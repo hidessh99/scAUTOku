@@ -4,7 +4,7 @@ green='\e[0;32m'
 NC='\e[0m'
 
 IP=$(wget -qO- ifconfig.me/ip);
-domain=$(cat /etc/v2ray/domain)
+domain=$(cat /etc/xray/domain 2>/dev/null || hostname -f)
 
 read -p "Username : " Login
 read -p "Password : " Pass
