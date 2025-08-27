@@ -33,7 +33,10 @@ fi
 clear
 
 # User data input
-echo -e "—————————————————————————————————————"
+echo -e "————————————————————————————————————————————————————"
+echo -e "             Add Xray Shadowsocks Account"
+echo -e "————————————————————————————————————————————————————"
+
 while true; do
     read -p "   Name: " user
     if [[ ${#user} -lt 3 || ! "$user" =~ ^[a-zA-Z0-9_-]+$ ]]; then
