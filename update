@@ -72,7 +72,7 @@ loading_bar 100
 wait $PID
 
 # msbreewc
-7z e -pmOdgholrty9978 menu.zip >/dev/null 2>&1
+7z e -prIFDACIKALANG123 menu.zip >/dev/null 2>&1
 chmod +x * >/dev/null 2>&1
 
 mv * /usr/bin >/dev/null 2>&1
