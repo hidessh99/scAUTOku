@@ -45,8 +45,6 @@ echo ""
 
 
 
-echo "   Username : $user"
-
 read -p "Password: " uuid
 
 

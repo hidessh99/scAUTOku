@@ -16,7 +16,9 @@ pubkey=$(cat /etc/slowdns/server.pub 2>/dev/null || echo "Pubkey not available")
 domain=$(cat /etc/xray/domain 2>/dev/null || hostname -f)
 # uuid=$(cat /proc/sys/kernel/random/uuid)
 
-
+echo -e "————————————————————————————————————————————————————"
+echo -e "             Add Xray Vless Account"
+echo -e "————————————————————————————————————————————————————"
 
 while true; do
     read -p "   Name: " user
@@ -36,10 +38,7 @@ while true; do
 done
 echo ""
 # User data input
-echo -e "————————————————————————————————————————————————————"
-echo -e "             Add Xray vless Account"
-echo -e "————————————————————————————————————————————————————"
-echo "   Username : $user"
+
 
 read -p "Password: " uuid
 until [[ $duration =~ ^[0-9]+$ ]]; do
