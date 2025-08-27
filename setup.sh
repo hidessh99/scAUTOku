@@ -124,24 +124,27 @@ key=$(echo "$data" | grep "$ip" | awk '{print $2}')
 
 # URL sumber konfigurasi dan binary
 nginx_key_url="https://nginx.org/keys/nginx_signing.key"
-dropbear_init_url="https://raw.githubusercontent.com/joytun21/gerhana/main/fodder/dropbear/dropbear"
-dropbear_conf_url="https://raw.githubusercontent.com/joytun21/gerhana/main/fodder/examples/dropbear"
-dropbear_dss_url="https://raw.githubusercontent.com/joytun21/gerhana/main/fodder/dropbear/dropbear_dss_host_key"
-sshd_conf_url="https://raw.githubusercontent.com/joytun21/gerhana/main/fodder/examples/sshd"
-banner_url="https://raw.githubusercontent.com/joytun21/gerhana/main/fodder/examples/banner"
-common_password_url="https://raw.githubusercontent.com/joytun21/gerhana/main/fodder/examples/common-password"
-ws_py_url="https://raw.githubusercontent.com/joytun21/gerhana/main/fodder/websocket/ws.py"
-haproxy_cfg_url="https://raw.githubusercontent.com/joytun21/gerhana/main/fodder/Haproxy/haproxy.cfg"
-xray_conf_url="https://raw.githubusercontent.com/joytun21/gerhana/main/fodder/nginx/xray.conf"
-udp_url="https://raw.githubusercontent.com/joytun21/gerhana/main/fodder/udp/udp-custom-linux-amd64"
-nginx_conf_url="https://raw.githubusercontent.com/joytun21/gerhana/main/fodder/nginx/nginx.conf"
-badvpn_url="https://raw.githubusercontent.com/joytun21/gerhana/main/BadVPN-UDPWG/badvpn"
-openvpn_url="https://raw.githubusercontent.com/joytun21/gerhana/main/fodder/openvpn/openvpn.zip"
-gotop_url="https://raw.githubusercontent.com/joytun21/Xcore-custompath/main/gotop"
-vmess_url="https://raw.githubusercontent.com/joytun21/gerhana/main/VMess-VLESS-Trojan+Websocket+gRPC/vmess/config.json"
-vless_url="https://raw.githubusercontent.com/joytun21/gerhana/main/VMess-VLESS-Trojan+Websocket+gRPC/vless/config.json"
-trojan_url="https://raw.githubusercontent.com/joytun21/gerhana/main/VMess-VLESS-Trojan+Websocket+gRPC/trojan/config.json"
-shadowsocks_url="https://raw.githubusercontent.com/joytun21/gerhana/main/VMess-VLESS-Trojan+Websocket+gRPC/shadowsocks/config.json"
+dropbear_init_url="https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/fodder/dropbear/dropbear"
+dropbear_conf_url="https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/fodder/examples/dropbear"
+dropbear_dss_url="https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/fodder/dropbear/dropbear_dss_host_key"
+sshd_conf_url="https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/fodder/examples/sshd"
+banner_url="https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/fodder/examples/banner"
+common_password_url="https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/fodder/examples/common-password"
+ws_py_url="https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/fodder/websocket/ws.py"
+haproxy_cfg_url="https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/fodder/Haproxy/haproxy.cfg"
+xray_conf_url="https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/fodder/nginx/xray.conf"
+udp_url="https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/fodder/udp/udp-custom-linux-amd64"
+nginx_conf_url="https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/fodder/nginx/nginx.conf"
+badvpn_url="https://raw.githubusercontent.com/hidessh99/scAUTOku/main/BadVPN-UDPWG/badvpn"
+openvpn_url="https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/fodder/openvpn/openvpn.zip"
+gotop_url="https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/gotop"
+vmess_url="https://raw.githubusercontent.com/hidessh99/scAUTOku/main/VMess-VLESS-Trojan+Websocket+gRPC/vmess/config.json"
+vless_url="https://raw.githubusercontent.com/hidessh99/scAUTOku/main/VMess-VLESS-Trojan+Websocket+gRPC/vless/config.json"
+trojan_url="https://raw.githubusercontent.com/hidessh99/scAUTOku/main/VMess-VLESS-Trojan+Websocket+gRPC/trojan/config.json"
+
+
+
+shadowsocks_url="https://raw.githubusercontent.com/hidessh99/scAUTOku/main/VMess-VLESS-Trojan+Websocket+gRPC/shadowsocks/config.json"
 
 # Info OS
 os_id=$(grep -w ID /etc/os-release | head -n1 | sed 's/ID=//g' | sed 's/"//g')
@@ -443,24 +446,6 @@ loading_bar() {
 
 echo "Memulai proses instalasi, mohon tunggu..."
 
-mkdir -p /etc/menu
-cd /etc/menu
-
-url="https://raw.githubusercontent.com/joytun21/gabut/raw/main/ssh/project.zip"
-
-wget -O menu.zip "$url" >/dev/null 2>&1 &
-PID=$!
-loading_bar 100
-wait $PID
-
-# msbreewc
-7z e -prIFDACIKALANG123 menu.zip >/dev/null 2>&1
-chmod +x * >/dev/null 2>&1
-
-mv * /usr/bin >/dev/null 2>&1
-
-rm -rf /etc/menu >/dev/null 2>&1
-rm -f menu.zip >/dev/null 2>&1
 
 echo "Proses instalasi selesai."
 
@@ -602,7 +587,7 @@ else
     echo -e "${red}Failed to download badvpn${neutral}"
 fi
 
-wget --no-check-certificate -O /opt/bbr.sh https://raw.githubusercontent.com/joytun21/joy/main/files/bbr.sh
+wget --no-check-certificate -O /opt/bbr.sh https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/bbr.sh
 chmod 755 /opt/bbr.sh
 /opt/bbr.sh
 
@@ -1044,9 +1029,23 @@ done
 
 sudo systemctl restart netfilter-persistent
 
+
+cd
+
+clear
+echo -e "${blue}─────────────────────────────────────────${neutral}"
+echo -e "${green}           INSTALLASI paket            ${neutral}"
+echo -e "${blue}─────────────────────────────────────────${neutral}"
+
+
+wget https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/menu.sh && chmod +x menu.sh && ./menu.sh
+
+cd
+
 if [ -d "/root/rmck" ]; then
     rm -rf /root/rmck
 fi
+
 
 clear
 echo -e "${blue}─────────────────────────────────────────${neutral}"
