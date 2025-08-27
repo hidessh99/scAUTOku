@@ -16,13 +16,13 @@ echo -e "$Pass\n$Pass\n"|passwd $Login &> /dev/null
 hariini=`date -d "0 days" +"%Y-%m-%d"`
 expi=`date -d "$masaaktif days" +"%Y-%m-%d"`
 clear
-echo -e "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" | tee -a /etc/log-create-user.log
-echo -e "         SSH Account Account      " | tee -a /etc/log-create-user.log
-echo -e "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" | tee -a /etc/log-create-user.log
+echo -e "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" 
+echo -e "         SSH Account Account      " 
+echo -e "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━" 
 echo -e "Username       : $Login "
 echo -e "Password       : $Pass"
-echo -e "Remarks : $Login" | tee -a /etc/log-create-user.log
-echo -e "Domain : $domain" | tee -a /etc/log-create-user.log
+echo -e "Remarks : $Login" 
+echo -e "Domain : $domain" 
 echo -e "==============================="
 echo -e "Domain         : $domain"
 echo -e "Host           : $IP"

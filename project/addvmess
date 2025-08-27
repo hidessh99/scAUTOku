@@ -273,39 +273,7 @@ mv "$temp_file" "$db_file"
 # Add new entry
 echo "### ${user} ${exp} ${uuid}" >>"$db_file"
 
-# Display account information
 
-
-
-clear -x
-echo -e "——————————————————————————————————————"
-echo -e  "    Xray/Vmess Account    "
-echo -e "——————————————————————————————————————"
-echo -e "Remarks      : ${user}"
-echo -e "Host Server  : ${domain}"
-echo -e "Location     : $city"
-echo -e "Port TLS     : 443"
-echo -e "Port non TLS : 80, 8080"
-echo -e "Port DNS     : 443, 53"
-echo -e "Port GRPC    : 443"
-echo -e "AlterId      : 0"
-echo -e "Security     : auto"
-echo -e "Network      : WS or gRPC"
-echo -e "Path         : /whatever/vmess "
-echo -e "ServiceName  : vmess-grpc"
-echo -e "User ID      : ${uuid}"
-echo -e "Public Key   : ${pubkey}"
-echo -e "————————————————————————————————————————————————————"
-echo -e "TLS Link    : ${vmess_tls}"
-echo -e "————————————————————————————————————————————————————"
-echo -e "NTLS Link   : ${vmess_non}"
-echo -e "————————————————————————————————————————————————————"
-echo -e "GRPC Link   : ${vmess_grpc}"
-echo -e "————————————————————————————————————————————————————"
-echo -e "OpenClash Format : https://${domain}:81/vmess-$user.txt"
-echo -e "————————————————————————————————————————————————————"
-echo -e "Expires On  : $exp"
-echo -e ""
 
 # Save original log
 {
@@ -339,5 +307,33 @@ echo -e ""
     echo "expires_on   : $exp"
     echo ""
 } >> /etc/xray/vmess/log-create-${user}.log
-read -n 1 -s -r -p "Press [ Enter ] to back on menu"
-menu
+
+# Display account information
+clear 
+echo -e "——————————————————————————————————————"
+echo -e  "    Xray/Vmess Account    "
+echo -e "——————————————————————————————————————"
+echo -e "Remarks      : ${user}"
+echo -e "Host Server  : ${domain}"
+echo -e "Location     : $city"
+echo -e "Port TLS     : 443"
+echo -e "Port non TLS : 80, 8080"
+echo -e "Port DNS     : 443, 53"
+echo -e "Port GRPC    : 443"
+echo -e "AlterId      : 0"
+echo -e "Security     : auto"
+echo -e "Network      : WS or gRPC"
+echo -e "Path         : /whatever/vmess "
+echo -e "ServiceName  : vmess-grpc"
+echo -e "User ID      : ${uuid}"
+echo -e "Public Key   : ${pubkey}"
+echo -e "————————————————————————————————————————————————————"
+echo -e "TLS Link    : ${vmess_tls}"
+echo -e "————————————————————————————————————————————————————"
+echo -e "NTLS Link   : ${vmess_non}"
+echo -e "————————————————————————————————————————————————————"
+echo -e "GRPC Link   : ${vmess_grpc}"
+echo -e "————————————————————————————————————————————————————"
+echo -e "OpenClash Format : https://${domain}:81/vmess-$user.txt"
+echo -e "————————————————————————————————————————————————————"
+echo -e "Expires On  : $exp"

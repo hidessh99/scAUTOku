@@ -384,7 +384,7 @@ echo -e "———————————————————————�
 echo -e "OpenClash Format : https://${domain}:81/shadowsocks-${user}.txt"
 echo -e "—————————————————————————————————————"
 echo -e "Expires On   : ${exp}"
-echo -e ""
+
 
 # Save log
 {
@@ -410,6 +410,27 @@ echo -e ""
   echo "Expires On   : ${exp}"
   echo ""
 } >> "/etc/xray/shadowsocks/log-create-${user}.log"
-read -n 1 -s -r -p "Press [ Enter ] to back on menu"
-menu
+# Display account information
+
+clear 
+echo -e "—————————————————————————————————————"
+echo -e "  Xray/Shadowsocks Account "
+echo -e "—————————————————————————————————————"
+echo -e "Description  : ${user}"
+echo -e "Server Host  : ${domain}"
+echo -e "Location     : ${city}"
+echo -e "Port         : 443"
+echo -e "Method       : ${method}"
+echo -e "Password     : ${password}"
+echo -e "WS Path      : /whatever/ss-ws"
+echo -e "ServiceName  : ss-grpc"
+echo -e "Public Key   : ${pubkey}"
+echo -e "—————————————————————————————————————"
+echo -e "SS WS Link   : ${ss_link_ws}"
+echo -e "—————————————————————————————————————"
+echo -e "SS gRPC Link : ${ss_link_grpc}"
+echo -e "—————————————————————————————————————"
+echo -e "OpenClash Format : https://${domain}:81/shadowsocks-${user}.txt"
+echo -e "—————————————————————————————————————"
+echo -e "Expires On   : ${exp}"
 
