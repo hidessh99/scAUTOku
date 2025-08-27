@@ -6,82 +6,15 @@ data_server=$(curl -v --insecure --silent https://google.com/ 2>&1 | grep Date |
 date_list=$(date +"%Y-%m-%d" -d "$data_server")
 
 
-    
-# Colors
-green="\e[38;5;87m"
-        red="\e[38;5;196m"
-        neutral="\e[0m"
-        blue="\e[38;5;130m"
-        orange="\e[38;5;99m"
-        yellow="\e[38;5;226m"
-        purple="\e[38;5;141m"
-        bold_white="\e[1;37m"
-        reset="\e[0m"
-        pink="\e[38;5;205m"
-
-# Function to print rainbow text
-print_rainbow() {
-    local text="$1"
-    local length=${#text}
-    local start_color=(255 255 0) # yellow
-    local mid_color=(0 255 0)     # green
-    local end_color=(255 255 0)   # yellow
-
-    for ((i = 0; i < length; i++)); do
-        local progress=$((i * 100 / (length - 1)))
-
-        if [ $progress -lt 50 ]; then
-            local factor=$((progress * 2))
-            r=$((start_color[0] * (100 - factor) / 100 + mid_color[0] * factor / 100))
-            g=$((start_color[1] * (100 - factor) / 100 + mid_color[1] * factor / 100))
-            b=$((start_color[2] * (100 - factor) / 100 + mid_color[2] * factor / 100))
-        else
-            local factor=$(((progress - 50) * 2))
-            r=$((mid_color[0] * (100 - factor) / 100 + end_color[0] * factor / 100))
-            g=$((mid_color[1] * (100 - factor) / 100 + end_color[1] * factor / 100))
-            b=$((mid_color[2] * (100 - factor) / 100 + end_color[2] * factor / 100))
-        fi
-
-        printf "\e[38;2;%d;%d;%dm%s" "$r" "$g" "$b" "${text:$i:1}"
-    done
-    echo -e "$reset"
-}
-
 # Variables
 ip=$(wget -qO- ipv4.icanhazip.com)
 city=$(cat /etc/xray/city 2>/dev/null || echo "Unknown city")
 pubkey=$(cat /etc/slowdns/server.pub 2>/dev/null || echo "Pubkey not available")
 domain=$(cat /etc/xray/domain 2>/dev/null || hostname -f)
 
-# Spinner dan progress bar
-spinner=("⠋" "⠙" "⠹" "⠸" "⠼" "⠴" "⠦" "⠧" "⠇" "⠏")
-bar_length=30
-
-echo ""
-echo -ne "${yellow}${bold}Preparing Premium Account...${reset}\n"
-
-for i in $(seq 1 $bar_length); do
-    # Hitung progress
-    progress=$((i*100/bar_length))
-    done_bar=$(printf "%0.s#" $(seq 1 $i))
-    remain_bar=$(printf "%0.s-" $(seq 1 $((bar_length - i))))
-
-    # Spinner
-    spin=${spinner[$((i % ${#spinner[@]}))]}
-
-    # Tampilkan progress bar + spinner
-    echo -ne "\r${yellow}[${done_bar}${remain_bar}] ${progress}% $spin${reset}"
-    sleep 0.1
-done
-
-echo -e "\n${green}${bold}Premium Account Ready to be created!${reset}\n"
-sleep 1
 clear
 
-# User data input
-print_rainbow "┌─────────────────────────────────────────┐"
-print_rainbow "│            ENTER USER DATA              │"
-print_rainbow "└─────────────────────────────────────────┘"
+
 while true; do
     read -p "   Name: " user
     if [[ ${#user} -lt 3 || ! "$user" =~ ^[a-zA-Z0-9_-]+$ ]]; then
@@ -99,11 +32,7 @@ while true; do
     fi
 done
 echo ""
-printf "\033[10A\033[0J"
-print_rainbow "┌─────────────────────────────────────────┐"
-print_rainbow "│      Input ssh/openvpn account deps     │"
-print_rainbow "│        Set IP Limit for Account         │"
-print_rainbow "└─────────────────────────────────────────┘"
+echo -e "—————————————————————————————————————"
 echo "   Username : $user"
 while true; do
     read -p "   Password: " passwd
@@ -187,12 +116,12 @@ Expiration       : $exp
 END
 
 clear
-print_rainbow "───────────────────────────"
-print_rainbow "     SSH OVPN Account      "
-print_rainbow "───────────────────────────"
+echo -e "—————————————————————————————————————"
+echo -e "     SSH OVPN Account      "
+echo -e "───────────────────────────"
 echo -e "Username         : $user"
 echo -e "Password         : $passwd"
-print_rainbow "───────────────────────────"
+echo -e "—————————————————————————————————————"
 echo -e "IP               : $ip"
 echo -e "Host             : $domain"
 echo -e "Location         : $city"
@@ -208,13 +137,13 @@ echo -e "OVPN TCP Port    : 1194"
 echo -e "OVPN UDP Port    : 2200"
 echo -e "BadVPN UDP       : 7100, 7300, 7300"
 echo -e "SlowDns Public Key: ${pubkey}"
-print_rainbow "───────────────────────────"
+echo -e "—————————————————————————————————————"
 echo -e "WSS Payload      : GET wss://BUG.COM/ HTTP/1.1[crlf]Host: $domain[crlf]Upgrade: websocket[crlf][crlf]"
-print_rainbow "───────────────────────────"
+echo -e "—————————————————————————————————————"
 echo -e "OpenVPN Link     : https://$domain:81/allovpn.zip"
-print_rainbow "───────────────────────────"
+echo -e "—————————————————————————————————————"
 echo -e "Save Account Link: https://$domain:81/ssh-$user.txt"
-print_rainbow "───────────────────────────"
+echo -e "—————————————————————————————————————"
 echo -e "Expiration       : $exp"
 echo -e ""
 

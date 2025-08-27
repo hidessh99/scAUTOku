@@ -46,7 +46,10 @@ echo ""
 
 
 echo "   Username : $user"
-echo "   Password : $uuid"
+
+read -p "Password: " uuid
+
+
 until [[ $duration =~ ^[0-9]+$ ]]; do
     read -p "   Active period (days): " duration
     if [[ -z "$duration" ]]; then
@@ -279,9 +282,9 @@ echo "### ${user} ${exp} ${uuid}" >>"$db_file"
 
 
 clear -x
-echo -e "————————————————————————————————————————————————————"
-print_rainbow "    Xray/Vmess Account    "
-echo -e "————————————————————————————————————————————————————"
+echo -e "——————————————————————————————————————"
+echo -e  "    Xray/Vmess Account    "
+echo -e "——————————————————————————————————————"
 echo -e "Remarks      : ${user}"
 echo -e "Host Server  : ${domain}"
 echo -e "Location     : $city"

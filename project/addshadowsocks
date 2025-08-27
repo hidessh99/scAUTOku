@@ -6,45 +6,6 @@ data_server=$(curl -v --insecure --silent https://google.com/ 2>&1 | grep Date |
 date_list=$(date +"%Y-%m-%d" -d "$data_server")
 
 
-
-
-# Colors
-red="\e[91m"
-green="\e[92m"
-yellow="\e[93m"
-blue="\e[94m"
-purple="\e[95m"
-cyan="\e[96m"
-white="\e[97m"
-reset="\e[0m"
-
-# Function to print rainbow text
-print_rainbow() {
-    local text="$1"
-    local length=${#text}
-    local start_color=(255 255 0) # yellow
-    local mid_color=(0 255 0)     # green
-    local end_color=(255 255 0)   # yellow
-
-    for ((i = 0; i < length; i++)); do
-        local progress=$((i * 100 / (length - 1)))
-
-        if [ $progress -lt 50 ]; then
-            local factor=$((progress * 2))
-            r=$((start_color[0] * (100 - factor) / 100 + mid_color[0] * factor / 100))
-            g=$((start_color[1] * (100 - factor) / 100 + mid_color[1] * factor / 100))
-            b=$((start_color[2] * (100 - factor) / 100 + mid_color[2] * factor / 100))
-        else
-            local factor=$(((progress - 50) * 2))
-            r=$((mid_color[0] * (100 - factor) / 100 + end_color[0] * factor / 100))
-            g=$((mid_color[1] * (100 - factor) / 100 + end_color[1] * factor / 100))
-            b=$((mid_color[2] * (100 - factor) / 100 + end_color[2] * factor / 100))
-        fi
-
-        printf "\e[38;2;%d;%d;%dm%s" "$r" "$g" "$b" "${text:$i:1}"
-    done
-    echo -e "$reset"
-}
 # Variables
 ip=$(wget -qO- ipv4.icanhazip.com)
 srv_date=$(curl -v --insecure --silent https://google.com/ 2>&1 | grep Date | sed -e 's/< Date: //')
@@ -69,35 +30,10 @@ if [ ! -d "/etc/xray/shadowsocks" ]; then
   mkdir -p /etc/xray/shadowsocks
 fi
 
-# Spinner dan progress bar
-spinner=("⠋" "⠙" "⠹" "⠸" "⠼" "⠴" "⠦" "⠧" "⠇" "⠏")
-bar_length=30
-
-echo ""
-echo -ne "${yellow}${bold}Preparing Premium Account...${reset}\n"
-
-for i in $(seq 1 $bar_length); do
-    # Hitung progress
-    progress=$((i*100/bar_length))
-    done_bar=$(printf "%0.s#" $(seq 1 $i))
-    remain_bar=$(printf "%0.s-" $(seq 1 $((bar_length - i))))
-
-    # Spinner
-    spin=${spinner[$((i % ${#spinner[@]}))]}
-
-    # Tampilkan progress bar + spinner
-    echo -ne "\r${yellow}[${done_bar}${remain_bar}] ${progress}% $spin${reset}"
-    sleep 0.1
-done
-
-echo -e "\n${green}${bold}Premium Account Ready to be created!${reset}\n"
-sleep 1
 clear
 
 # User data input
-print_rainbow "┌─────────────────────────────────────────┐"
-print_rainbow "│            ENTER USER DATA              │"
-print_rainbow "└─────────────────────────────────────────┘"
+echo -e "—————————————————————————————————————"
 while true; do
     read -p "   Name: " user
     if [[ ${#user} -lt 3 || ! "$user" =~ ^[a-zA-Z0-9_-]+$ ]]; then
@@ -115,12 +51,7 @@ while true; do
     fi
 done
 echo ""
-printf "\033[10A\033[0J"
-print_rainbow "┌─────────────────────────────────────────┐"
-print_rainbow "│  Input xray/shadowsocks account deps    │"
-print_rainbow "│     Set Quota/IP Limit for Account      │"
-print_rainbow "│             0 For Unlimited             │"
-print_rainbow "└─────────────────────────────────────────┘"
+echo -e "—————————————————————————————————————"
 echo "   Username : $user"
 until [[ $duration =~ ^[0-9]+$ ]]; do
   read -p "   Active period (days): " duration
@@ -433,9 +364,9 @@ echo "### ${user} ${exp} ${password}" >>"$db_file"
 
 # Display account information
 clear -x
-print_rainbow "───────────────────────────"
-print_rainbow "  Xray/Shadowsocks Account "
-print_rainbow "───────────────────────────"
+echo -e "—————————————————————————————————————"
+echo -e "  Xray/Shadowsocks Account "
+echo -e "—————————————————————————————————————"
 echo -e "Description  : ${user}"
 echo -e "Server Host  : ${domain}"
 echo -e "Location     : ${city}"
@@ -445,13 +376,13 @@ echo -e "Password     : ${password}"
 echo -e "WS Path      : /whatever/ss-ws"
 echo -e "ServiceName  : ss-grpc"
 echo -e "Public Key   : ${pubkey}"
-print_rainbow "───────────────────────────"
+echo -e "—————————————————————————————————————"
 echo -e "SS WS Link   : ${ss_link_ws}"
-print_rainbow "───────────────────────────"
+echo -e "—————————————————————————————————————"
 echo -e "SS gRPC Link : ${ss_link_grpc}"
-print_rainbow "───────────────────────────"
+echo -e "—————————————————————————————————————"
 echo -e "OpenClash Format : https://${domain}:81/shadowsocks-${user}.txt"
-print_rainbow "───────────────────────────"
+echo -e "—————————————————————————————————————"
 echo -e "Expires On   : ${exp}"
 echo -e ""
 
