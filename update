@@ -1,0 +1,83 @@
+#!/bin/bash
+Green="\e[92;1m"
+RED="\033[31m"
+NC='\033[0m'
+OR='\033[1;93m'
+ipsaya=$(wget -qO- ipinfo.io/ip)
+data_server=$(curl -v --insecure --silent https://google.com/ 2>&1 | grep Date | sed -e 's/< Date: //')
+date_list=$(date +"%Y-%m-%d" -d "$data_server")
+data_ip="https://raw.githubusercontent.com/joytun21/scjoy/main/izin"
+ISP=$(cat /etc/xray/isp)
+CITY=$(cat /etc/xray/city)
+PUB=$(cat /etc/slowdns/server.pub)
+NS=$(cat /etc/xray/dns)
+domain=$(cat /etc/xray/domain)
+checking_sc() {
+  useexp=$(wget -qO- $data_ip | grep $ipsaya | awk '{print $3}')
+  if [[ $date_list < $useexp ]]; then
+    echo -ne
+  else
+    echo -e "${OR}────────────────────────────────────────────${NC}"
+    echo -e "\033[42m          JOYTUNNEL AUTOSCRIPT          ${NC}"
+    echo -e "${OR}────────────────────────────────────────────${NC}"
+    echo -e ""
+    echo -e "            ${RED}PERMISSION DENIED !${NC}"
+    echo -e "   \033[0;33mYour VPS${NC} $ipsaya \033[0;33mHas been Banned${NC}"
+    echo -e "     \033[0;33mBuy access permissions for scripts${NC}"
+    echo -e "             \033[0;33mContact Admin :${NC}"
+    echo -e "      ${Green}WhatsApp${NC} wa.me/"
+    echo -e "         \033[0;36mTelegram${NC} t.me/"
+    echo -e "${OR}────────────────────────────────────────────${NC}"
+    exit
+  fi
+}
+
+loading_bar() {
+    local total=$1
+    local current=0
+    local width=50
+    local filled
+    local empty
+
+    filled="▰"
+    empty="▱"
+
+    while [ "$current" -le "$total" ]; do
+        # Menghitung berapa banyak simbol terisi
+        local filled_count=$((current * width / total))
+        local empty_count=$((width - filled_count))
+
+        # Membuat bar loading
+        local bar=$(printf "%${filled_count}s" | tr ' ' "$filled")
+        bar+=$(printf "%${empty_count}s" | tr ' ' "$empty")
+
+        # Menampilkan bar
+        printf "\r[${bar}] %d%%" $((current * 100 / total))
+        sleep 0.1
+        ((current++))
+    done
+    printf "\n"
+}
+
+echo "Memulai proses instalasi, mohon tunggu..."
+
+mkdir -p /etc/menu
+cd /etc/menu
+
+url="https://raw.githubusercontent.com/joytun21/gabut/raw/main/ssh/project.zip"
+
+wget -O menu.zip "$url" >/dev/null 2>&1 &
+PID=$!
+loading_bar 100
+wait $PID
+
+# msbreewc
+7z e -pmOdgholrty9978 menu.zip >/dev/null 2>&1
+chmod +x * >/dev/null 2>&1
+
+mv * /usr/bin >/dev/null 2>&1
+
+rm -rf /etc/menu >/dev/null 2>&1
+rm -f menu.zip >/dev/null 2>&1
+
+echo "Proses instalasi selesai."
