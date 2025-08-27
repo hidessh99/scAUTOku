@@ -119,7 +119,7 @@ domain=$(cat /etc/xray/domain)
 ip=$(wget -qO- ipinfo.io/ip)
 
 # Mendapatkan data izin dan key
-data=$(curl -s https://raw.githubusercontent.com/joytun21/scjoy/main/izin)
+data=$(curl -s https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/izin)
 key=$(echo "$data" | grep "$ip" | awk '{print $2}')
 
 # URL sumber konfigurasi dan binary
