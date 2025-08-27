@@ -5,28 +5,7 @@
 ipsaya=$(curl -sS ipv4.icanhazip.com)
 data_server=$(curl -v --insecure --silent https://google.com/ 2>&1 | grep Date | sed -e 's/< Date: //')
 date_list=$(date +"%Y-%m-%d" -d "$data_server")
-data_ip="https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/izin"
 
-checking_sc() {
-  useexp=$(wget -qO- $data_ip | grep $ipsaya | awk '{print $3}')
-  if [[ $date_list < $useexp ]]; then
-    echo -ne
-  else
-    echo -e "\033[1;93m────────────────────────────────────────────\033[0m"
-    echo -e "\033[42m          404 NOT FOUND AUTOSCRIPT          \033[0m"
-    echo -e "\033[1;93m────────────────────────────────────────────\033[0m"
-    echo -e ""
-    echo -e "            \033[1;31mPERMISSION DENIED !\033[0m"
-    echo -e "   \033[0;33mYour VPS $ipsaya Has been Banned\033[0m"
-    echo -e "     \033[0;33mBuy access permissions for scripts\033[0m"
-    echo -e "             \033[0;33mContact Admin :\033[0m"
-    echo -e "      \033[32mWhatsApp\033[0m wa.me/6283877140463"
-    echo -e "\033[1;93m────────────────────────────────────────────\033[0m"
-    sleep 5
-    reboot
-  fi
-}
-checking_sc
 
 # =====================================================
 # VMESS ONLINE USER CHECKER

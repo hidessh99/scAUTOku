@@ -8,29 +8,7 @@ data_server=$(curl -v --insecure --silent https://google.com/ 2>&1 | grep Date |
 date_list=$(date +"%Y-%m-%d" -d "$data_server")
 url_izin="https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/izin"
 
-# ===============================
-# CEK PERMISSION SCRIPT
-# ===============================
-checking_sc() {
-  useexp=$(wget -qO- $url_izin | grep $ipsaya | awk '{print $3}')
-  if [[ "$date_list" < "$useexp" ]]; then
-    echo -ne
-  else
-    echo -e "\033[1;93m────────────────────────────────────────────\033[0m"
-    echo -e "\033[42m          404 NOT FOUND AUTOSCRIPT          \033[0m"
-    echo -e "\033[1;93m────────────────────────────────────────────\033[0m"
-    echo -e ""
-    echo -e "            ${RED}PERMISSION DENIED !${neutral}"
-    echo -e "   \033[0;33mYour VPS${neutral} $ipsaya \033[0;33mHas been Banned${neutral}"
-    echo -e "     \033[0;33mBuy access permissions for scripts${neutral}"
-    echo -e "             \033[0;33mContact Admin :${neutral}"
-    echo -e "      ${GREEN}WhatsApp${neutral} wa.me/6283877140463"
-    echo -e "\033[1;93m────────────────────────────────────────────\033[0m"
-    sleep 5
-    reboot
-  fi
-}
-checking_sc
+
 
 # ===============================
 # AMBIL DATA CLIENT

@@ -6,31 +6,7 @@ OR='\033[1;93m'
 ipsaya=$(wget -qO- ipinfo.io/ip)
 data_server=$(curl -v --insecure --silent https://google.com/ 2>&1 | grep Date | sed -e 's/< Date: //')
 date_list=$(date +"%Y-%m-%d" -d "$data_server")
-data_ip="https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/izin"
-ISP=$(cat /etc/xray/isp)
-CITY=$(cat /etc/xray/city)
-PUB=$(cat /etc/slowdns/server.pub)
-NS=$(cat /etc/xray/dns)
-domain=$(cat /etc/xray/domain)
-checking_sc() {
-  useexp=$(wget -qO- $data_ip | grep $ipsaya | awk '{print $3}')
-  if [[ $date_list < $useexp ]]; then
-    echo -ne
-  else
-    echo -e "${OR}────────────────────────────────────────────${NC}"
-    echo -e "\033[42m          JOYTUNNEL AUTOSCRIPT          ${NC}"
-    echo -e "${OR}────────────────────────────────────────────${NC}"
-    echo -e ""
-    echo -e "            ${RED}PERMISSION DENIED !${NC}"
-    echo -e "   \033[0;33mYour VPS${NC} $ipsaya \033[0;33mHas been Banned${NC}"
-    echo -e "     \033[0;33mBuy access permissions for scripts${NC}"
-    echo -e "             \033[0;33mContact Admin :${NC}"
-    echo -e "      ${Green}WhatsApp${NC} wa.me/"
-    echo -e "         \033[0;36mTelegram${NC} t.me/"
-    echo -e "${OR}────────────────────────────────────────────${NC}"
-    exit
-  fi
-}
+
 
 loading_bar() {
     local total=$1
