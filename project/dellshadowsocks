@@ -6,8 +6,6 @@ data_server=$(curl -v --insecure --silent https://google.com/ 2>&1 | grep Date |
 date_list=$(date +"%Y-%m-%d" -d "$data_server")
 
 
-    
-
 # colors
 red="\e[91m"
 green="\e[92m"
