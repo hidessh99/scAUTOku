@@ -36,8 +36,7 @@ while true; do
         break
     fi
 done
-echo ""
-# User data input
+
 
 
 read -p "Password: " uuid

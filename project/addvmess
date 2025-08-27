@@ -41,8 +41,6 @@ while true; do
         break
     fi
 done
-echo ""
-
 
 
 read -p "Password: " uuid
