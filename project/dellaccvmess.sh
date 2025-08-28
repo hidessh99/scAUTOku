@@ -5,34 +5,29 @@ ipsaya=$(curl -sS ipv4.icanhazip.com)
 data_server=$(curl -v --insecure --silent https://google.com/ 2>&1 | grep Date | sed -e 's/< Date: //')
 date_list=$(date +"%Y-%m-%d" -d "$data_server")
 
-clear
 
-# User data input
-echo -e "————————————————————————————————————————————————————"
-echo -e "             Add Xray VMess Account"
-echo -e "————————————————————————————————————————————————————"
+    
+# colors
+red="\e[91m"
+green="\e[92m"
+yellow="\e[93m"
+blue="\e[94m"
+purple="\e[95m"
+cyan="\e[96m"
+white="\e[97m"
+reset="\e[0m"
 
-while true; do
-    read -p "   Name: " user
-    if [[ ${#user} -lt 3 || ! "$user" =~ ^[a-zA-Z0-9_-]+$ ]]; then
-        printf "\033[1A\033[0J"
-        echo -e "${red}   Username cannot be empty${reset}"
-        continue
-    fi
-
-done
-
-echo -e "Remarks      : ${user}"
+# Function to print rainbow text
 
 # variables
 domain=$(cat /etc/xray/domain 2>/dev/null || hostname -f)
 clear
-echo -e "————————————————————————————————————————————————————"
-echo -e "│          DELETE VMESS ACCOUNT           │"
-echo -e "————————————————————————————————————————————————————"
+read -p "User: " -e user
 
+echo -e  "┌─────────────────────────────────────────┐"
+echo -e  "│          DELETE VMESS ACCOUNT           │"
+echo -e  "└─────────────────────────────────────────┘"
 echo -e "Remarks      : ${user}"
-
 account_count=$(grep -c -E "^### " "/etc/xray/vmess/.vmess.db")
 if [[ ${account_count} == '0' ]]; then
     echo ""
@@ -42,19 +37,13 @@ if [[ ${account_count} == '0' ]]; then
 fi
 
 
-clear
-
-echo -e "${yellow}Select account to delete:${reset}"
-echo -e "${green}1) Choose by number${reset}"
-echo -e "${green}2) Type username manually${reset}"
-# Auto-select option 2: Type username manually
 delete_choice="2"
-echo "Auto-selected: 2) Type username manually"
+
 if [[ $delete_choice == "1" ]]; then
 clear
-        echo -e "${green}┌─────────────────────────────────────────┐${reset}"
-        echo -e "${green}│          DELETE VMESS ACCOUNT           │${reset}"
-        echo -e "${green}└─────────────────────────────────────────┘${reset}"
+        echo -e  "┌─────────────────────────────────────────┐"
+        echo -e  "│          DELETE VMESS ACCOUNT           │"
+        echo -e  "└─────────────────────────────────────────┘"
     echo " ┌────┬────────────────────┬─────────────┐"
     echo " │ no │ username           │     exp     │"
     echo " ├────┼────────────────────┼─────────────┤"
@@ -79,16 +68,16 @@ case $delete_choice in
         user=$(grep -E "^### " "/etc/xray/vmess/.vmess.db" | cut -d ' ' -f 2 | sed -n "${account_number}p")
         exp=$(grep -E "^### " "/etc/xray/vmess/.vmess.db" | cut -d ' ' -f 3 | sed -n "${account_number}p")
         echo ""
-        echo -e "${green}┌─────────────────────────────────────────┐${reset}"
-        echo -e "${green}│           SELECTED ACCOUNT              │${reset}"
-        echo -e "${green}└─────────────────────────────────────────┘${reset}"
+        echo -e  "┌─────────────────────────────────────────┐"
+        echo -e  "│           SELECTED ACCOUNT              │"
+        echo -e  "└─────────────────────────────────────────┘"
         echo -e "Username     : ${green}$user${reset}"
         echo -e "Expiry       : ${yellow}$exp${reset}"
         echo ""
         sleep 2
         ;;
     2)
-
+        # read -rp "enter username: " user
         if ! grep -qE "^### $user " "/etc/xray/vmess/.vmess.db"; then
             echo "username not found"
             exit 1
@@ -117,9 +106,8 @@ if ! systemctl restart vmess@config >/dev/null 2>&1; then
 fi
 
 clear
-echo -e "${green}┌─────────────────────────────────────────┐${reset}"
-echo -e "${green}│    VMESS ACCOUNT DELETED SUCCESSFULLY   │${reset}"
-echo -e "${green}└─────────────────────────────────────────┘${reset}"
+echo -e "┌─────────────────────────────────────────┐"
+echo -e  "│    VMESS ACCOUNT DELETED SUCCESSFULLY   │"
+echo -e  "└─────────────────────────────────────────┘"
 echo -e "username     : ${green}$user${reset}"
 echo -e "account has been permanently deleted"
-
