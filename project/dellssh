@@ -134,5 +134,6 @@ else
 fi
 
 echo ""
-read -n 1 -s -r -p "Press [ Enter ] to back on menu"
-menu
+echo -e "—————————————————————————————————————"
+echo -e "     SSH/OVPN ACCOUNT DELETED SUCCESSFULLY      "
+echo -e "───────────────────────────"
