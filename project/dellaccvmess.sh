@@ -6,6 +6,7 @@ data_server=$(curl -v --insecure --silent https://google.com/ 2>&1 | grep Date |
 date_list=$(date +"%Y-%m-%d" -d "$data_server")
 
 
+read -p "enter username:: " user
     
 # colors
 red="\e[91m"
@@ -33,7 +34,7 @@ if [[ ${account_count} == '0' ]]; then
     exit 0
 fi
 
-read -p "enter username:: " user
+
 
 
 echo -e "${yellow}Select account to delete:${reset}"
@@ -80,7 +81,7 @@ case $delete_choice in
         sleep 2
         ;;
     2)
-        # read -rp "enter username: " user
+
         if ! grep -qE "^### $user " "/etc/xray/vmess/.vmess.db"; then
             echo "username not found"
             exit 1
