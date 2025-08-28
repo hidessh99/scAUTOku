@@ -33,6 +33,9 @@ if [[ ${account_count} == '0' ]]; then
     exit 0
 fi
 
+read -p "enter username:: " user
+
+
 echo -e "${yellow}Select account to delete:${reset}"
 echo -e "${green}1) Choose by number${reset}"
 echo -e "${green}2) Type username manually${reset}"
@@ -77,7 +80,7 @@ case $delete_choice in
         sleep 2
         ;;
     2)
-        read -rp "enter username: " user
+        # read -rp "enter username: " user
         if ! grep -qE "^### $user " "/etc/xray/vmess/.vmess.db"; then
             echo "username not found"
             exit 1
