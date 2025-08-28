@@ -42,7 +42,7 @@ if [[ ${account_count} == '0' ]]; then
 fi
 
 
-
+clear
 
 echo -e "${yellow}Select account to delete:${reset}"
 echo -e "${green}1) Choose by number${reset}"
