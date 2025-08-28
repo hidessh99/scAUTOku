@@ -5,26 +5,33 @@ ipsaya=$(curl -sS ipv4.icanhazip.com)
 data_server=$(curl -v --insecure --silent https://google.com/ 2>&1 | grep Date | sed -e 's/< Date: //')
 date_list=$(date +"%Y-%m-%d" -d "$data_server")
 
+clear
 
-read -p "enter username:: " user
-    
-# colors
-red="\e[91m"
-green="\e[92m"
-yellow="\e[93m"
-blue="\e[94m"
-purple="\e[95m"
-cyan="\e[96m"
-white="\e[97m"
-reset="\e[0m"
+# User data input
+echo -e "————————————————————————————————————————————————————"
+echo -e "             Add Xray VMess Account"
+echo -e "————————————————————————————————————————————————————"
 
+while true; do
+    read -p "   Name: " user
+    if [[ ${#user} -lt 3 || ! "$user" =~ ^[a-zA-Z0-9_-]+$ ]]; then
+        printf "\033[1A\033[0J"
+        echo -e "${red}   Username cannot be empty${reset}"
+        continue
+    fi
+
+done
+
+echo -e "Remarks      : ${user}"
 
 # variables
 domain=$(cat /etc/xray/domain 2>/dev/null || hostname -f)
 clear
-echo -e "${green}┌─────────────────────────────────────────┐${reset}"
-echo -e "${green}│          DELETE VMESS ACCOUNT           │${reset}"
-echo -e "${green}└─────────────────────────────────────────┘${reset}"
+echo -e "————————————————————————————————————————————————————"
+echo -e "│          DELETE VMESS ACCOUNT           │"
+echo -e "————————————————————————————————————————————————————"
+
+echo -e "Remarks      : ${user}"
 
 account_count=$(grep -c -E "^### " "/etc/xray/vmess/.vmess.db")
 if [[ ${account_count} == '0' ]]; then
