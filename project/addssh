@@ -38,10 +38,6 @@ while true; do
     read -p "   Password: " passwd
     if [[ -z "$passwd" ]]; then
         echo -e "${red}   Password cannot be empty${reset}"
-    elif [[ ${#passwd} -lt 6 ]]; then
-        echo -e "${red}   Password must be at least 6 characters${reset}"
-    elif ! [[ $passwd =~ ^[a-zA-Z0-9]+$ ]]; then
-        echo -e "${red}   Password can only contain letters and numbers${reset}"
     else
         break
     fi
