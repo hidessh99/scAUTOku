@@ -100,4 +100,12 @@ else
   echo -e "${yellow}User is currently offline${reset}"
 fi
 
-echo -e "${orange}──────────────────────────────────────────${reset}"
+# Display account information
+clear 
+echo -e "——————————————————————————————————————"
+echo -e  "    Check Xray/Vmess Account    "
+echo -e "——————————————————————————————————————"
+echo -e "User       : ${user}"
+echo -e "Status     : ${status}"
+echo -e "IP Connect : ${ip_count}"
+echo -e "Usage      : ${readable_usage}"
