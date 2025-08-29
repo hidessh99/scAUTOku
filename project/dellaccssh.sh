@@ -25,9 +25,9 @@ green="\e[38;5;87m"
 domain=$(cat /etc/xray/domain 2>/dev/null || hostname -f)
 clear
 
-echo -e  "┌─────────────────────────────────────────┐"
-echo -e  "│        DELETE SSH OVPN ACCOUNT          │"
-echo -e  "┌─────────────────────────────────────────┐"
+echo -e "${green}┌─────────────────────────────────────────┐${reset}"
+echo -e "${green}│        DELETE SSH OVPN ACCOUNT          │${reset}"
+echo -e "${green}└─────────────────────────────────────────┘${reset}"
 
 account_count=$(grep -c -E "^### " "/etc/ssh/.ssh.db")
 if [[ ${account_count} == '0' ]]; then
@@ -40,18 +40,16 @@ fi
 echo -e "${yellow}choose how to delete the account:${reset}"
 echo -e "${green}1) select by number${reset}"
 echo -e "${green}2) enter username manually${reset}"
-read -p "your choice [1-2]: " delete_choice
-
+# Auto-select option 2: enter username manually
 delete_choice="2"
-
+echo "Auto-selected: 2) enter username manually"
 
 case $delete_choice in
     1)
         clear
-        echo -e  "┌─────────────────────────────────────────┐"
-        echo -e  "┌─────────────────────────────────────────┐"
-        echo -e  "│        DELETE SSH OVPN ACCOUNT          │"
-        echo -e  "└─────────────────────────────────────────┘"
+        echo -e "${green}┌─────────────────────────────────────────┐${reset}"
+        echo -e "${green}│        DELETE SSH OVPN ACCOUNT          │${reset}"
+        echo -e "${green}└─────────────────────────────────────────┘${reset}"
         echo " ┌────┬────────────────────┬─────────────┐"
         echo " │ No │ Username           │  Days Left  │"
         echo " ├────┼────────────────────┼─────────────┤"
@@ -75,7 +73,7 @@ case $delete_choice in
         exp=$(grep -E "^### " "/etc/ssh/.ssh.db" | cut -d ' ' -f 3 | sed -n "${client_number}"p)
         ;;
     2)
-        read -rp "Enter username: " user
+        # read -rp "Enter username: " user
         if ! grep -qE "^### $user " "/etc/ssh/.ssh.db"; then
             echo "Username not found"
             exit 1
@@ -88,12 +86,7 @@ case $delete_choice in
         ;;
 esac
 
-# Deletion confirmation
-read -p "Are you sure you want to delete the account $user? (y/n): " confirm
-if [[ $confirm != "y" && $confirm != "Y" ]]; then
-    echo "Account deletion cancelled"
-    exit 0
-fi
+
 
 # Deletion process
 if userdel -f $user 2>/dev/null; then
@@ -101,12 +94,11 @@ if userdel -f $user 2>/dev/null; then
     rm -f /etc/xray/log-createssh-$user.log
     
     clear
-    echo -e  "┌─────────────────────────────────────────┐"
-    echo -e  "│  SSH/OVPN ACCOUNT DELETED SUCCESSFULLY  │"
-    echo -e  "└─────────────────────────────────────────┘"
+    echo -e "${green}┌─────────────────────────────────────────┐${reset}"
+    echo -e "${green}│  SSH/OVPN ACCOUNT DELETED SUCCESSFULLY  │${reset}"
+    echo -e "${green}└─────────────────────────────────────────┘${reset}"
     echo -e "  Username : $user"
     echo -e "  Expiration Date : $exp"
-    print_rainbow "  ───────────────────────────"
 else
     echo "Failed to delete account. Please check if the username is correct."
 fi
