@@ -6,8 +6,6 @@
 ipsaya=$(curl -sS ipv4.icanhazip.com)
 data_server=$(curl -v --insecure --silent https://google.com/ 2>&1 | grep Date | sed -e 's/< Date: //')
 date_list=$(date +"%Y-%m-%d" -d "$data_server")
-url_izin="https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/izin"
-
 
 
 # ===============================
@@ -157,10 +155,10 @@ echo -e "   \e[38;5;99m│ \e[38;5;196m• \e[0mUPTIME    : $(uptime -p 2>/dev/n
 echo -e "   \e[38;5;99m│ \e[38;5;196m• \e[0mCPU CORE  : $(nproc 2>/dev/null || echo "N/A")"
 
 # ISP
-echo -e "   \e[38;5;99m│ \e[38;5;196m• \e[0mISP       : $(head -n1 /etc/xray/isp 2>/dev/null || echo "Unable to detect ISP")"
+echo -e "   \e[38;5;99m│ \e[38;5;196m• \e[0mISP       : $(curl -s ipinfo.io/org 2>/dev/null | cut -d ' ' -f 2-100 || echo "Unable to detect ISP")"
 
 # City
-echo -e "   \e[38;5;99m│ \e[38;5;196m• \e[0mCITY      : $(head -n1 /etc/xray/city 2>/dev/null || echo "Unable to detect city")"
+echo -e "   \e[38;5;99m│ \e[38;5;196m• \e[0mCITY      : $(curl -s ipinfo.io/city 2>/dev/null || echo "Unable to detect city")"
 
 # IP Publik
 echo -e "   \e[38;5;99m│ \e[38;5;196m• \e[0mIP        : $(curl -s ipv4.icanhazip.com 2>/dev/null || echo "Unable to detect IP")"
