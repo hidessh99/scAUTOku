@@ -1034,12 +1034,24 @@ cd
 
 clear
 echo -e "${blue}─────────────────────────────────────────${neutral}"
-echo -e "${green}           INSTALLASI paket            ${neutral}"
+echo -e "${green}           INSTALLASI Menu              ${neutral}"
 echo -e "${blue}─────────────────────────────────────────${neutral}"
 
 
 wget https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/menu.sh && chmod +x menu.sh && ./menu.sh
 
+cd
+
+
+clear
+echo -e "${blue}─────────────────────────────────────────${neutral}"
+echo -e "${green}       INSTALLASI plugin HideSSH        ${neutral}"
+echo -e "${blue}─────────────────────────────────────────${neutral}"
+
+
+wget https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/package-gohide.sh && chmod +x package-gohide.sh && ./package-gohide.sh
+cd 
+rm -rf package-gohide.sh
 cd
 
 if [ -d "/root/rmck" ]; then
