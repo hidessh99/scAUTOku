@@ -71,7 +71,7 @@ case $delete_choice in
         exp=$(grep -E "^### " "/etc/ssh/.ssh.db" | cut -d ' ' -f 3 | sed -n "${client_number}"p)
         ;;
     2)
-        # read -rp "Enter username: " user
+        read -rp "Enter username: " user
         if ! grep -qE "^### $user " "/etc/ssh/.ssh.db"; then
             echo "Username not found"
             exit 1
