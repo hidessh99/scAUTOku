@@ -32,13 +32,23 @@ if [[ ${account_count} == '0' ]]; then
     exit 0
 fi
 
-# Prompt for username directly
+# Prompt for username and password directly
 read -rp "Enter username: " user
+read -rp "Enter password: " uuid
 
 # Check if user exists
 if ! grep -qE "^### $user " "/etc/xray/vmess/.vmess.db"; then
     echo ""
     echo "Username not found"
+    echo ""
+    exit 1
+fi
+
+# Verify the UUID matches the stored one
+stored_uuid=$(grep -E "^### $user " "/etc/xray/vmess/.vmess.db" | cut -d ' ' -f 4)
+if [[ "$uuid" != "$stored_uuid" ]]; then
+    echo ""
+    echo "Password (UUID) does not match"
     echo ""
     exit 1
 fi
@@ -99,15 +109,25 @@ fi
 
 # Calculate new expiration date
 new_exp=$(date -d "$old_exp +${active_days} days" +"%Y-%m-%d")
-uuid=$(grep -E "^### $user " "/etc/xray/vmess/.vmess.db" | cut -d ' ' -f 4)
+
 # Check if config file exists before making changes
 if [ ! -f "/etc/xray/vmess/config.json" ]; then
     echo "Config file not found. Creating a new file..."
     echo '{"inbounds": []}' >/etc/xray/vmess/config.json
 fi
 
-sed -i "/^### $user/c\### $user $new_exp" /etc/xray/vmess/config.json
-sed -i "/^### $user/c\### $user $new_exp $uuid" /etc/xray/vmess/.vmess.db
+# Remove old entries before updating to prevent duplicates
+sed -i "/^### $user /d" /etc/xray/vmess/config.json
+sed -i "/^### $user /d" /etc/xray/vmess/.vmess.db
+
+# Add updated entries with the same UUID
+sed -i '/#vmess$/a\### '"$user $new_exp"'\
+},{"id": "'""$uuid""'","email": "'""$user""'"' /etc/xray/vmess/config.json
+
+sed -i '/#vmessgrpc$/a\### '"$user $new_exp"'\
+},{"id": "'""$uuid""'","email": "'""$user""'"' /etc/xray/vmess/config.json
+
+echo "### ${user} ${new_exp} ${uuid}" >>/etc/xray/vmess/.vmess.db
 
 # Restart service with error handling
 if ! systemctl restart vmess@config >/dev/null 2>&1; then
