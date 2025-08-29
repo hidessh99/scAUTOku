@@ -51,15 +51,7 @@ fi
 
 LOG_FILE="/var/log/xray/access.log"
 
-# Spinner loading
-echo -ne "${yellow}Checking User "
-spinner=("⠋" "⠙" "⠹" "⠸" "⠼" "⠴" "⠦" "⠧" "⠇" "⠏")
-for ((i=0;i<20;i++)); do
-  echo -ne "${spinner[i % ${#spinner[@]}]}"
-  sleep 0.05
-  echo -ne "\b"
-done
-echo -e "${reset}\n"
+
 
 # Table header
 echo -e "${orange}──────────────────────────────────────────${reset}"
