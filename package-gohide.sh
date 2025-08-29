@@ -43,7 +43,4 @@ cd
 
 wget -q -O /usr/local/bin/check-vmess "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/checkuservmess.sh" && chmod +x /usr/local/bin/check-vmess      
 
-
-
-
-wget -q -O /usr/local/bin/add-vmess-json "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/addvmessjson.sh" && chmod +x /usr/local/bin/add-vmess-json 
+ 

@@ -21,9 +21,7 @@ domain=$(cat /etc/xray/domain 2>/dev/null || hostname -f)
 clear
 
 # User data input
-echo -e "————————————————————————————————————————————————————"
-echo -e "             Add Xray VMess Account"
-echo -e "————————————————————————————————————————————————————"
+
 
 while true; do
     read -p "   Name: " user

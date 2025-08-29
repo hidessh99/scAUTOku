@@ -25,9 +25,7 @@ green="\e[38;5;87m"
 domain=$(cat /etc/xray/domain 2>/dev/null || hostname -f)
 clear
 
-echo -e "${green}┌─────────────────────────────────────────┐${reset}"
-echo -e "${green}│        DELETE SSH OVPN ACCOUNT          │${reset}"
-echo -e "${green}└─────────────────────────────────────────┘${reset}"
+
 
 account_count=$(grep -c -E "^### " "/etc/ssh/.ssh.db")
 if [[ ${account_count} == '0' ]]; then
@@ -103,6 +101,8 @@ else
     echo "Failed to delete account. Please check if the username is correct."
 fi
 
+
+clear
 echo ""
 echo -e "—————————————————————————————————————"
 echo -e "     SSH/OVPN ACCOUNT DELETED SUCCESSFULLY      "
