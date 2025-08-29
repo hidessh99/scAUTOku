@@ -44,4 +44,4 @@ cd
 wget -q -O /usr/local/bin/check-vmess "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/checkuservmess.sh" && chmod +x /usr/local/bin/check-vmess      
 
  
-wget -q -O /usr/local/bin/renew-vmess "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/checkuservmess.sh" && chmod +x /usr/local/bin/renew-vmess
+wget -q -O /usr/local/bin/renew-vmess "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/renewaccvmess.sh" && chmod +x /usr/local/bin/renew-vmess

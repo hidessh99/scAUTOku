@@ -31,7 +31,7 @@ wget -q -O dellshadowsocks  "https://raw.githubusercontent.com/hidessh99/scAUTOk
 wget -q -O dellssh "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/dellssh"
 wget -q -O delltrojan "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/delltrojan"
 wget -q -O dellvless "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/dellvless"
-wget -q -O dellvmess "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/dellvless"
+wget -q -O dellvmess "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/dellvmess"
 
 wget -q -O exp "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/exp"
 wget -q -O features "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/features"
