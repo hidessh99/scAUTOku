@@ -308,70 +308,29 @@ echo "### ${user} ${exp} ${uuid}" >>"$db_file"
     echo ""
 } >> /etc/xray/vmess/log-create-${user}.log
 
-# Display account information
-clear 
-echo -e "——————————————————————————————————————"
-echo -e  "    Xray/Vmess Account    "
-echo -e "——————————————————————————————————————"
-echo -e "Remarks      : ${user}"
-echo -e "Host Server  : ${domain}"
-echo -e "Location     : $city"
-echo -e "Port TLS     : 443"
-echo -e "Port non TLS : 80, 8080"
-echo -e "Port DNS     : 443, 53"
-echo -e "Port GRPC    : 443"
-echo -e "AlterId      : 0"
-echo -e "Security     : auto"
-echo -e "Network      : WS or gRPC"
-echo -e "Path         : /whatever/vmess "
-echo -e "ServiceName  : vmess-grpc"
-echo -e "User ID      : ${uuid}"
-echo -e "Public Key   : ${pubkey}"
-echo -e "————————————————————————————————————————————————————"
-echo -e "TLS Link    : ${vmess_tls}"
-echo -e "————————————————————————————————————————————————————"
-echo -e "NTLS Link   : ${vmess_non}"
-echo -e "————————————————————————————————————————————————————"
-echo -e "GRPC Link   : ${vmess_grpc}"
-echo -e "————————————————————————————————————————————————————"
-echo -e "OpenClash Format : https://${domain}:81/vmess-$user.txt"
-echo -e "————————————————————————————————————————————————————"
-echo -e "Expires On  : $exp"
-
+# Display account information in JSON format
 clear
-# === Output JSON ke bot
-jq -n \
 
-  --arg protocol "vmess" \
-  --arg username "$user" \
-  --arg uuid "$uuid" \
-  --arg ip "$ip" \
-  --arg domain "$domain" \
-  --arg city "$city" \
-  --arg ns_domain "$ns_domain" \
-  --arg public_key "$pubkey" \
-  --arg expiration "$exp" \
-  --arg link_tls "$vmess_tls" \
-  --arg link_ntls "$vmess_non" \
-  --arg link_grpc "$vmess_grpc" \
-  '{
-    protocol: $protocol,
-    username: $username,
-    uuid: $uuid,
-    ip: $ip,
-    domain: $domain,
-    city: $city,
-    ns_domain: $ns_domain,
-    public_key: $public_key,
-    expiration: $expiration,
-    link_tls: $link_tls,
-    link_ntls: $link_ntls,
-    link_grpc: $link_grpc,
-    port_tls: "443",
-    port_http: "80, 8080",
-    dns_port: "443, 53",
-    grpc_port: "443",
-    alter_id: "0",
-    path: "/whatever/vmess",
-    service_name: "vmess-grpc"
-  }'
+cat <<EOF
+{
+  "remarks": "${user}",
+  "host_server": "${domain}",
+  "location": "$city",
+  "port_tls": 443,
+  "port_non_tls": "80, 8080",
+  "port_dns": "443, 53",
+  "port_grpc": 443,
+  "alterid": 0,
+  "security": "auto",
+  "network": "WS or gRPC",
+  "path": "/whatever/vmess",
+  "servicename": "vmess-grpc",
+  "user_id": "${uuid}",
+  "public_key": "${pubkey}",
+  "tls_link": "${vmess_tls}",
+  "ntls_link": "${vmess_non}",
+  "grpc_link": "${vmess_grpc}",
+  "openclash_format": "https://${domain}:81/vmess-$user.txt",
+  "expires_on": "$exp"
+}
+EOF
