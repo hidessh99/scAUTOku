@@ -313,7 +313,9 @@ clear
 
 cat <<EOF
 {
-  "remarks": "${user}",
+  "username": "${user}",
+  "password": "${uuid}",
+  "ip": "${ip}",
   "host_server": "${domain}",
   "location": "$city",
   "port_tls": 443,
@@ -325,7 +327,6 @@ cat <<EOF
   "network": "WS or gRPC",
   "path": "/whatever/vmess",
   "servicename": "vmess-grpc",
-  "user_id": "${uuid}",
   "public_key": "${pubkey}",
   "tls_link": "${vmess_tls}",
   "ntls_link": "${vmess_non}",
