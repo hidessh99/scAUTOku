@@ -34,7 +34,7 @@ fi
 
 # Prompt for username and password directly
 read -rp "Enter username: " user
-read -rp "Enter password: " uuid
+# read -rp "Enter password: " uuid
 
 # Check if user exists
 if ! grep -qE "^### $user " "/etc/xray/vmess/.vmess.db"; then
@@ -43,7 +43,7 @@ if ! grep -qE "^### $user " "/etc/xray/vmess/.vmess.db"; then
     echo ""
     exit 1
 fi
-
+uuid=$(grep -E "^### $user " "/etc/xray/vmess/.vmess.db" | cut -d ' ' -f 4)
 # Verify the UUID matches the stored one
 stored_uuid=$(grep -E "^### $user " "/etc/xray/vmess/.vmess.db" | cut -d ' ' -f 4)
 if [[ "$uuid" != "$stored_uuid" ]]; then
@@ -117,8 +117,12 @@ if [ ! -f "/etc/xray/vmess/config.json" ]; then
 fi
 
 # Remove old entries before updating to prevent duplicates
-sed -i "/^### $user /d" /etc/xray/vmess/config.json
+# Remove from database
 sed -i "/^### $user /d" /etc/xray/vmess/.vmess.db
+
+# Remove from config file (both WS and gRPC sections)
+sed -i "/^### $user /d" /etc/xray/vmess/config.json
+sed -i "/{\"id\": \"$stored_uuid\"/d" /etc/xray/vmess/config.json
 
 # Add updated entries with the same UUID
 sed -i '/#vmess$/a\### '"$user $new_exp"'\
