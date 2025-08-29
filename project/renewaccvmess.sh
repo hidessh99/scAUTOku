@@ -106,8 +106,18 @@ if [ ! -f "/etc/xray/vmess/config.json" ]; then
     echo '{"inbounds": []}' >/etc/xray/vmess/config.json
 fi
 
-sed -i "/^### $user/c\### $user $new_exp" /etc/xray/vmess/config.json
-sed -i "/^### $user/c\### $user $new_exp $uuid" /etc/xray/vmess/.vmess.db
+# Remove old entries before updating to prevent duplicates
+sed -i "/^### $user /d" /etc/xray/vmess/config.json
+sed -i "/^### $user /d" /etc/xray/vmess/.vmess.db
+
+# Add updated entries
+sed -i '/#vmess$/a\### '"$user $new_exp"'\
+},{"id": "'""$uuid""'","email": "'""$user""'"' /etc/xray/vmess/config.json
+
+sed -i '/#vmessgrpc$/a\### '"$user $new_exp"'\
+},{"id": "'""$uuid""'","email": "'""$user""'"' /etc/xray/vmess/config.json
+
+echo "### ${user} ${new_exp} ${uuid}" >>/etc/xray/vmess/.vmess.db
 
 # Restart service with error handling
 if ! systemctl restart vmess@config >/dev/null 2>&1; then
