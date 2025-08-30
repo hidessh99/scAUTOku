@@ -37,10 +37,10 @@ echo -e "${green} INSTALLASI Check  package HIdeSSH      ${neutral}"
 echo -e "${blue}─────────────────────────────────────────${neutral}"
 cd
 
-wget -q -O /usr/local/bin/check-vless "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/checkuservless.sh" && chmod +x /usr/local/bin/add-vless
-wget -q -O /usr/local/bin/check-trojan "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/checkusertrojan.sh" && chmod +x /usr/local/bin/add-trojan
-wget -q -O /usr/local/bin/check-shadowsocks "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/checkusershadowsocks.sh" && chmod +x /usr/local/bin/add-shadowsocks    
-wget -q -O /usr/local/bin/check-ssh "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/checkuserssh.sh" && chmod +x /usr/local/bin/add-ssh
+wget -q -O /usr/local/bin/check-vless "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/checkuservless.sh" && chmod +x /usr/local/bin/check-vless
+wget -q -O /usr/local/bin/check-trojan "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/checkusertrojan.sh" && chmod +x /usr/local/bin/check-trojan
+wget -q -O /usr/local/bin/check-shadowsocks "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/checkusershadowsocks.sh" && chmod +x /usr/local/bin/check-shadowsocks    
+wget -q -O /usr/local/bin/check-ssh "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/checkuserssh.sh" && chmod +x /usr/local/bin/check-ssh
 wget -q -O /usr/local/bin/check-vmess "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/checkuservmess.sh" && chmod +x /usr/local/bin/check-vmess      
 
  
