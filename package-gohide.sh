@@ -54,4 +54,4 @@ wget -q -O /usr/local/bin/renew-vmess "https://raw.githubusercontent.com/hidessh
 wget -q -O /usr/local/bin/renew-ssh "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/renewaccssh.sh" && chmod +x /usr/local/bin/renew-ssh
 wget -q -O /usr/local/bin/renew-vless "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/renewaccvless.sh" && chmod +x /usr/local/bin/renew-vless
 wget -q -O /usr/local/bin/renew-trojan "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/renewacctrojan.sh" && chmod +x /usr/local/bin/renew-trojan
-wget -q -O /usr/local/bin/renew-shadowsocks "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/renewaccssr.sh" && chmod +x /usr/local/bin/renew-shadowsocks
+wget -q -O /usr/local/bin/renew-shadowsocks "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/renewshadowsocks.sh" && chmod +x /usr/local/bin/renew-shadowsocks
