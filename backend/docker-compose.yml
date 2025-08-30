@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  vpn-api:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+    volumes:
+      - ../project:/app/project
+    restart: unless-stopped
