@@ -123,6 +123,45 @@ DB_NAME=vpnaccounts
 3. Install dependencies: `go mod tidy`
 4. Run the application: `go run main.go`
 
+## Deployment to Ubuntu VPS
+
+1. Build the application for Linux:
+   ```bash
+   GOOS=linux GOARCH=amd64 go build -o vpn-api main.go
+   ```
+
+2. Copy the binary and configuration files to your VPS:
+   ```bash
+   scp vpn-api root@your-vps-ip:/root/scAUTO/backend/
+   scp .env root@your-vps-ip:/root/scAUTO/backend/
+   scp vpn-api.service root@your-vps-ip:/etc/systemd/system/
+   ```
+
+3. On your VPS, reload the systemd daemon:
+   ```bash
+   sudo systemctl daemon-reload
+   ```
+
+4. Enable the service:
+   ```bash
+   sudo systemctl enable vpn-api
+   ```
+
+5. Start the service:
+   ```bash
+   sudo systemctl start vpn-api
+   ```
+
+6. Check the service status:
+   ```bash
+   sudo systemctl status vpn-api
+   ```
+
+7. To view logs:
+   ```bash
+   sudo journalctl -u vpn-api -f
+   ```
+
 ## Dependencies
 
 - [GoFiber](https://gofiber.io/) - Express-inspired web framework for Go

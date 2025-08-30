@@ -11,7 +11,7 @@ ExecStart=/root/scAUTO/backend/vpn-api
 Restart=always
 RestartSec=3
 Environment=PORT=3000
-Environment=API_KEY=your_api_key_here
+Environment=be51e916-7380-47c4-98dd-d05c3d26ecd2
 
 [Install]
 WantedBy=multi-user.target
