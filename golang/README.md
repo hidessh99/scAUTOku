@@ -297,6 +297,24 @@ This script will:
 - Set up the necessary environment variables
 - Verify the installation
 
+
+## Installing golang to your system vps
+
+then install golang with this script
+
+```bash
+wget https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/golang/rest-go.sh
+chmod +x rest-go.sh
+./rest-go.sh
+```
+
+This script will:
+- rest api golang
+- low memory usage
+- very fast
+- low cpu usage
+- small file size 16mb
+
 ## Testing
 
 The [tests](tests/) directory contains HTTP test files for each protocol:
