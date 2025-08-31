@@ -12,7 +12,7 @@ echo -e "${blue}─────────────────────�
 cd
 
 clear
-
+read -p "Port example 3005 : " port
 uuid=$(cat /proc/sys/kernel/random/uuid)
 
 
@@ -29,7 +29,7 @@ WorkingDirectory=/root/backend
 ExecStart=/root/backend/vpn-api
 Restart=always
 RestartSec=10
-Environment=PORT=3005
+Environment=PORT=${port}
 Environment=API_KEY=${uuid}
 Environment=AllowOrigins=*
 
