@@ -20,6 +20,7 @@ go.work
 
 # backednd files
 backend/*
+backend/
 
 # Docker
 .dockerignore
