@@ -32,8 +32,8 @@ After=network.target
 [Service]
 Type=simple
 User=root
-WorkingDirectory=/root/backend
-ExecStart=/root/backend/vpn-api
+WorkingDirectory=/usr/local/bin/vpn-api
+ExecStart=/usr/local/bin/vpn-api
 Restart=always
 RestartSec=10
 Environment=PORT=${port}
@@ -43,6 +43,8 @@ Environment=AllowOrigins=*
 [Install]
 WantedBy=multi-user.target
 EOF
+
+
 
 cd
 chmod 644 /etc/systemd/system/vpn-api.service
