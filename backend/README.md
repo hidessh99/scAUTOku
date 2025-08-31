@@ -159,12 +159,175 @@ DB_PASSWORD=vpnpassword
 DB_NAME=vpnaccounts
 ```
 
-## Installation
+## Installation on Ubuntu VPS
 
-1. Make sure Go is installed (version 1.21 or higher)
-2. Navigate to the backend directory: `cd backend`
-3. Install dependencies: `go mod tidy`
-4. Run the application: `go run main.go`
+Follow these steps to deploy the VPN Account Management API on your Ubuntu VPS:
+
+### Prerequisites
+
+- Ubuntu 18.04 or higher VPS
+- SSH access to your VPS
+- Sudo privileges
+
+### Step 1: Upload the Backend Files
+
+1. Compress the backend folder on your local machine:
+   ```bash
+   zip -r backend.zip backend
+   ```
+
+2. Upload the zip file to your VPS using scp:
+   ```bash
+   scp backend.zip user@your-vps-ip:/home/user/
+   ```
+
+### Step 2: Install Go
+
+If Go is not already installed on your VPS, you can use the provided installation script:
+
+```bash
+# Navigate to the backend directory
+cd /home/user
+
+# Extract the backend files
+unzip backend.zip
+
+# Make the Go installation script executable
+chmod +x backend/install-go.sh
+
+# Run the Go installation script
+./backend/install-go.sh
+```
+
+Alternatively, you can install Go manually:
+
+```bash
+# Download the latest Go version
+wget https://go.dev/dl/go1.21.0.linux-amd64.tar.gz
+
+# Remove any existing Go installation
+sudo rm -rf /usr/local/go
+
+# Extract Go to /usr/local
+sudo tar -C /usr/local -xzf go1.21.0.linux-amd64.tar.gz
+
+# Add Go to PATH
+echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
+source ~/.bashrc
+
+# Verify installation
+go version
+```
+
+### Step 3: Prepare the Application
+
+1. Navigate to the backend directory:
+   ```bash
+   cd backend
+   ```
+
+2. Install dependencies:
+   ```bash
+   go mod tidy
+   ```
+
+3. Configure the environment:
+   ```bash
+   # Copy the example env file
+   cp .env.example .env
+   
+   # Edit the configuration
+   nano .env
+   ```
+   
+   Set your API key and other configuration values:
+   ```
+   API_KEY=your_secure_api_key_here
+   PORT=3000
+   ```
+
+### Step 4: Build the Application
+
+```bash
+# Build the application for Linux
+GOOS=linux GOARCH=amd64 go build -o vpn-api main.go
+
+# Verify the build was successful
+ls -la vpn-api
+```
+
+### Step 5: Create a Systemd Service
+
+1. Create a systemd service file:
+   ```bash
+   sudo nano /etc/systemd/system/vpn-api.service
+   ```
+
+2. Add the following content to the service file:
+   ```ini
+   [Unit]
+   Description=VPN Account Management API
+   After=network.target
+
+   [Service]
+   Type=simple
+   User=root
+   WorkingDirectory=/home/user/backend
+   ExecStart=/home/user/backend/vpn-api
+   Restart=always
+   RestartSec=10
+   Environment=PORT=3000
+
+   [Install]
+   WantedBy=multi-user.target
+   ```
+
+3. Set proper permissions for the service file:
+   ```bash
+   sudo chmod 644 /etc/systemd/system/vpn-api.service
+   ```
+
+### Step 6: Start and Enable the Service
+
+1. Reload systemd to recognize the new service:
+   ```bash
+   sudo systemctl daemon-reload
+   ```
+
+2. Start the service:
+   ```bash
+   sudo systemctl start vpn-api
+   ```
+
+3. Enable the service to start on boot:
+   ```bash
+   sudo systemctl enable vpn-api
+   ```
+
+4. Check the service status:
+   ```bash
+   sudo systemctl status vpn-api
+   ```
+
+### Step 7: Configure Firewall (Optional)
+
+If you have UFW firewall enabled, allow traffic to your API port:
+
+```bash
+sudo ufw allow 3000
+```
+
+### Step 8: Test the API
+
+You can test if the API is running correctly:
+
+```bash
+# Check if the API responds
+curl http://localhost:3000/health
+
+# Expected response:
+# {"message":"Account management API is running","status":"success"}
+```
 
 ## Installing Go
 
@@ -192,45 +355,6 @@ The [tests](tests/) directory contains HTTP test files for each protocol:
 - [All protocols tests](tests/all_protocols.http)
 
 These can be run using VS Code REST Client extension or any HTTP client that supports .http files.
-
-## Deployment to Ubuntu VPS
-
-1. Build the application for Linux:
-   ```bash
-   GOOS=linux GOARCH=amd64 go build -o vpn-api main.go
-   ```
-
-2. Copy the binary and configuration files to your VPS:
-   ```bash
-   scp vpn-api root@your-vps-ip:/root/scAUTO/backend/
-   scp .env root@your-vps-ip:/root/scAUTO/backend/
-   scp vpn-api.service root@your-vps-ip:/etc/systemd/system/
-   ```
-
-3. On your VPS, reload the systemd daemon:
-   ```bash
-   sudo systemctl daemon-reload
-   ```
-
-4. Enable the service:
-   ```bash
-   sudo systemctl enable vpn-api
-   ```
-
-5. Start the service:
-   ```bash
-   sudo systemctl start vpn-api
-   ```
-
-6. Check the service status:
-   ```bash
-   sudo systemctl status vpn-api
-   ```
-
-7. To view logs:
-   ```bash
-   sudo journalctl -u vpn-api -f
-   ```
 
 ## Command Paths
 
