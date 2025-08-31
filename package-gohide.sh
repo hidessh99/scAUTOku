@@ -26,7 +26,7 @@ cd
 wget -q -O /usr/local/bin/del-vmess "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/dellaccvmess.sh" && chmod +x /usr/local/bin/del-vmess
 wget -q -O /usr/local/bin/del-trojan "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/dellacctrojan.sh" && chmod +x /usr/local/bin/del-trojan
 wget -q -O /usr/local/bin/del-vless "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/dellaccvless.sh" && chmod +x /usr/local/bin/del-vless
-wget -q -O /usr/local/bin/del-addshadowsocks "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/dellaccshadowsocks.sh" && chmod +x /usr/local/bin/del-addshadowsocks
+wget -q -O /usr/local/bin/del-shadowsocks "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/dellaccshadowsocks.sh" && chmod +x /usr/local/bin/del-shadowsocks
 wget -q -O /usr/local/bin/del-ssh "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/dellaccssh.sh" && chmod +x /usr/local/bin/del-ssh
 clear
 
