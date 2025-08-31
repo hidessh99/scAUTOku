@@ -4,6 +4,8 @@ import (
 	"backend/models"
 	"backend/utils"
 	"fmt"
+	"os/exec"
+	"strings"
 )
 
 type ShadowsocksUsecase interface {
@@ -33,36 +35,29 @@ func (uc *shadowsocksUsecase) CreateAccount(req models.CreateAccountRequest) (*m
 		}, fmt.Errorf("validation failed: %v", validationErrors)
 	}
 
-	// Execute the add-addshadowsocks script
-	scriptArgs := []string{
-		req.Username,
-		req.Password,
-		req.Exp,
-		req.IPQuota,
-	}
+	scriptPath := "/usr/local/bin/add-addshadowsocks"
 
-	_, err := utils.ExecuteShellCommand("/usr/local/bin/add-addshadowsocks", scriptArgs...)
+	input := fmt.Sprintf("%s\n%s\n%s\n%s\n",
+		req.Username, req.Password, req.Exp, req.IPQuota)
+
+	// Execute the script with input
+	cmd := exec.Command("bash", scriptPath)
+	cmd.Stdin = strings.NewReader(input)
+
+	output, err := cmd.CombinedOutput()
 	if err != nil {
 		return &models.AccountResponse{
 			Status:  "error",
-			Message: fmt.Sprintf("Failed to create SHADOWSOCKS account: %v", err),
-		}, err
+			Message: "Cannot create account SHADOWSOCKS ",
+		}, fmt.Errorf("validation failed: %v", err)
 	}
 
-	data := models.ShadowsocksAccountData{
-		Username: req.Username,
-		Password: req.Password,
-		Domain:   "example.com", // Would be extracted from output
-		Expired:  req.Exp,
-		IPQuota:  req.IPQuota,
-		Method:   "aes-256-gcm", // Would be extracted from output
-		SSLink:   "ss://shadowsocks-link",
-	}
+	parsedData := utils.OutputParseShadowsocks(string(output))
 
 	return &models.AccountResponse{
 		Status:  "success",
 		Message: "SHADOWSOCKS account created successfully",
-		Data:    data,
+		Data:    parsedData,
 	}, nil
 }
 
@@ -76,26 +71,30 @@ func (uc *shadowsocksUsecase) CheckAccount(req models.CheckAccountRequest) (*mod
 		}, fmt.Errorf("validation failed: %v", validationErrors)
 	}
 
-	// Execute the check-shadowsocks script
-	scriptArgs := []string{req.Username}
-	_, err := utils.ExecuteShellCommand("/usr/local/bin/check-shadowsocks", scriptArgs...)
+	scriptPath := "/usr/local/bin/check-shadowsocks"
+
+	input := fmt.Sprintf("%s\n",
+		req.Username)
+
+	// Execute the script with input
+	cmd := exec.Command("bash", scriptPath)
+	cmd.Stdin = strings.NewReader(input)
+
+	output, err := cmd.CombinedOutput()
 	if err != nil {
 		return &models.AccountResponse{
 			Status:  "error",
-			Message: fmt.Sprintf("Failed to check SHADOWSOCKS account: %v", err),
-		}, err
+			Message: "Cannot check account SHADOWSOCKS ",
+		}, fmt.Errorf("validation failed: %v", err)
 	}
 
-	// Parse output (simplified)
+	// Parse the output using the new parser
+	parsedData := utils.ParseCheckAccountOutput(string(output))
 
 	return &models.AccountResponse{
 		Status:  "success",
-		Message: "SHADOWSOCKS account details retrieved",
-		Data: map[string]interface{}{
-			"username": req.Username,
-			"status":   "active", // Would be parsed from output
-			"usage":    "1GB",    // Would be parsed from output
-		},
+		Message: "Check account SHADOWSOCKS successfully",
+		Data:    parsedData,
 	}, nil
 }
 
@@ -109,17 +108,23 @@ func (uc *shadowsocksUsecase) DeleteAccount(req models.DeleteAccountRequest) (*m
 		}, fmt.Errorf("validation failed: %v", validationErrors)
 	}
 
-	// Execute the del-addshadowsocks script
-	scriptArgs := []string{req.Username}
-	_, err := utils.ExecuteShellCommand("/usr/local/bin/del-addshadowsocks", scriptArgs...)
+	scriptPath := "/usr/local/bin/del-addshadowsocks"
+
+	input := fmt.Sprintf("%s\n",
+		req.Username)
+
+	// Execute the script with input
+	cmd := exec.Command("bash", scriptPath)
+	cmd.Stdin = strings.NewReader(input)
+
+	_, err := cmd.CombinedOutput()
 	if err != nil {
 		return &models.AccountResponse{
 			Status:  "error",
-			Message: fmt.Sprintf("Failed to delete SHADOWSOCKS account: %v", err),
-		}, err
+			Message: "Cannot delete account SHADOWSOCKS ",
+		}, fmt.Errorf("validation failed: %v", err)
 	}
 
-	// Parse output (simplified)
 	return &models.AccountResponse{
 		Status:  "success",
 		Message: "SHADOWSOCKS account deleted successfully",
@@ -136,21 +141,23 @@ func (uc *shadowsocksUsecase) RenewAccount(req models.RenewAccountRequest) (*mod
 		}, fmt.Errorf("validation failed: %v", validationErrors)
 	}
 
-	// Execute the renew-shadowsocks script
-	scriptArgs := []string{
-		req.Username,
-		req.Exp,
-	}
+	scriptPath := "/usr/local/bin/renew-shadowsocks"
 
-	_, err := utils.ExecuteShellCommand("/usr/local/bin/renew-shadowsocks", scriptArgs...)
+	input := fmt.Sprintf("%s\n%s\n%s\n%s\n",
+		req.Username, req.Exp, req.Quota, req.IPQuota)
+
+	// Execute the script with input
+	cmd := exec.Command("bash", scriptPath)
+	cmd.Stdin = strings.NewReader(input)
+
+	_, err := cmd.CombinedOutput()
 	if err != nil {
 		return &models.AccountResponse{
 			Status:  "error",
-			Message: fmt.Sprintf("Failed to renew SHADOWSOCKS account: %v", err),
-		}, err
+			Message: "Cannot renew account SHADOWSOCKS ",
+		}, fmt.Errorf("validation failed: %v", err)
 	}
 
-	// Parse output (simplified)
 	return &models.AccountResponse{
 		Status:  "success",
 		Message: "SHADOWSOCKS account renewed successfully",

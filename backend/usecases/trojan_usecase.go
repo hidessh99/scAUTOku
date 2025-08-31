@@ -4,6 +4,8 @@ import (
 	"backend/models"
 	"backend/utils"
 	"fmt"
+	"os/exec"
+	"strings"
 )
 
 type TrojanUsecase interface {
@@ -33,36 +35,29 @@ func (uc *trojanUsecase) CreateAccount(req models.CreateAccountRequest) (*models
 		}, fmt.Errorf("validation failed: %v", validationErrors)
 	}
 
-	// Execute the add-trojan script
-	scriptArgs := []string{
-		req.Username,
-		req.Password,
-		req.Exp,
-		req.IPQuota,
-	}
+	scriptPath := "/usr/local/bin/add-trojan"
 
-	_, err := utils.ExecuteShellCommand("/usr/local/bin/add-trojan", scriptArgs...)
+	input := fmt.Sprintf("%s\n%s\n%s\n%s\n",
+		req.Username, req.Password, req.Exp, req.IPQuota)
+
+	// Execute the script with input
+	cmd := exec.Command("bash", scriptPath)
+	cmd.Stdin = strings.NewReader(input)
+
+	output, err := cmd.CombinedOutput()
 	if err != nil {
 		return &models.AccountResponse{
 			Status:  "error",
-			Message: fmt.Sprintf("Failed to create TROJAN account: %v", err),
-		}, err
+			Message: "Cannot create account Trojan ",
+		}, fmt.Errorf("validation failed: %v", err)
 	}
 
-	data := models.TrojanAccountData{
-		Username:      req.Username,
-		Password:      req.Password,
-		Domain:        "example.com", // Would be extracted from output
-		Expired:       req.Exp,
-		IPQuota:       req.IPQuota,
-		TrojanTLSLink: "trojan://tls-link",
-		TrojanGRPC:    "trojan://grpc-link",
-	}
+	parsedData := utils.OutputParseTrojan(string(output))
 
 	return &models.AccountResponse{
 		Status:  "success",
 		Message: "TROJAN account created successfully",
-		Data:    data,
+		Data:    parsedData,
 	}, nil
 }
 
@@ -76,26 +71,30 @@ func (uc *trojanUsecase) CheckAccount(req models.CheckAccountRequest) (*models.A
 		}, fmt.Errorf("validation failed: %v", validationErrors)
 	}
 
-	// Execute the check-trojan script
-	scriptArgs := []string{req.Username}
-	_, err := utils.ExecuteShellCommand("/usr/local/bin/check-trojan", scriptArgs...)
+	scriptPath := "/usr/local/bin/check-trojan"
+
+	input := fmt.Sprintf("%s\n",
+		req.Username)
+
+	// Execute the script with input
+	cmd := exec.Command("bash", scriptPath)
+	cmd.Stdin = strings.NewReader(input)
+
+	output, err := cmd.CombinedOutput()
 	if err != nil {
 		return &models.AccountResponse{
 			Status:  "error",
-			Message: fmt.Sprintf("Failed to check TROJAN account: %v", err),
-		}, err
+			Message: "Cannot check account Trojan ",
+		}, fmt.Errorf("validation failed: %v", err)
 	}
 
-	// Parse output (simplified)
+	// Parse the output using the new parser
+	parsedData := utils.ParseCheckAccountOutput(string(output))
 
 	return &models.AccountResponse{
 		Status:  "success",
-		Message: "TROJAN account details retrieved",
-		Data: map[string]interface{}{
-			"username": req.Username,
-			"status":   "active", // Would be parsed from output
-			"usage":    "1GB",    // Would be parsed from output
-		},
+		Message: "Check account Trojan successfully",
+		Data:    parsedData,
 	}, nil
 }
 
@@ -109,17 +108,23 @@ func (uc *trojanUsecase) DeleteAccount(req models.DeleteAccountRequest) (*models
 		}, fmt.Errorf("validation failed: %v", validationErrors)
 	}
 
-	// Execute the del-trojan script
-	scriptArgs := []string{req.Username}
-	_, err := utils.ExecuteShellCommand("/usr/local/bin/del-trojan", scriptArgs...)
+	scriptPath := "/usr/local/bin/del-trojan"
+
+	input := fmt.Sprintf("%s\n",
+		req.Username)
+
+	// Execute the script with input
+	cmd := exec.Command("bash", scriptPath)
+	cmd.Stdin = strings.NewReader(input)
+
+	_, err := cmd.CombinedOutput()
 	if err != nil {
 		return &models.AccountResponse{
 			Status:  "error",
-			Message: fmt.Sprintf("Failed to delete TROJAN account: %v", err),
-		}, err
+			Message: "Cannot delete account Trojan ",
+		}, fmt.Errorf("validation failed: %v", err)
 	}
 
-	// Parse output (simplified)
 	return &models.AccountResponse{
 		Status:  "success",
 		Message: "TROJAN account deleted successfully",
@@ -136,21 +141,23 @@ func (uc *trojanUsecase) RenewAccount(req models.RenewAccountRequest) (*models.A
 		}, fmt.Errorf("validation failed: %v", validationErrors)
 	}
 
-	// Execute the renew-trojan script
-	scriptArgs := []string{
-		req.Username,
-		req.Exp,
-	}
+	scriptPath := "/usr/local/bin/renew-trojan"
 
-	_, err := utils.ExecuteShellCommand("/usr/local/bin/renew-trojan", scriptArgs...)
+	input := fmt.Sprintf("%s\n%s\n%s\n%s\n",
+		req.Username, req.Exp, req.Quota, req.IPQuota)
+
+	// Execute the script with input
+	cmd := exec.Command("bash", scriptPath)
+	cmd.Stdin = strings.NewReader(input)
+
+	_, err := cmd.CombinedOutput()
 	if err != nil {
 		return &models.AccountResponse{
 			Status:  "error",
-			Message: fmt.Sprintf("Failed to renew TROJAN account: %v", err),
-		}, err
+			Message: "Cannot renew account Trojan ",
+		}, fmt.Errorf("validation failed: %v", err)
 	}
 
-	// Parse output (simplified)
 	return &models.AccountResponse{
 		Status:  "success",
 		Message: "TROJAN account renewed successfully",

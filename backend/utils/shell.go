@@ -13,7 +13,7 @@ func ExecuteShellCommand(command string, args ...string) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("command execution failed: %v, output: %s", err, string(output))
 	}
-	return strings.TrimSpace(string(output)), nil
+	return string(output), nil
 }
 
 // ExecuteProjectScript executes a script from the project directory

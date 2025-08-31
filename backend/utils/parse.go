@@ -1,15 +1,14 @@
 package utils
 
 import (
-	"strings"
 	"encoding/base64"
 	"net/url"
-	"github.com/goccy/go-json"
-	"strconv"
 	"regexp"
-	
-)
+	"strconv"
+	"strings"
 
+	"github.com/goccy/go-json"
+)
 
 type ParseJsonSSH struct {
 	Username       string `json:"username"`
@@ -87,7 +86,6 @@ func OutputParseSsh(raw string) ParseJsonSSH {
 
 	return info
 }
-
 
 // ParseJsonShadowsocks represents the structure of parsed Shadowsocks account data
 type ParseJsonShadowsocks struct {
@@ -246,7 +244,6 @@ func OutputParseShadowsocks(raw string) ParseJsonShadowsocks {
 	return info
 }
 
-
 // ParseJsonTrojan represents the structure of parsed Trojan account data
 type ParseJsonTrojan struct {
 	Description    string                 `json:"description"`
@@ -375,8 +372,6 @@ func OutputParseTrojan(raw string) ParseJsonTrojan {
 
 	return info
 }
-
-
 
 // ParseJsonVLess represents the structure of parsed VLess account data
 type ParseJsonVLess struct {
@@ -517,8 +512,6 @@ func OutputParseVLess(raw string) ParseJsonVLess {
 
 	return info
 }
-
-
 
 // ParseJsonVMess represents the structure of parsed VMess account data
 type ParseJsonVMess struct {
@@ -759,4 +752,54 @@ func CheckAccount(rawData []byte) ([]byte, error) {
 	}
 
 	return jsonData, nil
+}
+
+// CheckAccountInfo represents the structure of parsed check account data
+type CheckAccountInfo struct {
+	Username  string `json:"username"`
+	Status    string `json:"status"`
+	IPConnect string `json:"ip_connect"`
+	Usage     string `json:"usage"`
+}
+
+// ParseCheckAccountOutput parses the check account response string and extracts all relevant data
+func ParseCheckAccountOutput(raw string) CheckAccountInfo {
+	info := CheckAccountInfo{}
+
+	// Remove ANSI escape codes
+	ansiRegex := regexp.MustCompile(`\x1b\[[0-9;]*m`)
+	cleanedRaw := ansiRegex.ReplaceAllString(raw, "")
+
+	lines := strings.Split(cleanedRaw, "\n")
+
+	// Parse basic information from key-value pairs
+	for _, line := range lines {
+		// Skip separator lines
+		trimmedLine := strings.TrimSpace(line)
+		if strings.Contains(trimmedLine, "————") || trimmedLine == "" {
+			continue
+		}
+
+		// Parse lines with format "Key : Value"
+		parts := strings.SplitN(line, ":", 2)
+		if len(parts) == 2 {
+			key := strings.TrimSpace(parts[0])
+			value := strings.TrimSpace(parts[1])
+
+			switch key {
+			case "User":
+				info.Username = value
+			case "Username":
+				info.Username = value
+			case "Status":
+				info.Status = value
+			case "IP Connect":
+				info.IPConnect = value
+			case "Usage":
+				info.Usage = value
+			}
+		}
+	}
+
+	return info
 }

@@ -4,6 +4,8 @@ import (
 	"backend/models"
 	"backend/utils"
 	"fmt"
+	"os/exec"
+	"strings"
 )
 
 type VmessUsecase interface {
@@ -33,41 +35,29 @@ func (uc *vmessUsecase) CreateAccount(req models.CreateAccountRequest) (*models.
 		}, fmt.Errorf("validation failed: %v", validationErrors)
 	}
 
-	// Execute the add-vmess script with appropriate parameters
-	scriptArgs := []string{
-		req.Username,
-		req.Exp,
-		req.Quota,
-		req.IPQuota,
-	}
+	scriptPath := "/usr/local/bin/add-vmess"
 
-	_, err := utils.ExecuteShellCommand("/usr/local/bin/add-vmess", scriptArgs...)
+	input := fmt.Sprintf("%s\n%s\n%s\n%s\n%s\n",
+		req.Username, req.Password, req.Exp, req.Quota, req.IPQuota)
+
+	// Execute the script with input
+	cmd := exec.Command("bash", scriptPath)
+	cmd.Stdin = strings.NewReader(input)
+
+	output, err := cmd.CombinedOutput()
 	if err != nil {
 		return &models.AccountResponse{
 			Status:  "error",
-			Message: fmt.Sprintf("Failed to create VMESS account: %v", err),
-		}, err
+			Message: "Cannot create account Vmess ",
+		}, fmt.Errorf("validation failed: %v", err)
 	}
 
-	// Parse the output to extract account details
-	// This would need to be adapted based on actual script output format
-	data := models.VmessAccountData{
-		Username:        req.Username,
-		Domain:          "example.com", // Would be extracted from output
-		Quota:           req.Quota,
-		IPQuota:         req.IPQuota,
-		Expired:         req.Exp,
-		UUID:            "generated-uuid", // Would be extracted from output
-		Pubkey:          "public-key",     // Would be extracted from output
-		VmessTLSLink:    "vmess://tls-link",
-		VmessNonTLSLink: "vmess://non-tls-link",
-		VmessGRPCLink:   "vmess://grpc-link",
-	}
+	parsedData := utils.OutputParseVMess(string(output))
 
 	return &models.AccountResponse{
 		Status:  "success",
 		Message: "VMESS account created successfully",
-		Data:    data,
+		Data:    parsedData,
 	}, nil
 }
 
@@ -81,27 +71,32 @@ func (uc *vmessUsecase) CheckAccount(req models.CheckAccountRequest) (*models.Ac
 		}, fmt.Errorf("validation failed: %v", validationErrors)
 	}
 
-	// Execute the check-vmess script
-	scriptArgs := []string{req.Username}
-	_, err := utils.ExecuteShellCommand("/usr/local/bin/check-vmess", scriptArgs...)
+	scriptPath := "/usr/local/bin/check-vmess"
+
+	input := fmt.Sprintf("%s\n",
+		req.Username)
+
+	// Execute the script with input
+	cmd := exec.Command("bash", scriptPath)
+	cmd.Stdin = strings.NewReader(input)
+
+	output, err := cmd.CombinedOutput()
 	if err != nil {
 		return &models.AccountResponse{
 			Status:  "error",
-			Message: fmt.Sprintf("Failed to check VMESS account: %v", err),
-		}, err
+			Message: "Cannot check account Vmess ",
+		}, fmt.Errorf("validation failed: %v", err)
 	}
 
-	// Parse output (simplified)
+	// Parse the output using the new parser
+	parsedData := utils.ParseCheckAccountOutput(string(output))
 
 	return &models.AccountResponse{
 		Status:  "success",
-		Message: "VMESS account details retrieved",
-		Data: map[string]interface{}{
-			"username": req.Username,
-			"status":   "active", // Would be parsed from output
-			"usage":    "1GB",    // Would be parsed from output
-		},
+		Message: "Check account Vmess successfully",
+		Data:    parsedData,
 	}, nil
+
 }
 
 func (uc *vmessUsecase) DeleteAccount(req models.DeleteAccountRequest) (*models.AccountResponse, error) {
@@ -114,17 +109,23 @@ func (uc *vmessUsecase) DeleteAccount(req models.DeleteAccountRequest) (*models.
 		}, fmt.Errorf("validation failed: %v", validationErrors)
 	}
 
-	// Execute the del-vmess script
-	scriptArgs := []string{req.Username}
-	_, err := utils.ExecuteShellCommand("/usr/local/bin/del-vmess", scriptArgs...)
+	scriptPath := "/usr/local/bin/del-vmess"
+
+	input := fmt.Sprintf("%s\n",
+		req.Username)
+
+	// Execute the script with input
+	cmd := exec.Command("bash", scriptPath)
+	cmd.Stdin = strings.NewReader(input)
+
+	_, err := cmd.CombinedOutput()
 	if err != nil {
 		return &models.AccountResponse{
 			Status:  "error",
-			Message: fmt.Sprintf("Failed to delete VMESS account: %v", err),
-		}, err
+			Message: "Cannot delete account Vmess ",
+		}, fmt.Errorf("validation failed: %v", err)
 	}
 
-	// Parse output (simplified)
 	return &models.AccountResponse{
 		Status:  "success",
 		Message: "VMESS account deleted successfully",
@@ -141,23 +142,27 @@ func (uc *vmessUsecase) RenewAccount(req models.RenewAccountRequest) (*models.Ac
 		}, fmt.Errorf("validation failed: %v", validationErrors)
 	}
 
-	// Execute the renew-vmess script
-	scriptArgs := []string{
-		req.Username,
-		req.Exp,
-	}
+	scriptPath := "/usr/local/bin/renew-vmess"
 
-	_, err := utils.ExecuteShellCommand("/usr/local/bin/renew-vmess", scriptArgs...)
+	input := fmt.Sprintf("%s\n%s\n%s\n%s\n",
+		req.Username, req.Exp, req.Quota, req.IPQuota)
+
+	// Execute the script with input
+	cmd := exec.Command("bash", scriptPath)
+	cmd.Stdin = strings.NewReader(input)
+
+	_, err := cmd.CombinedOutput()
 	if err != nil {
 		return &models.AccountResponse{
 			Status:  "error",
-			Message: fmt.Sprintf("Failed to renew VMESS account: %v", err),
-		}, err
+			Message: "Cannot create renew account Vmess ",
+		}, fmt.Errorf("validation failed: %v", err)
 	}
 
 	// Parse output (simplified)
 	return &models.AccountResponse{
 		Status:  "success",
 		Message: "VMESS account renewed successfully",
+		data:    req.Exp,
 	}, nil
 }

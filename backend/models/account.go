@@ -16,7 +16,7 @@ type CreateAccountRequest struct {
 	Exp         string      `json:"exp" validate:"required" xml:"exp" form:"exp"`
 	Quota       string      `json:"quota,omitempty" xml:"quota,omitempty" form:"quota,omitempty"`
 	IPQuota     string      `json:"ip_quota,omitempty" xml:"ip_quota,omitempty" form:"ip_quota,omitempty"`
-	AccountType AccountType `json:"account_type" validate:"required" xml:"account_type" form:"account_type"`
+	AccountType AccountType `json:"account_type" xml:"account_type" form:"account_type"`
 }
 
 type AccountResponse struct {
@@ -79,17 +79,19 @@ type ShadowsocksAccountData struct {
 
 type CheckAccountRequest struct {
 	Username    string      `json:"username" validate:"required" xml:"username" form:"username"`
-	AccountType AccountType `json:"account_type" validate:"required" xml:"account_type" form:"account_type"`
+	AccountType AccountType `json:"account_type" xml:"account_type" form:"account_type"`
 }
 
 type DeleteAccountRequest struct {
 	Username    string      `json:"username" validate:"required" xml:"username" form:"username"`
-	AccountType AccountType `json:"account_type" validate:"required" xml:"account_type" form:"account_type"`
+	AccountType AccountType `json:"account_type"  xml:"account_type" form:"account_type"`
 }
 
 // Renewal request
 type RenewAccountRequest struct {
 	Username    string      `json:"username" validate:"required" xml:"username" form:"username"`
-	AccountType AccountType `json:"account_type" validate:"required" xml:"account_type" form:"account_type"`
+	AccountType AccountType `json:"account_type"  xml:"account_type" form:"account_type"`
 	Exp         string      `json:"exp" validate:"required" xml:"exp" form:"exp"`
+	Quota       string      `json:"quota" validate:"required" xml:"quota" form:"quota"`
+	IPQuota     string      `json:"ip_quota" validate:"required" xml:"ip_quota" form:"ip_quota"`
 }

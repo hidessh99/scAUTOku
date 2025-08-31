@@ -4,6 +4,8 @@ import (
 	"backend/models"
 	"backend/utils"
 	"fmt"
+	"os/exec"
+	"strings"
 )
 
 type SshUsecase interface {
@@ -33,35 +35,29 @@ func (uc *sshUsecase) CreateAccount(req models.CreateAccountRequest) (*models.Ac
 		}, fmt.Errorf("validation failed: %v", validationErrors)
 	}
 
-	// Execute the add-ssh script
-	scriptArgs := []string{
-		req.Username,
-		req.Password,
-		req.Exp,
-		req.IPQuota,
-	}
+	scriptPath := "/usr/local/bin/add-ssh"
 
-	_, err := utils.ExecuteShellCommand("/usr/local/bin/add-ssh", scriptArgs...)
+	input := fmt.Sprintf("%s\n%s\n%s\n%s\n",
+		req.Username, req.Password, req.Exp, req.IPQuota)
+
+	// Execute the script with input
+	cmd := exec.Command("bash", scriptPath)
+	cmd.Stdin = strings.NewReader(input)
+
+	output, err := cmd.CombinedOutput()
 	if err != nil {
 		return &models.AccountResponse{
 			Status:  "error",
-			Message: fmt.Sprintf("Failed to create SSH account: %v", err),
-		}, err
+			Message: "Cannot create account SSH ",
+		}, fmt.Errorf("validation failed: %v", err)
 	}
 
-	data := models.SSHAccountData{
-		Username: req.Username,
-		Password: req.Password,
-		Domain:   "example.com", // Would be extracted from output
-		Expired:  req.Exp,
-		IPQuota:  req.IPQuota,
-		Pubkey:   "public-key", // Would be extracted from output
-	}
+	parsedData := utils.OutputParseSsh(string(output))
 
 	return &models.AccountResponse{
 		Status:  "success",
 		Message: "SSH account created successfully",
-		Data:    data,
+		Data:    parsedData,
 	}, nil
 }
 
@@ -75,26 +71,30 @@ func (uc *sshUsecase) CheckAccount(req models.CheckAccountRequest) (*models.Acco
 		}, fmt.Errorf("validation failed: %v", validationErrors)
 	}
 
-	// Execute the check-ssh script
-	scriptArgs := []string{req.Username}
-	_, err := utils.ExecuteShellCommand("/usr/local/bin/check-ssh", scriptArgs...)
+	scriptPath := "/usr/local/bin/check-ssh"
+
+	input := fmt.Sprintf("%s\n",
+		req.Username)
+
+	// Execute the script with input
+	cmd := exec.Command("bash", scriptPath)
+	cmd.Stdin = strings.NewReader(input)
+
+	output, err := cmd.CombinedOutput()
 	if err != nil {
 		return &models.AccountResponse{
 			Status:  "error",
-			Message: fmt.Sprintf("Failed to check SSH account: %v", err),
-		}, err
+			Message: "Cannot check account SSH ",
+		}, fmt.Errorf("validation failed: %v", err)
 	}
 
-	// Parse output (simplified)
+	// Parse the output using the new parser
+	parsedData := utils.ParseCheckAccountOutput(string(output))
 
 	return &models.AccountResponse{
 		Status:  "success",
-		Message: "SSH account details retrieved",
-		Data: map[string]interface{}{
-			"username": req.Username,
-			"status":   "active", // Would be parsed from output
-			"usage":    "1GB",    // Would be parsed from output
-		},
+		Message: "Check account SSH successfully",
+		Data:    parsedData,
 	}, nil
 }
 
@@ -108,17 +108,23 @@ func (uc *sshUsecase) DeleteAccount(req models.DeleteAccountRequest) (*models.Ac
 		}, fmt.Errorf("validation failed: %v", validationErrors)
 	}
 
-	// Execute the del-ssh script
-	scriptArgs := []string{req.Username}
-	_, err := utils.ExecuteShellCommand("/usr/local/bin/del-ssh", scriptArgs...)
+	scriptPath := "/usr/local/bin/del-ssh"
+
+	input := fmt.Sprintf("%s\n",
+		req.Username)
+
+	// Execute the script with input
+	cmd := exec.Command("bash", scriptPath)
+	cmd.Stdin = strings.NewReader(input)
+
+	_, err := cmd.CombinedOutput()
 	if err != nil {
 		return &models.AccountResponse{
 			Status:  "error",
-			Message: fmt.Sprintf("Failed to delete SSH account: %v", err),
-		}, err
+			Message: "Cannot delete account SSH ",
+		}, fmt.Errorf("validation failed: %v", err)
 	}
 
-	// Parse output (simplified)
 	return &models.AccountResponse{
 		Status:  "success",
 		Message: "SSH account deleted successfully",
@@ -135,21 +141,23 @@ func (uc *sshUsecase) RenewAccount(req models.RenewAccountRequest) (*models.Acco
 		}, fmt.Errorf("validation failed: %v", validationErrors)
 	}
 
-	// Execute the renew-ssh script
-	scriptArgs := []string{
-		req.Username,
-		req.Exp,
-	}
+	scriptPath := "/usr/local/bin/renew-ssh"
 
-	_, err := utils.ExecuteShellCommand("/usr/local/bin/renew-ssh", scriptArgs...)
+	input := fmt.Sprintf("%s\n%s\n",
+		req.Username, req.Exp)
+
+	// Execute the script with input
+	cmd := exec.Command("bash", scriptPath)
+	cmd.Stdin = strings.NewReader(input)
+
+	_, err := cmd.CombinedOutput()
 	if err != nil {
 		return &models.AccountResponse{
 			Status:  "error",
-			Message: fmt.Sprintf("Failed to renew SSH account: %v", err),
-		}, err
+			Message: "Cannot renew account SSH ",
+		}, fmt.Errorf("validation failed: %v", err)
 	}
 
-	// Parse output (simplified)
 	return &models.AccountResponse{
 		Status:  "success",
 		Message: "SSH account renewed successfully",

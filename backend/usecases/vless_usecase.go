@@ -4,6 +4,8 @@ import (
 	"backend/models"
 	"backend/utils"
 	"fmt"
+	"os/exec"
+	"strings"
 )
 
 type VlessUsecase interface {
@@ -33,36 +35,29 @@ func (uc *vlessUsecase) CreateAccount(req models.CreateAccountRequest) (*models.
 		}, fmt.Errorf("validation failed: %v", validationErrors)
 	}
 
-	// Execute the add-vless script
-	scriptArgs := []string{
-		req.Username,
-		req.Exp,
-		req.Quota,
-		req.IPQuota,
-	}
+	scriptPath := "/usr/local/bin/add-vless"
 
-	_, err := utils.ExecuteShellCommand("/usr/local/bin/add-vless", scriptArgs...)
+	input := fmt.Sprintf("%s\n%s\n%s\n%s\n",
+		req.Username, req.Exp, req.Quota, req.IPQuota)
+
+	// Execute the script with input
+	cmd := exec.Command("bash", scriptPath)
+	cmd.Stdin = strings.NewReader(input)
+
+	output, err := cmd.CombinedOutput()
 	if err != nil {
 		return &models.AccountResponse{
 			Status:  "error",
-			Message: fmt.Sprintf("Failed to create VLESS account: %v", err),
-		}, err
+			Message: "Cannot create account VLESS ",
+		}, fmt.Errorf("validation failed: %v", err)
 	}
 
-	data := models.VlessAccountData{
-		Username:      req.Username,
-		Domain:        "example.com", // Would be extracted from output
-		Expired:       req.Exp,
-		IPQuota:       req.IPQuota,
-		UUID:          "generated-uuid", // Would be extracted from output
-		VlessTLSLink:  "vless://tls-link",
-		VlessGRPCLink: "vless://grpc-link",
-	}
+	parsedData := utils.OutputParseVLess(string(output))
 
 	return &models.AccountResponse{
 		Status:  "success",
 		Message: "VLESS account created successfully",
-		Data:    data,
+		Data:    parsedData,
 	}, nil
 }
 
@@ -76,26 +71,30 @@ func (uc *vlessUsecase) CheckAccount(req models.CheckAccountRequest) (*models.Ac
 		}, fmt.Errorf("validation failed: %v", validationErrors)
 	}
 
-	// Execute the check-vless script
-	scriptArgs := []string{req.Username}
-	_, err := utils.ExecuteShellCommand("/usr/local/bin/check-vless", scriptArgs...)
+	scriptPath := "/usr/local/bin/check-vless"
+
+	input := fmt.Sprintf("%s\n",
+		req.Username)
+
+	// Execute the script with input
+	cmd := exec.Command("bash", scriptPath)
+	cmd.Stdin = strings.NewReader(input)
+
+	output, err := cmd.CombinedOutput()
 	if err != nil {
 		return &models.AccountResponse{
 			Status:  "error",
-			Message: fmt.Sprintf("Failed to check VLESS account: %v", err),
-		}, err
+			Message: "Cannot check account VLESS ",
+		}, fmt.Errorf("validation failed: %v", err)
 	}
 
-	// Parse output (simplified)
+	// Parse the output using the new parser
+	parsedData := utils.ParseCheckAccountOutput(string(output))
 
 	return &models.AccountResponse{
 		Status:  "success",
-		Message: "VLESS account details retrieved",
-		Data: map[string]interface{}{
-			"username": req.Username,
-			"status":   "active", // Would be parsed from output
-			"usage":    "1GB",    // Would be parsed from output
-		},
+		Message: "Check account VLESS successfully",
+		Data:    parsedData,
 	}, nil
 }
 
@@ -109,17 +108,23 @@ func (uc *vlessUsecase) DeleteAccount(req models.DeleteAccountRequest) (*models.
 		}, fmt.Errorf("validation failed: %v", validationErrors)
 	}
 
-	// Execute the del-vless script
-	scriptArgs := []string{req.Username}
-	_, err := utils.ExecuteShellCommand("/usr/local/bin/del-vless", scriptArgs...)
+	scriptPath := "/usr/local/bin/del-vless"
+
+	input := fmt.Sprintf("%s\n",
+		req.Username)
+
+	// Execute the script with input
+	cmd := exec.Command("bash", scriptPath)
+	cmd.Stdin = strings.NewReader(input)
+
+	_, err := cmd.CombinedOutput()
 	if err != nil {
 		return &models.AccountResponse{
 			Status:  "error",
-			Message: fmt.Sprintf("Failed to delete VLESS account: %v", err),
-		}, err
+			Message: "Cannot delete account VLESS ",
+		}, fmt.Errorf("validation failed: %v", err)
 	}
 
-	// Parse output (simplified)
 	return &models.AccountResponse{
 		Status:  "success",
 		Message: "VLESS account deleted successfully",
@@ -136,21 +141,23 @@ func (uc *vlessUsecase) RenewAccount(req models.RenewAccountRequest) (*models.Ac
 		}, fmt.Errorf("validation failed: %v", validationErrors)
 	}
 
-	// Execute the renew-vless script
-	scriptArgs := []string{
-		req.Username,
-		req.Exp,
-	}
+	scriptPath := "/usr/local/bin/renew-vless"
 
-	_, err := utils.ExecuteShellCommand("/usr/local/bin/renew-vless", scriptArgs...)
+	input := fmt.Sprintf("%s\n%s\n%s\n%s\n",
+		req.Username, req.Exp, req.Quota, req.IPQuota)
+
+	// Execute the script with input
+	cmd := exec.Command("bash", scriptPath)
+	cmd.Stdin = strings.NewReader(input)
+
+	_, err := cmd.CombinedOutput()
 	if err != nil {
 		return &models.AccountResponse{
 			Status:  "error",
-			Message: fmt.Sprintf("Failed to renew VLESS account: %v", err),
-		}, err
+			Message: "Cannot renew account VLESS ",
+		}, fmt.Errorf("validation failed: %v", err)
 	}
 
-	// Parse output (simplified)
 	return &models.AccountResponse{
 		Status:  "success",
 		Message: "VLESS account renewed successfully",
