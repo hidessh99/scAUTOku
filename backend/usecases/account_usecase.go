@@ -157,6 +157,15 @@ func (uc *accountUsecase) RenewAccount(req models.RenewAccountRequest) (*models.
 
 // VMESS implementations
 func (uc *accountUsecase) createVmessAccount(req models.CreateAccountRequest) (*models.AccountResponse, error) {
+	// Validate the request
+	if validationErrors := uc.validator.ValidateStruct(req); len(validationErrors) > 0 {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Validation failed",
+			Data:    validationErrors,
+		}, fmt.Errorf("validation failed: %v", validationErrors)
+	}
+
 	// Execute the add-vmess script with appropriate parameters
 	scriptArgs := []string{
 		req.Username,
@@ -196,6 +205,15 @@ func (uc *accountUsecase) createVmessAccount(req models.CreateAccountRequest) (*
 }
 
 func (uc *accountUsecase) checkVmessAccount(req models.CheckAccountRequest) (*models.AccountResponse, error) {
+	// Validate the request
+	if validationErrors := uc.validator.ValidateStruct(req); len(validationErrors) > 0 {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Validation failed",
+			Data:    validationErrors,
+		}, fmt.Errorf("validation failed: %v", validationErrors)
+	}
+
 	// Execute the check-vmess script
 	scriptArgs := []string{req.Username}
 	_, err := utils.ExecuteShellCommand("/usr/local/bin/check-vmess", scriptArgs...)
@@ -220,6 +238,15 @@ func (uc *accountUsecase) checkVmessAccount(req models.CheckAccountRequest) (*mo
 }
 
 func (uc *accountUsecase) deleteVmessAccount(req models.DeleteAccountRequest) (*models.AccountResponse, error) {
+	// Validate the request
+	if validationErrors := uc.validator.ValidateStruct(req); len(validationErrors) > 0 {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Validation failed",
+			Data:    validationErrors,
+		}, fmt.Errorf("validation failed: %v", validationErrors)
+	}
+
 	// Execute the del-vmess script
 	scriptArgs := []string{req.Username}
 	_, err := utils.ExecuteShellCommand("/usr/local/bin/del-vmess", scriptArgs...)
@@ -238,6 +265,15 @@ func (uc *accountUsecase) deleteVmessAccount(req models.DeleteAccountRequest) (*
 }
 
 func (uc *accountUsecase) renewVmessAccount(req models.RenewAccountRequest) (*models.AccountResponse, error) {
+	// Validate the request
+	if validationErrors := uc.validator.ValidateStruct(req); len(validationErrors) > 0 {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Validation failed",
+			Data:    validationErrors,
+		}, fmt.Errorf("validation failed: %v", validationErrors)
+	}
+
 	// Execute the renew-vmess script
 	scriptArgs := []string{
 		req.Username,
@@ -261,6 +297,15 @@ func (uc *accountUsecase) renewVmessAccount(req models.RenewAccountRequest) (*mo
 
 // SSH implementations
 func (uc *accountUsecase) createSSHAccount(req models.CreateAccountRequest) (*models.AccountResponse, error) {
+	// Validate the request
+	if validationErrors := uc.validator.ValidateStruct(req); len(validationErrors) > 0 {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Validation failed",
+			Data:    validationErrors,
+		}, fmt.Errorf("validation failed: %v", validationErrors)
+	}
+
 	// Execute the add-ssh script
 	scriptArgs := []string{
 		req.Username,
@@ -294,6 +339,15 @@ func (uc *accountUsecase) createSSHAccount(req models.CreateAccountRequest) (*mo
 }
 
 func (uc *accountUsecase) checkSSHAccount(req models.CheckAccountRequest) (*models.AccountResponse, error) {
+	// Validate the request
+	if validationErrors := uc.validator.ValidateStruct(req); len(validationErrors) > 0 {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Validation failed",
+			Data:    validationErrors,
+		}, fmt.Errorf("validation failed: %v", validationErrors)
+	}
+
 	// Execute the check-ssh script
 	scriptArgs := []string{req.Username}
 	_, err := utils.ExecuteShellCommand("/usr/local/bin/check-ssh", scriptArgs...)
@@ -318,6 +372,15 @@ func (uc *accountUsecase) checkSSHAccount(req models.CheckAccountRequest) (*mode
 }
 
 func (uc *accountUsecase) deleteSSHAccount(req models.DeleteAccountRequest) (*models.AccountResponse, error) {
+	// Validate the request
+	if validationErrors := uc.validator.ValidateStruct(req); len(validationErrors) > 0 {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Validation failed",
+			Data:    validationErrors,
+		}, fmt.Errorf("validation failed: %v", validationErrors)
+	}
+
 	// Execute the del-ssh script
 	scriptArgs := []string{req.Username}
 	_, err := utils.ExecuteShellCommand("/usr/local/bin/del-ssh", scriptArgs...)
@@ -336,6 +399,15 @@ func (uc *accountUsecase) deleteSSHAccount(req models.DeleteAccountRequest) (*mo
 }
 
 func (uc *accountUsecase) renewSSHAccount(req models.RenewAccountRequest) (*models.AccountResponse, error) {
+	// Validate the request
+	if validationErrors := uc.validator.ValidateStruct(req); len(validationErrors) > 0 {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Validation failed",
+			Data:    validationErrors,
+		}, fmt.Errorf("validation failed: %v", validationErrors)
+	}
+
 	// Execute the renew-ssh script
 	scriptArgs := []string{
 		req.Username,
@@ -359,6 +431,15 @@ func (uc *accountUsecase) renewSSHAccount(req models.RenewAccountRequest) (*mode
 
 // TROJAN implementations
 func (uc *accountUsecase) createTrojanAccount(req models.CreateAccountRequest) (*models.AccountResponse, error) {
+	// Validate the request
+	if validationErrors := uc.validator.ValidateStruct(req); len(validationErrors) > 0 {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Validation failed",
+			Data:    validationErrors,
+		}, fmt.Errorf("validation failed: %v", validationErrors)
+	}
+
 	// Execute the add-trojan script
 	scriptArgs := []string{
 		req.Username,
@@ -393,6 +474,15 @@ func (uc *accountUsecase) createTrojanAccount(req models.CreateAccountRequest) (
 }
 
 func (uc *accountUsecase) checkTrojanAccount(req models.CheckAccountRequest) (*models.AccountResponse, error) {
+	// Validate the request
+	if validationErrors := uc.validator.ValidateStruct(req); len(validationErrors) > 0 {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Validation failed",
+			Data:    validationErrors,
+		}, fmt.Errorf("validation failed: %v", validationErrors)
+	}
+
 	// Execute the check-trojan script
 	scriptArgs := []string{req.Username}
 	_, err := utils.ExecuteShellCommand("/usr/local/bin/check-trojan", scriptArgs...)
@@ -417,6 +507,15 @@ func (uc *accountUsecase) checkTrojanAccount(req models.CheckAccountRequest) (*m
 }
 
 func (uc *accountUsecase) deleteTrojanAccount(req models.DeleteAccountRequest) (*models.AccountResponse, error) {
+	// Validate the request
+	if validationErrors := uc.validator.ValidateStruct(req); len(validationErrors) > 0 {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Validation failed",
+			Data:    validationErrors,
+		}, fmt.Errorf("validation failed: %v", validationErrors)
+	}
+
 	// Execute the del-trojan script
 	scriptArgs := []string{req.Username}
 	_, err := utils.ExecuteShellCommand("/usr/local/bin/del-trojan", scriptArgs...)
@@ -435,6 +534,15 @@ func (uc *accountUsecase) deleteTrojanAccount(req models.DeleteAccountRequest) (
 }
 
 func (uc *accountUsecase) renewTrojanAccount(req models.RenewAccountRequest) (*models.AccountResponse, error) {
+	// Validate the request
+	if validationErrors := uc.validator.ValidateStruct(req); len(validationErrors) > 0 {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Validation failed",
+			Data:    validationErrors,
+		}, fmt.Errorf("validation failed: %v", validationErrors)
+	}
+
 	// Execute the renew-trojan script
 	scriptArgs := []string{
 		req.Username,
@@ -458,6 +566,15 @@ func (uc *accountUsecase) renewTrojanAccount(req models.RenewAccountRequest) (*m
 
 // VLESS implementations
 func (uc *accountUsecase) createVlessAccount(req models.CreateAccountRequest) (*models.AccountResponse, error) {
+	// Validate the request
+	if validationErrors := uc.validator.ValidateStruct(req); len(validationErrors) > 0 {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Validation failed",
+			Data:    validationErrors,
+		}, fmt.Errorf("validation failed: %v", validationErrors)
+	}
+
 	// Execute the add-vless script
 	scriptArgs := []string{
 		req.Username,
@@ -492,6 +609,15 @@ func (uc *accountUsecase) createVlessAccount(req models.CreateAccountRequest) (*
 }
 
 func (uc *accountUsecase) checkVlessAccount(req models.CheckAccountRequest) (*models.AccountResponse, error) {
+	// Validate the request
+	if validationErrors := uc.validator.ValidateStruct(req); len(validationErrors) > 0 {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Validation failed",
+			Data:    validationErrors,
+		}, fmt.Errorf("validation failed: %v", validationErrors)
+	}
+
 	// Execute the check-vless script
 	scriptArgs := []string{req.Username}
 	_, err := utils.ExecuteShellCommand("/usr/local/bin/check-vless", scriptArgs...)
@@ -516,6 +642,15 @@ func (uc *accountUsecase) checkVlessAccount(req models.CheckAccountRequest) (*mo
 }
 
 func (uc *accountUsecase) deleteVlessAccount(req models.DeleteAccountRequest) (*models.AccountResponse, error) {
+	// Validate the request
+	if validationErrors := uc.validator.ValidateStruct(req); len(validationErrors) > 0 {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Validation failed",
+			Data:    validationErrors,
+		}, fmt.Errorf("validation failed: %v", validationErrors)
+	}
+
 	// Execute the del-vless script
 	scriptArgs := []string{req.Username}
 	_, err := utils.ExecuteShellCommand("/usr/local/bin/del-vless", scriptArgs...)
@@ -534,6 +669,15 @@ func (uc *accountUsecase) deleteVlessAccount(req models.DeleteAccountRequest) (*
 }
 
 func (uc *accountUsecase) renewVlessAccount(req models.RenewAccountRequest) (*models.AccountResponse, error) {
+	// Validate the request
+	if validationErrors := uc.validator.ValidateStruct(req); len(validationErrors) > 0 {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Validation failed",
+			Data:    validationErrors,
+		}, fmt.Errorf("validation failed: %v", validationErrors)
+	}
+
 	// Execute the renew-vless script
 	scriptArgs := []string{
 		req.Username,
@@ -557,6 +701,15 @@ func (uc *accountUsecase) renewVlessAccount(req models.RenewAccountRequest) (*mo
 
 // SHADOWSOCKS implementations
 func (uc *accountUsecase) createShadowsocksAccount(req models.CreateAccountRequest) (*models.AccountResponse, error) {
+	// Validate the request
+	if validationErrors := uc.validator.ValidateStruct(req); len(validationErrors) > 0 {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Validation failed",
+			Data:    validationErrors,
+		}, fmt.Errorf("validation failed: %v", validationErrors)
+	}
+
 	// Execute the add-addshadowsocks script
 	scriptArgs := []string{
 		req.Username,
@@ -591,6 +744,15 @@ func (uc *accountUsecase) createShadowsocksAccount(req models.CreateAccountReque
 }
 
 func (uc *accountUsecase) checkShadowsocksAccount(req models.CheckAccountRequest) (*models.AccountResponse, error) {
+	// Validate the request
+	if validationErrors := uc.validator.ValidateStruct(req); len(validationErrors) > 0 {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Validation failed",
+			Data:    validationErrors,
+		}, fmt.Errorf("validation failed: %v", validationErrors)
+	}
+
 	// Execute the check-shadowsocks script
 	scriptArgs := []string{req.Username}
 	_, err := utils.ExecuteShellCommand("/usr/local/bin/check-shadowsocks", scriptArgs...)
@@ -615,6 +777,15 @@ func (uc *accountUsecase) checkShadowsocksAccount(req models.CheckAccountRequest
 }
 
 func (uc *accountUsecase) deleteShadowsocksAccount(req models.DeleteAccountRequest) (*models.AccountResponse, error) {
+	// Validate the request
+	if validationErrors := uc.validator.ValidateStruct(req); len(validationErrors) > 0 {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Validation failed",
+			Data:    validationErrors,
+		}, fmt.Errorf("validation failed: %v", validationErrors)
+	}
+
 	// Execute the del-addshadowsocks script
 	scriptArgs := []string{req.Username}
 	_, err := utils.ExecuteShellCommand("/usr/local/bin/del-addshadowsocks", scriptArgs...)
@@ -633,6 +804,15 @@ func (uc *accountUsecase) deleteShadowsocksAccount(req models.DeleteAccountReque
 }
 
 func (uc *accountUsecase) renewShadowsocksAccount(req models.RenewAccountRequest) (*models.AccountResponse, error) {
+	// Validate the request
+	if validationErrors := uc.validator.ValidateStruct(req); len(validationErrors) > 0 {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Validation failed",
+			Data:    validationErrors,
+		}, fmt.Errorf("validation failed: %v", validationErrors)
+	}
+
 	// Execute the renew-shadowsocks script
 	scriptArgs := []string{
 		req.Username,

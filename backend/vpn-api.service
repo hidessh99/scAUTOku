@@ -1,15 +1,17 @@
 [Unit]
 Description=VPN Account Management API
-Documentation=https://github.com/your-repo/backend
 After=network.target
 
 [Service]
 Type=simple
 User=root
-WorkingDirectory=/root/scAUTO/backend
-ExecStart=/root/scAUTO/backend/vpn-api
+WorkingDirectory=/root/backend
+ExecStart=/root/backend/vpn-api
 Restart=always
-RestartSec=3
+RestartSec=10
+Environment=PORT=3005
+Environment=API_KEY=c75258f0-940b-4972-b316-63c14a4bb7e3
+Environment=AllowOrigins=*
 
 [Install]
 WantedBy=multi-user.target
