@@ -17,7 +17,6 @@ Authorization: Bearer {{apiKey}}
   "exp": "30",
   "quota": "10GB",
   "ip_quota": "5",
-  "server_id": 1,
   "account_type": "vmess"
 }
 
@@ -33,7 +32,6 @@ Authorization: Bearer {{apiKey}}
   "password": "testpassword",
   "exp": "30",
   "ip_quota": "5",
-  "server_id": 1,
   "account_type": "ssh"
 }
 
@@ -49,7 +47,6 @@ Authorization: Bearer {{apiKey}}
   "exp": "30",
   "quota": "10GB",
   "ip_quota": "5",
-  "server_id": 1,
   "account_type": "vless"
 }
 
@@ -65,7 +62,6 @@ Authorization: Bearer {{apiKey}}
   "password": "testpassword",
   "exp": "30",
   "ip_quota": "5",
-  "server_id": 1,
   "account_type": "trojan"
 }
 
@@ -81,7 +77,6 @@ Authorization: Bearer {{apiKey}}
   "password": "testpassword",
   "exp": "30",
   "ip_quota": "5",
-  "server_id": 1,
   "account_type": "shadowsocks"
 }
 
@@ -153,7 +148,6 @@ Authorization: Bearer {{apiKey}}
 {
   "username": "testallvmess",
   "exp": "15",
-  "server_id": 1,
   "account_type": "vmess"
 }
 
@@ -167,7 +161,6 @@ Authorization: Bearer {{apiKey}}
 {
   "username": "testallssh",
   "exp": "15",
-  "server_id": 1,
   "account_type": "ssh"
 }
 
@@ -181,7 +174,6 @@ Authorization: Bearer {{apiKey}}
 {
   "username": "testallvless",
   "exp": "15",
-  "server_id": 1,
   "account_type": "vless"
 }
 
@@ -195,7 +187,6 @@ Authorization: Bearer {{apiKey}}
 {
   "username": "testalltrojan",
   "exp": "15",
-  "server_id": 1,
   "account_type": "trojan"
 }
 
@@ -209,7 +200,6 @@ Authorization: Bearer {{apiKey}}
 {
   "username": "testallss",
   "exp": "15",
-  "server_id": 1,
   "account_type": "shadowsocks"
 }
 
@@ -221,7 +211,6 @@ Authorization: Bearer {{apiKey}}
 
 {
   "username": "testallvmess",
-  "server_id": 1,
   "account_type": "vmess"
 }
 
@@ -234,7 +223,6 @@ Authorization: Bearer {{apiKey}}
 
 {
   "username": "testallssh",
-  "server_id": 1,
   "account_type": "ssh"
 }
 
@@ -247,7 +235,6 @@ Authorization: Bearer {{apiKey}}
 
 {
   "username": "testallvless",
-  "server_id": 1,
   "account_type": "vless"
 }
 
@@ -260,7 +247,6 @@ Authorization: Bearer {{apiKey}}
 
 {
   "username": "testalltrojan",
-  "server_id": 1,
   "account_type": "trojan"
 }
 
@@ -273,6 +259,5 @@ Authorization: Bearer {{apiKey}}
 
 {
   "username": "testallss",
-  "server_id": 1,
   "account_type": "shadowsocks"
 }

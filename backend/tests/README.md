@@ -50,4 +50,3 @@ Each test file includes tests for:
 
 - The tests use placeholder data that should be updated with real values
 - Make sure to use unique usernames for create operations to avoid conflicts
-- The server_id should correspond to an actual server in your infrastructure

@@ -26,7 +26,6 @@ func (uc *trojanUsecase) CreateAccount(req models.CreateAccountRequest) (*models
 		req.Password,
 		req.Exp,
 		req.IPQuota,
-		fmt.Sprintf("%d", req.ServerID),
 	}
 
 	_, err := utils.ExecuteShellCommand("/usr/local/bin/add-trojan-user", scriptArgs...)
@@ -101,7 +100,6 @@ func (uc *trojanUsecase) RenewAccount(req models.RenewAccountRequest) (*models.A
 	scriptArgs := []string{
 		req.Username,
 		req.Exp,
-		fmt.Sprintf("%d", req.ServerID),
 	}
 
 	_, err := utils.ExecuteShellCommand("/usr/local/bin/renew-trojan", scriptArgs...)

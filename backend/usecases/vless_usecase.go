@@ -26,7 +26,6 @@ func (uc *vlessUsecase) CreateAccount(req models.CreateAccountRequest) (*models.
 		req.Exp,
 		req.Quota,
 		req.IPQuota,
-		fmt.Sprintf("%d", req.ServerID),
 	}
 
 	_, err := utils.ExecuteShellCommand("/usr/local/bin/add-vless-user", scriptArgs...)
@@ -101,7 +100,6 @@ func (uc *vlessUsecase) RenewAccount(req models.RenewAccountRequest) (*models.Ac
 	scriptArgs := []string{
 		req.Username,
 		req.Exp,
-		fmt.Sprintf("%d", req.ServerID),
 	}
 
 	_, err := utils.ExecuteShellCommand("/usr/local/bin/renew-vless", scriptArgs...)

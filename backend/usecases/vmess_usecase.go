@@ -26,7 +26,6 @@ func (uc *vmessUsecase) CreateAccount(req models.CreateAccountRequest) (*models.
 		req.Exp,
 		req.Quota,
 		req.IPQuota,
-		fmt.Sprintf("%d", req.ServerID),
 	}
 
 	_, err := utils.ExecuteShellCommand("/usr/local/bin/add-vmess-user", scriptArgs...)
@@ -106,7 +105,6 @@ func (uc *vmessUsecase) RenewAccount(req models.RenewAccountRequest) (*models.Ac
 	scriptArgs := []string{
 		req.Username,
 		req.Exp,
-		fmt.Sprintf("%d", req.ServerID),
 	}
 
 	_, err := utils.ExecuteShellCommand("/usr/local/bin/renew-vmess", scriptArgs...)

@@ -125,7 +125,6 @@ func (uc *accountUsecase) createVmessAccount(req models.CreateAccountRequest) (*
 		req.Exp,
 		req.Quota,
 		req.IPQuota,
-		fmt.Sprintf("%d", req.ServerID),
 	}
 
 	_, err := utils.ExecuteShellCommand("/usr/local/bin/add-vmess-user", scriptArgs...)
@@ -205,7 +204,6 @@ func (uc *accountUsecase) renewVmessAccount(req models.RenewAccountRequest) (*mo
 	scriptArgs := []string{
 		req.Username,
 		req.Exp,
-		fmt.Sprintf("%d", req.ServerID),
 	}
 
 	_, err := utils.ExecuteShellCommand("/usr/local/bin/renew-vmess", scriptArgs...)
@@ -231,7 +229,6 @@ func (uc *accountUsecase) createSSHAccount(req models.CreateAccountRequest) (*mo
 		req.Password,
 		req.Exp,
 		req.IPQuota,
-		fmt.Sprintf("%d", req.ServerID),
 	}
 
 	_, err := utils.ExecuteShellCommand("/usr/local/bin/add-ssh-user", scriptArgs...)
@@ -305,7 +302,6 @@ func (uc *accountUsecase) renewSSHAccount(req models.RenewAccountRequest) (*mode
 	scriptArgs := []string{
 		req.Username,
 		req.Exp,
-		fmt.Sprintf("%d", req.ServerID),
 	}
 
 	_, err := utils.ExecuteShellCommand("/usr/local/bin/renew-ssh", scriptArgs...)
@@ -331,7 +327,6 @@ func (uc *accountUsecase) createTrojanAccount(req models.CreateAccountRequest) (
 		req.Password,
 		req.Exp,
 		req.IPQuota,
-		fmt.Sprintf("%d", req.ServerID),
 	}
 
 	_, err := utils.ExecuteShellCommand("/usr/local/bin/add-trojan-user", scriptArgs...)
@@ -406,7 +401,6 @@ func (uc *accountUsecase) renewTrojanAccount(req models.RenewAccountRequest) (*m
 	scriptArgs := []string{
 		req.Username,
 		req.Exp,
-		fmt.Sprintf("%d", req.ServerID),
 	}
 
 	_, err := utils.ExecuteShellCommand("/usr/local/bin/renew-trojan", scriptArgs...)
@@ -432,7 +426,6 @@ func (uc *accountUsecase) createVlessAccount(req models.CreateAccountRequest) (*
 		req.Exp,
 		req.Quota,
 		req.IPQuota,
-		fmt.Sprintf("%d", req.ServerID),
 	}
 
 	_, err := utils.ExecuteShellCommand("/usr/local/bin/add-vless-user", scriptArgs...)
@@ -507,7 +500,6 @@ func (uc *accountUsecase) renewVlessAccount(req models.RenewAccountRequest) (*mo
 	scriptArgs := []string{
 		req.Username,
 		req.Exp,
-		fmt.Sprintf("%d", req.ServerID),
 	}
 
 	_, err := utils.ExecuteShellCommand("/usr/local/bin/renew-vless", scriptArgs...)
@@ -533,7 +525,6 @@ func (uc *accountUsecase) createShadowsocksAccount(req models.CreateAccountReque
 		req.Password,
 		req.Exp,
 		req.IPQuota,
-		fmt.Sprintf("%d", req.ServerID),
 	}
 
 	_, err := utils.ExecuteShellCommand("/usr/local/bin/add-shadowsocks-user", scriptArgs...)
@@ -608,7 +599,6 @@ func (uc *accountUsecase) renewShadowsocksAccount(req models.RenewAccountRequest
 	scriptArgs := []string{
 		req.Username,
 		req.Exp,
-		fmt.Sprintf("%d", req.ServerID),
 	}
 
 	_, err := utils.ExecuteShellCommand("/usr/local/bin/renew-shadowsocks", scriptArgs...)

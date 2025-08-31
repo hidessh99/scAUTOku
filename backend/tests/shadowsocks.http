@@ -15,8 +15,7 @@ Authorization: Bearer {{apiKey}}
   "username": "testss",
   "password": "testpassword",
   "exp": "30",
-  "ip_quota": "5",
-  "server_id": 1
+  "ip_quota": "5"
 }
 
 ### Check SHADOWSOCKS Account
@@ -35,8 +34,7 @@ Authorization: Bearer {{apiKey}}
 
 {
   "username": "testss",
-  "exp": "15",
-  "server_id": 1
+  "exp": "15"
 }
 
 ### Delete SHADOWSOCKS Account
@@ -45,8 +43,7 @@ Content-Type: application/json
 Authorization: Bearer {{apiKey}}
 
 {
-  "username": "testss",
-  "server_id": 1
+  "username": "testss"
 }
 
 ### Create SHADOWSOCKS Account (General Endpoint)
@@ -59,7 +56,6 @@ Authorization: Bearer {{apiKey}}
   "password": "testpassword",
   "exp": "30",
   "ip_quota": "5",
-  "server_id": 1,
   "account_type": "shadowsocks"
 }
 
@@ -81,7 +77,6 @@ Authorization: Bearer {{apiKey}}
 {
   "username": "testss2",
   "exp": "15",
-  "server_id": 1,
   "account_type": "shadowsocks"
 }
 
@@ -92,6 +87,5 @@ Authorization: Bearer {{apiKey}}
 
 {
   "username": "testss2",
-  "server_id": 1,
   "account_type": "shadowsocks"
 }

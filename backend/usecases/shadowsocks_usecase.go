@@ -26,7 +26,6 @@ func (uc *shadowsocksUsecase) CreateAccount(req models.CreateAccountRequest) (*m
 		req.Password,
 		req.Exp,
 		req.IPQuota,
-		fmt.Sprintf("%d", req.ServerID),
 	}
 
 	_, err := utils.ExecuteShellCommand("/usr/local/bin/add-shadowsocks-user", scriptArgs...)
@@ -101,7 +100,6 @@ func (uc *shadowsocksUsecase) RenewAccount(req models.RenewAccountRequest) (*mod
 	scriptArgs := []string{
 		req.Username,
 		req.Exp,
-		fmt.Sprintf("%d", req.ServerID),
 	}
 
 	_, err := utils.ExecuteShellCommand("/usr/local/bin/renew-shadowsocks", scriptArgs...)

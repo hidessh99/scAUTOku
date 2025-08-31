@@ -15,8 +15,7 @@ Authorization: Bearer {{apiKey}}
   "username": "testvmess",
   "exp": "30",
   "quota": "10GB",
-  "ip_quota": "5",
-  "server_id": 1
+  "ip_quota": "5"
 }
 
 ### Check VMESS Account
@@ -35,8 +34,7 @@ Authorization: Bearer {{apiKey}}
 
 {
   "username": "testvmess",
-  "exp": "15",
-  "server_id": 1
+  "exp": "15"
 }
 
 ### Delete VMESS Account
@@ -45,8 +43,7 @@ Content-Type: application/json
 Authorization: Bearer {{apiKey}}
 
 {
-  "username": "testvmess",
-  "server_id": 1
+  "username": "testvmess"
 }
 
 ### Create VMESS Account (General Endpoint)
@@ -59,7 +56,6 @@ Authorization: Bearer {{apiKey}}
   "exp": "30",
   "quota": "10GB",
   "ip_quota": "5",
-  "server_id": 1,
   "account_type": "vmess"
 }
 
@@ -81,7 +77,6 @@ Authorization: Bearer {{apiKey}}
 {
   "username": "testvmess2",
   "exp": "15",
-  "server_id": 1,
   "account_type": "vmess"
 }
 
@@ -92,6 +87,5 @@ Authorization: Bearer {{apiKey}}
 
 {
   "username": "testvmess2",
-  "server_id": 1,
   "account_type": "vmess"
 }

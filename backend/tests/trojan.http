@@ -15,8 +15,7 @@ Authorization: Bearer {{apiKey}}
   "username": "testtrojan",
   "password": "testpassword",
   "exp": "30",
-  "ip_quota": "5",
-  "server_id": 1
+  "ip_quota": "5"
 }
 
 ### Check TROJAN Account
@@ -35,8 +34,7 @@ Authorization: Bearer {{apiKey}}
 
 {
   "username": "testtrojan",
-  "exp": "15",
-  "server_id": 1
+  "exp": "15"
 }
 
 ### Delete TROJAN Account
@@ -45,8 +43,7 @@ Content-Type: application/json
 Authorization: Bearer {{apiKey}}
 
 {
-  "username": "testtrojan",
-  "server_id": 1
+  "username": "testtrojan"
 }
 
 ### Create TROJAN Account (General Endpoint)
@@ -59,7 +56,6 @@ Authorization: Bearer {{apiKey}}
   "password": "testpassword",
   "exp": "30",
   "ip_quota": "5",
-  "server_id": 1,
   "account_type": "trojan"
 }
 
@@ -81,7 +77,6 @@ Authorization: Bearer {{apiKey}}
 {
   "username": "testtrojan2",
   "exp": "15",
-  "server_id": 1,
   "account_type": "trojan"
 }
 
@@ -92,6 +87,5 @@ Authorization: Bearer {{apiKey}}
 
 {
   "username": "testtrojan2",
-  "server_id": 1,
   "account_type": "trojan"
 }

@@ -16,7 +16,6 @@ type CreateAccountRequest struct {
 	Exp         string      `json:"exp" validate:"required" xml:"exp" form:"exp"`
 	Quota       string      `json:"quota,omitempty" xml:"quota,omitempty" form:"quota,omitempty"`
 	IPQuota     string      `json:"ip_quota,omitempty" xml:"ip_quota,omitempty" form:"ip_quota,omitempty"`
-	ServerID    int         `json:"server_id" validate:"required" xml:"server_id" form:"server_id"`
 	AccountType AccountType `json:"account_type" validate:"required" xml:"account_type" form:"account_type"`
 }
 
@@ -86,7 +85,6 @@ type CheckAccountRequest struct {
 type DeleteAccountRequest struct {
 	Username    string      `json:"username" validate:"required" xml:"username" form:"username"`
 	AccountType AccountType `json:"account_type" validate:"required" xml:"account_type" form:"account_type"`
-	ServerID    int         `json:"server_id" validate:"required" xml:"server_id" form:"server_id"`
 }
 
 // Renewal request
@@ -94,5 +92,4 @@ type RenewAccountRequest struct {
 	Username    string      `json:"username" validate:"required" xml:"username" form:"username"`
 	AccountType AccountType `json:"account_type" validate:"required" xml:"account_type" form:"account_type"`
 	Exp         string      `json:"exp" validate:"required" xml:"exp" form:"exp"`
-	ServerID    int         `json:"server_id" validate:"required" xml:"server_id" form:"server_id"`
 }

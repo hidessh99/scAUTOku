@@ -46,10 +46,10 @@ func (ac *AccountController) CreateAccount(c *fiber.Ctx) error {
 	}
 
 	// Validate required fields
-	if req.Username == "" || req.Exp == "" || req.ServerID <= 0 {
+	if req.Username == "" || req.Exp == "" {
 		return c.Status(fiber.StatusBadRequest).JSON(models.AccountResponse{
 			Status:  "error",
-			Message: "Username, expiration, and server ID are required",
+			Message: "Username and expiration are required",
 		})
 	}
 
@@ -100,10 +100,10 @@ func (ac *AccountController) DeleteAccount(c *fiber.Ctx) error {
 	}
 
 	// Validate required fields
-	if req.Username == "" || req.ServerID <= 0 {
+	if req.Username == "" {
 		return c.Status(fiber.StatusBadRequest).JSON(models.AccountResponse{
 			Status:  "error",
-			Message: "Username and server ID are required",
+			Message: "Username is required",
 		})
 	}
 
@@ -127,10 +127,10 @@ func (ac *AccountController) RenewAccount(c *fiber.Ctx) error {
 	}
 
 	// Validate required fields
-	if req.Username == "" || req.Exp == "" || req.ServerID <= 0 {
+	if req.Username == "" || req.Exp == "" {
 		return c.Status(fiber.StatusBadRequest).JSON(models.AccountResponse{
 			Status:  "error",
-			Message: "Username, expiration, and server ID are required",
+			Message: "Username and expiration are required",
 		})
 	}
 

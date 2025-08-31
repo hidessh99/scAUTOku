@@ -26,16 +26,17 @@ func (uc *sshUsecase) CreateAccount(req models.CreateAccountRequest) (*models.Ac
 		req.Password,
 		req.Exp,
 		req.IPQuota,
-		fmt.Sprintf("%d", req.ServerID),
 	}
+	fmt.Println(req.Username, req.Password, req.Exp, req.IPQuota)
 
-	_, err := utils.ExecuteShellCommand("/usr/local/bin/add-ssh-user", scriptArgs...)
+	resp, err := utils.ExecuteShellCommand("/usr/local/bin/add-ssh-user", scriptArgs...)
 	if err != nil {
 		return &models.AccountResponse{
 			Status:  "error",
 			Message: fmt.Sprintf("Failed to create SSH account: %v", err),
 		}, err
 	}
+	fmt.Println(resp)
 
 	data := models.SSHAccountData{
 		Username: req.Username,
@@ -100,7 +101,6 @@ func (uc *sshUsecase) RenewAccount(req models.RenewAccountRequest) (*models.Acco
 	scriptArgs := []string{
 		req.Username,
 		req.Exp,
-		fmt.Sprintf("%d", req.ServerID),
 	}
 
 	_, err := utils.ExecuteShellCommand("/usr/local/bin/renew-ssh", scriptArgs...)

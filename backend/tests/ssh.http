@@ -1,7 +1,7 @@
 # SSH Account Management Tests
 
-@baseUrl = http://localhost:3000
-@apiKey = your_api_key_here
+@baseUrl = http://localhost:3005
+@apiKey = c75258f0-940b-4972-b316-63c14a4bb7e3
 
 ### Health Check
 GET {{baseUrl}}/health
@@ -15,8 +15,7 @@ Authorization: Bearer {{apiKey}}
   "username": "testssh",
   "password": "testpassword",
   "exp": "30",
-  "ip_quota": "5",
-  "server_id": 1
+  "ip_quota": "5"
 }
 
 ### Check SSH Account
@@ -35,8 +34,7 @@ Authorization: Bearer {{apiKey}}
 
 {
   "username": "testssh",
-  "exp": "15",
-  "server_id": 1
+  "exp": "15"
 }
 
 ### Delete SSH Account
@@ -45,8 +43,7 @@ Content-Type: application/json
 Authorization: Bearer {{apiKey}}
 
 {
-  "username": "testssh",
-  "server_id": 1
+  "username": "testssh"
 }
 
 ### Create SSH Account (General Endpoint)
@@ -59,7 +56,6 @@ Authorization: Bearer {{apiKey}}
   "password": "testpassword",
   "exp": "30",
   "ip_quota": "5",
-  "server_id": 1,
   "account_type": "ssh"
 }
 
@@ -81,7 +77,6 @@ Authorization: Bearer {{apiKey}}
 {
   "username": "testssh2",
   "exp": "15",
-  "server_id": 1,
   "account_type": "ssh"
 }
 
@@ -92,6 +87,5 @@ Authorization: Bearer {{apiKey}}
 
 {
   "username": "testssh2",
-  "server_id": 1,
   "account_type": "ssh"
 }
