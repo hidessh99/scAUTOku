@@ -32,8 +32,6 @@ Environment=PORT=3005
 Environment=API_KEY=${uuid}
 Environment=AllowOrigins=*
 
-
-
 [Install]
 WantedBy=multi-user.target
 EOF
