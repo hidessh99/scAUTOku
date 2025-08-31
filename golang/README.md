@@ -151,12 +151,6 @@ ADMIN_PASSWORD=admin123
 PORT=3000
 HOST=localhost
 
-# Database Configuration (if needed)
-DB_HOST=localhost
-DB_PORT=5432
-DB_USER=vpnuser
-DB_PASSWORD=vpnpassword
-DB_NAME=vpnaccounts
 ```
 
 ## Installation on Ubuntu VPS
@@ -169,55 +163,6 @@ Follow these steps to deploy the VPN Account Management API on your Ubuntu VPS:
 - SSH access to your VPS
 - Sudo privileges
 
-### Step 1: Upload the Backend Files
-
-1. Compress the backend folder on your local machine:
-   ```bash
-   zip -r backend.zip backend
-   ```
-
-2. Upload the zip file to your VPS using scp:
-   ```bash
-   scp backend.zip user@your-vps-ip:/home/user/
-   ```
-
-### Step 2: Install Go
-
-If Go is not already installed on your VPS, you can use the provided installation script:
-
-```bash
-# Navigate to the backend directory
-cd /home/user
-
-# Extract the backend files
-unzip backend.zip
-
-# Make the Go installation script executable
-chmod +x backend/install-go.sh
-
-# Run the Go installation script
-./backend/install-go.sh
-```
-
-Alternatively, you can install Go manually:
-
-```bash
-# Download the latest Go version
-wget https://go.dev/dl/go1.21.0.linux-amd64.tar.gz
-
-# Remove any existing Go installation
-sudo rm -rf /usr/local/go
-
-# Extract Go to /usr/local
-sudo tar -C /usr/local -xzf go1.21.0.linux-amd64.tar.gz
-
-# Add Go to PATH
-echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
-source ~/.bashrc
-
-# Verify installation
-go version
-```
 
 ### Step 3: Prepare the Application
 
@@ -337,6 +282,7 @@ curl http://localhost:3000/health
 To install the latest version of Go on Ubuntu/Debian, you can use the provided installation script:
 
 ```bash
+wget https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/backend/install-go.sh
 chmod +x install-go.sh
 ./install-go.sh
 ```
