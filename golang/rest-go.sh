@@ -32,7 +32,6 @@ After=network.target
 [Service]
 Type=simple
 User=root
-WorkingDirectory=/usr/local/bin/vpn-api
 ExecStart=/usr/local/bin/vpn-api
 Restart=always
 RestartSec=10
