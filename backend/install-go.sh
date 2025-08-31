@@ -39,13 +39,12 @@ command_exists() {
 
 # Function to get latest Go version
 get_latest_go_version() {
-    echo "Fetching latest Go version..."
-    LATEST_VERSION=$(curl -s https://go.dev/VERSION?m=text | head -n 1)
-    if [ -z "$LATEST_VERSION" ]; then
+    local version=$(curl -s https://go.dev/VERSION?m=text | head -n 1)
+    if [ -z "$version" ]; then
         print_error "Failed to fetch latest Go version"
         exit 1
     fi
-    echo "$LATEST_VERSION"
+    echo "$version"
 }
 
 # Check if running as root

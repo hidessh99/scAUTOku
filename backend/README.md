@@ -86,7 +86,6 @@ The API key can be configured in the `.env` file.
   "exp": "30", // Expiration in days
   "quota": "10GB", // Optional quota
   "ip_quota": "5", // IP limit
-  "server_id": 1,
   "account_type": "vmess" // vmess, ssh, trojan, vless, shadowsocks
 }
 ```
@@ -97,8 +96,7 @@ The API key can be configured in the `.env` file.
   "username": "testuser",
   "exp": "30",
   "quota": "10GB",
-  "ip_quota": "5",
-  "server_id": 1
+  "ip_quota": "5"
 }
 ```
 
@@ -114,7 +112,6 @@ The API key can be configured in the `.env` file.
 ```json
 {
   "username": "testuser",
-  "server_id": 1,
   "account_type": "vmess"
 }
 ```
@@ -124,7 +121,6 @@ The API key can be configured in the `.env` file.
 {
   "username": "testuser",
   "exp": "30", // Additional days to extend expiration
-  "server_id": 1,
   "account_type": "vmess"
 }
 ```
@@ -169,6 +165,21 @@ DB_NAME=vpnaccounts
 2. Navigate to the backend directory: `cd backend`
 3. Install dependencies: `go mod tidy`
 4. Run the application: `go run main.go`
+
+## Installing Go
+
+To install the latest version of Go on Ubuntu/Debian, you can use the provided installation script:
+
+```bash
+chmod +x install-go.sh
+./install-go.sh
+```
+
+This script will:
+- Detect your system architecture
+- Download and install the latest version of Go
+- Set up the necessary environment variables
+- Verify the installation
 
 ## Testing
 
