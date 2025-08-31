@@ -10,7 +10,7 @@ WorkingDirectory=/root/scAUTO/backend
 ExecStart=/root/scAUTO/backend/vpn-api
 Restart=always
 RestartSec=3
-Environment=PORT=3000
+Environment=PORT=3005
 Environment=be51e916-7380-47c4-98dd-d05c3d26ecd2
 
 [Install]
