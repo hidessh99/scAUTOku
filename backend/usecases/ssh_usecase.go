@@ -143,8 +143,8 @@ func (uc *sshUsecase) RenewAccount(req models.RenewAccountRequest) (*models.Acco
 
 	scriptPath := "/usr/local/bin/renew-ssh"
 
-	input := fmt.Sprintf("%s\n%s\n",
-		req.Username, req.Exp)
+	input := fmt.Sprintf("%s\n%s\n%s\n",
+		req.Username, req.Exp, req.IPQuota)
 
 	// Execute the script with input
 	cmd := exec.Command("bash", scriptPath)

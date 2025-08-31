@@ -163,6 +163,6 @@ func (uc *vmessUsecase) RenewAccount(req models.RenewAccountRequest) (*models.Ac
 	return &models.AccountResponse{
 		Status:  "success",
 		Message: "VMESS account renewed successfully",
-		data:    req.Exp,
+		
 	}, nil
 }

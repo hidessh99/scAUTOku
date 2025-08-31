@@ -37,8 +37,8 @@ func (uc *shadowsocksUsecase) CreateAccount(req models.CreateAccountRequest) (*m
 
 	scriptPath := "/usr/local/bin/add-addshadowsocks"
 
-	input := fmt.Sprintf("%s\n%s\n%s\n%s\n",
-		req.Username, req.Password, req.Exp, req.IPQuota)
+	input := fmt.Sprintf("%s\n%s\n%s\n%s\n%s\n",
+		req.Username, req.Password, req.Exp, req.Quota, req.IPQuota)
 
 	// Execute the script with input
 	cmd := exec.Command("bash", scriptPath)
