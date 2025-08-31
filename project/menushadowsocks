@@ -424,7 +424,7 @@ custom_uuid_shadowsocks() {
     echo -e "${orange}│${neutral}  ${green} [x]${neutral} Exit Shadowsocks Manager"
     echo -e "${orange}└────────────────────────────────────────┘${neutral}"
     echo -e ""
-            read -p "Pick a number (1-9) or hit 'x' to bail: " $shadowsocks_choice in
+            read -p "Pick a number (1-9) or hit 'x' to bail: " shadowsocks_choice
 
             case $shadowsocks_choice in
             1) addshadowsocks ;;
@@ -451,4 +451,3 @@ custom_uuid_shadowsocks() {
 
         # Call function to display menu
         display_shadowsocks_menu
-    
