@@ -1,0 +1,97 @@
+# TROJAN Account Management Tests
+
+@baseUrl = http://localhost:3000
+@apiKey = your_api_key_here
+
+### Health Check
+GET {{baseUrl}}/health
+
+### Create TROJAN Account
+POST {{baseUrl}}/api/v1/trojan/
+Content-Type: application/json
+Authorization: Bearer {{apiKey}}
+
+{
+  "username": "testtrojan",
+  "password": "testpassword",
+  "exp": "30",
+  "ip_quota": "5",
+  "server_id": 1
+}
+
+### Check TROJAN Account
+POST {{baseUrl}}/api/v1/trojan/check
+Content-Type: application/json
+Authorization: Bearer {{apiKey}}
+
+{
+  "username": "testtrojan"
+}
+
+### Renew TROJAN Account
+POST {{baseUrl}}/api/v1/trojan/renew
+Content-Type: application/json
+Authorization: Bearer {{apiKey}}
+
+{
+  "username": "testtrojan",
+  "exp": "15",
+  "server_id": 1
+}
+
+### Delete TROJAN Account
+POST {{baseUrl}}/api/v1/trojan/delete
+Content-Type: application/json
+Authorization: Bearer {{apiKey}}
+
+{
+  "username": "testtrojan",
+  "server_id": 1
+}
+
+### Create TROJAN Account (General Endpoint)
+POST {{baseUrl}}/api/v1/accounts
+Content-Type: application/json
+Authorization: Bearer {{apiKey}}
+
+{
+  "username": "testtrojan2",
+  "password": "testpassword",
+  "exp": "30",
+  "ip_quota": "5",
+  "server_id": 1,
+  "account_type": "trojan"
+}
+
+### Check TROJAN Account (General Endpoint)
+POST {{baseUrl}}/api/v1/accounts/check
+Content-Type: application/json
+Authorization: Bearer {{apiKey}}
+
+{
+  "username": "testtrojan2",
+  "account_type": "trojan"
+}
+
+### Renew TROJAN Account (General Endpoint)
+POST {{baseUrl}}/api/v1/accounts/renew
+Content-Type: application/json
+Authorization: Bearer {{apiKey}}
+
+{
+  "username": "testtrojan2",
+  "exp": "15",
+  "server_id": 1,
+  "account_type": "trojan"
+}
+
+### Delete TROJAN Account (General Endpoint)
+POST {{baseUrl}}/api/v1/accounts/delete
+Content-Type: application/json
+Authorization: Bearer {{apiKey}}
+
+{
+  "username": "testtrojan2",
+  "server_id": 1,
+  "account_type": "trojan"
+}

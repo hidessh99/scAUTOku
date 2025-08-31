@@ -33,11 +33,8 @@ func main() {
 	// Setup routes
 	routes.AccountRoutes(app)
 
-	// Get port from environment variable or default to 3000
+	// Get port from configuration
 	port := config.AppConfig.ServerPort
-	if port == "" {
-		port = "3005"
-	}
 
 	// Start server
 	log.Printf("🚀 Starting server on port %s", port)

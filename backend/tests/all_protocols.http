@@ -1,0 +1,278 @@
+# All Protocols Account Management Tests
+
+@baseUrl = http://localhost:3000
+@apiKey = your_api_key_here
+
+### Health Check
+GET {{baseUrl}}/health
+
+### Create Accounts (General Endpoint)
+# VMESS
+POST {{baseUrl}}/api/v1/accounts
+Content-Type: application/json
+Authorization: Bearer {{apiKey}}
+
+{
+  "username": "testallvmess",
+  "exp": "30",
+  "quota": "10GB",
+  "ip_quota": "5",
+  "server_id": 1,
+  "account_type": "vmess"
+}
+
+###
+
+# SSH
+POST {{baseUrl}}/api/v1/accounts
+Content-Type: application/json
+Authorization: Bearer {{apiKey}}
+
+{
+  "username": "testallssh",
+  "password": "testpassword",
+  "exp": "30",
+  "ip_quota": "5",
+  "server_id": 1,
+  "account_type": "ssh"
+}
+
+###
+
+# VLESS
+POST {{baseUrl}}/api/v1/accounts
+Content-Type: application/json
+Authorization: Bearer {{apiKey}}
+
+{
+  "username": "testallvless",
+  "exp": "30",
+  "quota": "10GB",
+  "ip_quota": "5",
+  "server_id": 1,
+  "account_type": "vless"
+}
+
+###
+
+# TROJAN
+POST {{baseUrl}}/api/v1/accounts
+Content-Type: application/json
+Authorization: Bearer {{apiKey}}
+
+{
+  "username": "testalltrojan",
+  "password": "testpassword",
+  "exp": "30",
+  "ip_quota": "5",
+  "server_id": 1,
+  "account_type": "trojan"
+}
+
+###
+
+# SHADOWSOCKS
+POST {{baseUrl}}/api/v1/accounts
+Content-Type: application/json
+Authorization: Bearer {{apiKey}}
+
+{
+  "username": "testallss",
+  "password": "testpassword",
+  "exp": "30",
+  "ip_quota": "5",
+  "server_id": 1,
+  "account_type": "shadowsocks"
+}
+
+### Check Accounts (General Endpoint)
+# VMESS
+POST {{baseUrl}}/api/v1/accounts/check
+Content-Type: application/json
+Authorization: Bearer {{apiKey}}
+
+{
+  "username": "testallvmess",
+  "account_type": "vmess"
+}
+
+###
+
+# SSH
+POST {{baseUrl}}/api/v1/accounts/check
+Content-Type: application/json
+Authorization: Bearer {{apiKey}}
+
+{
+  "username": "testallssh",
+  "account_type": "ssh"
+}
+
+###
+
+# VLESS
+POST {{baseUrl}}/api/v1/accounts/check
+Content-Type: application/json
+Authorization: Bearer {{apiKey}}
+
+{
+  "username": "testallvless",
+  "account_type": "vless"
+}
+
+###
+
+# TROJAN
+POST {{baseUrl}}/api/v1/accounts/check
+Content-Type: application/json
+Authorization: Bearer {{apiKey}}
+
+{
+  "username": "testalltrojan",
+  "account_type": "trojan"
+}
+
+###
+
+# SHADOWSOCKS
+POST {{baseUrl}}/api/v1/accounts/check
+Content-Type: application/json
+Authorization: Bearer {{apiKey}}
+
+{
+  "username": "testallss",
+  "account_type": "shadowsocks"
+}
+
+### Renew Accounts (General Endpoint)
+# VMESS
+POST {{baseUrl}}/api/v1/accounts/renew
+Content-Type: application/json
+Authorization: Bearer {{apiKey}}
+
+{
+  "username": "testallvmess",
+  "exp": "15",
+  "server_id": 1,
+  "account_type": "vmess"
+}
+
+###
+
+# SSH
+POST {{baseUrl}}/api/v1/accounts/renew
+Content-Type: application/json
+Authorization: Bearer {{apiKey}}
+
+{
+  "username": "testallssh",
+  "exp": "15",
+  "server_id": 1,
+  "account_type": "ssh"
+}
+
+###
+
+# VLESS
+POST {{baseUrl}}/api/v1/accounts/renew
+Content-Type: application/json
+Authorization: Bearer {{apiKey}}
+
+{
+  "username": "testallvless",
+  "exp": "15",
+  "server_id": 1,
+  "account_type": "vless"
+}
+
+###
+
+# TROJAN
+POST {{baseUrl}}/api/v1/accounts/renew
+Content-Type: application/json
+Authorization: Bearer {{apiKey}}
+
+{
+  "username": "testalltrojan",
+  "exp": "15",
+  "server_id": 1,
+  "account_type": "trojan"
+}
+
+###
+
+# SHADOWSOCKS
+POST {{baseUrl}}/api/v1/accounts/renew
+Content-Type: application/json
+Authorization: Bearer {{apiKey}}
+
+{
+  "username": "testallss",
+  "exp": "15",
+  "server_id": 1,
+  "account_type": "shadowsocks"
+}
+
+### Delete Accounts (General Endpoint)
+# VMESS
+POST {{baseUrl}}/api/v1/accounts/delete
+Content-Type: application/json
+Authorization: Bearer {{apiKey}}
+
+{
+  "username": "testallvmess",
+  "server_id": 1,
+  "account_type": "vmess"
+}
+
+###
+
+# SSH
+POST {{baseUrl}}/api/v1/accounts/delete
+Content-Type: application/json
+Authorization: Bearer {{apiKey}}
+
+{
+  "username": "testallssh",
+  "server_id": 1,
+  "account_type": "ssh"
+}
+
+###
+
+# VLESS
+POST {{baseUrl}}/api/v1/accounts/delete
+Content-Type: application/json
+Authorization: Bearer {{apiKey}}
+
+{
+  "username": "testallvless",
+  "server_id": 1,
+  "account_type": "vless"
+}
+
+###
+
+# TROJAN
+POST {{baseUrl}}/api/v1/accounts/delete
+Content-Type: application/json
+Authorization: Bearer {{apiKey}}
+
+{
+  "username": "testalltrojan",
+  "server_id": 1,
+  "account_type": "trojan"
+}
+
+###
+
+# SHADOWSOCKS
+POST {{baseUrl}}/api/v1/accounts/delete
+Content-Type: application/json
+Authorization: Bearer {{apiKey}}
+
+{
+  "username": "testallss",
+  "server_id": 1,
+  "account_type": "shadowsocks"
+}

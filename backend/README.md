@@ -13,6 +13,10 @@ This API follows Clean Architecture principles with the following layers:
 5. **Routes**: API route definitions
 6. **Config**: Configuration management
 
+The architecture has been separated by protocol:
+- Each protocol (VMESS, SSH, VLESS, TROJAN, SHADOWSOCKS) has its own usecase and controller
+- A main account usecase and controller coordinate between the protocol-specific components
+
 ## Authentication
 
 The API requires authentication for all protected endpoints. You can authenticate using:
@@ -34,25 +38,47 @@ The API key can be configured in the `.env` file.
 ### Health Check
 - `GET /health` - Check if the API is running (No authentication required)
 
-### Account Management
-- `POST /api/v1/accounts` - Create a new account
-- `POST /api/v1/accounts/check` - Check an existing account
-- `POST /api/v1/accounts/delete` - Delete an existing account
+### General Account Management
+- `POST /api/v1/accounts` - Create a new account (specify account_type in request)
+- `POST /api/v1/accounts/check` - Check an existing account (specify account_type in request)
+- `POST /api/v1/accounts/delete` - Delete an existing account (specify account_type in request)
+- `POST /api/v1/accounts/renew` - Renew an existing account (specify account_type in request)
 
 ### Protocol Specific Routes
-- `POST /api/v1/accounts/vmess/` - Create VMESS account
-- `POST /api/v1/accounts/vmess/check` - Check VMESS account
-- `POST /api/v1/accounts/vmess/delete` - Delete VMESS account
 
-Similar routes exist for:
-- SSH: `/api/v1/accounts/ssh/`
-- TROJAN: `/api/v1/accounts/trojan/`
-- VLESS: `/api/v1/accounts/vless/`
-- SHADOWSOCKS: `/api/v1/accounts/shadowsocks/`
+#### VMESS
+- `POST /api/v1/vmess/` - Create VMESS account
+- `POST /api/v1/vmess/check` - Check VMESS account
+- `POST /api/v1/vmess/delete` - Delete VMESS account
+- `POST /api/v1/vmess/renew` - Renew VMESS account
+
+#### SSH
+- `POST /api/v1/ssh/` - Create SSH account
+- `POST /api/v1/ssh/check` - Check SSH account
+- `POST /api/v1/ssh/delete` - Delete SSH account
+- `POST /api/v1/ssh/renew` - Renew SSH account
+
+#### VLESS
+- `POST /api/v1/vless/` - Create VLESS account
+- `POST /api/v1/vless/check` - Check VLESS account
+- `POST /api/v1/vless/delete` - Delete VLESS account
+- `POST /api/v1/vless/renew` - Renew VLESS account
+
+#### TROJAN
+- `POST /api/v1/trojan/` - Create TROJAN account
+- `POST /api/v1/trojan/check` - Check TROJAN account
+- `POST /api/v1/trojan/delete` - Delete TROJAN account
+- `POST /api/v1/trojan/renew` - Renew TROJAN account
+
+#### SHADOWSOCKS
+- `POST /api/v1/shadowsocks/` - Create SHADOWSOCKS account
+- `POST /api/v1/shadowsocks/check` - Check SHADOWSOCKS account
+- `POST /api/v1/shadowsocks/delete` - Delete SHADOWSOCKS account
+- `POST /api/v1/shadowsocks/renew` - Renew SHADOWSOCKS account
 
 ## Request Examples
 
-### Create Account
+### Create Account (General)
 ```json
 {
   "username": "testuser",
@@ -62,6 +88,17 @@ Similar routes exist for:
   "ip_quota": "5", // IP limit
   "server_id": 1,
   "account_type": "vmess" // vmess, ssh, trojan, vless, shadowsocks
+}
+```
+
+### Create VMESS Account (Protocol Specific)
+```json
+{
+  "username": "testuser",
+  "exp": "30",
+  "quota": "10GB",
+  "ip_quota": "5",
+  "server_id": 1
 }
 ```
 
@@ -77,6 +114,16 @@ Similar routes exist for:
 ```json
 {
   "username": "testuser",
+  "server_id": 1,
+  "account_type": "vmess"
+}
+```
+
+### Renew Account
+```json
+{
+  "username": "testuser",
+  "exp": "30", // Additional days to extend expiration
   "server_id": 1,
   "account_type": "vmess"
 }
@@ -123,6 +170,18 @@ DB_NAME=vpnaccounts
 3. Install dependencies: `go mod tidy`
 4. Run the application: `go run main.go`
 
+## Testing
+
+The [tests](tests/) directory contains HTTP test files for each protocol:
+- [VMESS tests](tests/vmess.http)
+- [SSH tests](tests/ssh.http)
+- [VLESS tests](tests/vless.http)
+- [TROJAN tests](tests/trojan.http)
+- [SHADOWSOCKS tests](tests/shadowsocks.http)
+- [All protocols tests](tests/all_protocols.http)
+
+These can be run using VS Code REST Client extension or any HTTP client that supports .http files.
+
 ## Deployment to Ubuntu VPS
 
 1. Build the application for Linux:
@@ -161,6 +220,33 @@ DB_NAME=vpnaccounts
    ```bash
    sudo journalctl -u vpn-api -f
    ```
+
+## Command Paths
+
+The application expects the following shell commands to be available on the system:
+
+### Account Creation:
+- VMESS: `/usr/local/bin/add-vmess-user`
+- SSH: `/usr/local/bin/add-ssh-user`
+- TROJAN: `/usr/local/bin/add-trojan-user`
+- VLESS: `/usr/local/bin/add-vless-user`
+- SHADOWSOCKS: `/usr/local/bin/add-shadowsocks-user`
+
+### Account Deletion:
+- VMESS: `/usr/local/bin/del-vmess`
+- SSH: `/usr/local/bin/del-ssh`
+- TROJAN: `/usr/local/bin/del-trojan`
+- VLESS: `/usr/local/bin/del-vless`
+- SHADOWSOCKS: `/usr/local/bin/del-addshadowsocks`
+
+### Account Renewal:
+- VMESS: `/usr/local/bin/renew-vmess`
+- SSH: `/usr/local/bin/renew-ssh`
+- TROJAN: `/usr/local/bin/renew-trojan`
+- VLESS: `/usr/local/bin/renew-vless`
+- SHADOWSOCKS: `/usr/local/bin/renew-shadowsocks`
+
+Make sure these commands are properly installed and accessible on your system.
 
 ## Dependencies
 

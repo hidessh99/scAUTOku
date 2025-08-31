@@ -1,0 +1,97 @@
+# VLESS Account Management Tests
+
+@baseUrl = http://localhost:3000
+@apiKey = your_api_key_here
+
+### Health Check
+GET {{baseUrl}}/health
+
+### Create VLESS Account
+POST {{baseUrl}}/api/v1/vless/
+Content-Type: application/json
+Authorization: Bearer {{apiKey}}
+
+{
+  "username": "testvless",
+  "exp": "30",
+  "quota": "10GB",
+  "ip_quota": "5",
+  "server_id": 1
+}
+
+### Check VLESS Account
+POST {{baseUrl}}/api/v1/vless/check
+Content-Type: application/json
+Authorization: Bearer {{apiKey}}
+
+{
+  "username": "testvless"
+}
+
+### Renew VLESS Account
+POST {{baseUrl}}/api/v1/vless/renew
+Content-Type: application/json
+Authorization: Bearer {{apiKey}}
+
+{
+  "username": "testvless",
+  "exp": "15",
+  "server_id": 1
+}
+
+### Delete VLESS Account
+POST {{baseUrl}}/api/v1/vless/delete
+Content-Type: application/json
+Authorization: Bearer {{apiKey}}
+
+{
+  "username": "testvless",
+  "server_id": 1
+}
+
+### Create VLESS Account (General Endpoint)
+POST {{baseUrl}}/api/v1/accounts
+Content-Type: application/json
+Authorization: Bearer {{apiKey}}
+
+{
+  "username": "testvless2",
+  "exp": "30",
+  "quota": "10GB",
+  "ip_quota": "5",
+  "server_id": 1,
+  "account_type": "vless"
+}
+
+### Check VLESS Account (General Endpoint)
+POST {{baseUrl}}/api/v1/accounts/check
+Content-Type: application/json
+Authorization: Bearer {{apiKey}}
+
+{
+  "username": "testvless2",
+  "account_type": "vless"
+}
+
+### Renew VLESS Account (General Endpoint)
+POST {{baseUrl}}/api/v1/accounts/renew
+Content-Type: application/json
+Authorization: Bearer {{apiKey}}
+
+{
+  "username": "testvless2",
+  "exp": "15",
+  "server_id": 1,
+  "account_type": "vless"
+}
+
+### Delete VLESS Account (General Endpoint)
+POST {{baseUrl}}/api/v1/accounts/delete
+Content-Type: application/json
+Authorization: Bearer {{apiKey}}
+
+{
+  "username": "testvless2",
+  "server_id": 1,
+  "account_type": "vless"
+}

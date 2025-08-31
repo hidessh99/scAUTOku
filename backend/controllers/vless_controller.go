@@ -7,35 +7,18 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-type AccountController struct {
-	accountUsecase        usecases.AccountUsecase
-	vmessController       *VmessController
-	sshController         *SshController
-	vlessController       *VlessController
-	trojanController      *TrojanController
-	shadowsocksController *ShadowsocksController
+type VlessController struct {
+	vlessUsecase usecases.VlessUsecase
 }
 
-func NewAccountController(
-	accountUsecase usecases.AccountUsecase,
-	vmessController *VmessController,
-	sshController *SshController,
-	vlessController *VlessController,
-	trojanController *TrojanController,
-	shadowsocksController *ShadowsocksController,
-) *AccountController {
-	return &AccountController{
-		accountUsecase:        accountUsecase,
-		vmessController:       vmessController,
-		sshController:         sshController,
-		vlessController:       vlessController,
-		trojanController:      trojanController,
-		shadowsocksController: shadowsocksController,
+func NewVlessController(vlessUsecase usecases.VlessUsecase) *VlessController {
+	return &VlessController{
+		vlessUsecase: vlessUsecase,
 	}
 }
 
-// CreateAccount creates a new account
-func (ac *AccountController) CreateAccount(c *fiber.Ctx) error {
+// CreateAccount creates a new VLESS account
+func (ac *VlessController) CreateAccount(c *fiber.Ctx) error {
 	var req models.CreateAccountRequest
 
 	if err := c.BodyParser(&req); err != nil {
@@ -53,7 +36,10 @@ func (ac *AccountController) CreateAccount(c *fiber.Ctx) error {
 		})
 	}
 
-	response, err := ac.accountUsecase.CreateAccount(req)
+	// Set account type
+	req.AccountType = models.VLESS
+
+	response, err := ac.vlessUsecase.CreateAccount(req)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(response)
 	}
@@ -61,8 +47,8 @@ func (ac *AccountController) CreateAccount(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(response)
 }
 
-// CheckAccount checks an existing account
-func (ac *AccountController) CheckAccount(c *fiber.Ctx) error {
+// CheckAccount checks an existing VLESS account
+func (ac *VlessController) CheckAccount(c *fiber.Ctx) error {
 	var req models.CheckAccountRequest
 
 	if err := c.BodyParser(&req); err != nil {
@@ -80,7 +66,10 @@ func (ac *AccountController) CheckAccount(c *fiber.Ctx) error {
 		})
 	}
 
-	response, err := ac.accountUsecase.CheckAccount(req)
+	// Set account type
+	req.AccountType = models.VLESS
+
+	response, err := ac.vlessUsecase.CheckAccount(req)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(response)
 	}
@@ -88,8 +77,8 @@ func (ac *AccountController) CheckAccount(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(response)
 }
 
-// DeleteAccount deletes an existing account
-func (ac *AccountController) DeleteAccount(c *fiber.Ctx) error {
+// DeleteAccount deletes an existing VLESS account
+func (ac *VlessController) DeleteAccount(c *fiber.Ctx) error {
 	var req models.DeleteAccountRequest
 
 	if err := c.BodyParser(&req); err != nil {
@@ -107,7 +96,10 @@ func (ac *AccountController) DeleteAccount(c *fiber.Ctx) error {
 		})
 	}
 
-	response, err := ac.accountUsecase.DeleteAccount(req)
+	// Set account type
+	req.AccountType = models.VLESS
+
+	response, err := ac.vlessUsecase.DeleteAccount(req)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(response)
 	}
@@ -115,8 +107,8 @@ func (ac *AccountController) DeleteAccount(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(response)
 }
 
-// RenewAccount renews an existing account
-func (ac *AccountController) RenewAccount(c *fiber.Ctx) error {
+// RenewAccount renews an existing VLESS account
+func (ac *VlessController) RenewAccount(c *fiber.Ctx) error {
 	var req models.RenewAccountRequest
 
 	if err := c.BodyParser(&req); err != nil {
@@ -134,18 +126,13 @@ func (ac *AccountController) RenewAccount(c *fiber.Ctx) error {
 		})
 	}
 
-	response, err := ac.accountUsecase.RenewAccount(req)
+	// Set account type
+	req.AccountType = models.VLESS
+
+	response, err := ac.vlessUsecase.RenewAccount(req)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(response)
 	}
 
 	return c.Status(fiber.StatusOK).JSON(response)
-}
-
-// Health check endpoint
-func (ac *AccountController) Health(c *fiber.Ctx) error {
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{
-		"status":  "success",
-		"message": "Account management API is running",
-	})
 }

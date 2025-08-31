@@ -1,0 +1,97 @@
+# VMESS Account Management Tests
+
+@baseUrl = http://localhost:3000
+@apiKey = your_api_key_here
+
+### Health Check
+GET {{baseUrl}}/health
+
+### Create VMESS Account
+POST {{baseUrl}}/api/v1/vmess/
+Content-Type: application/json
+Authorization: Bearer {{apiKey}}
+
+{
+  "username": "testvmess",
+  "exp": "30",
+  "quota": "10GB",
+  "ip_quota": "5",
+  "server_id": 1
+}
+
+### Check VMESS Account
+POST {{baseUrl}}/api/v1/vmess/check
+Content-Type: application/json
+Authorization: Bearer {{apiKey}}
+
+{
+  "username": "testvmess"
+}
+
+### Renew VMESS Account
+POST {{baseUrl}}/api/v1/vmess/renew
+Content-Type: application/json
+Authorization: Bearer {{apiKey}}
+
+{
+  "username": "testvmess",
+  "exp": "15",
+  "server_id": 1
+}
+
+### Delete VMESS Account
+POST {{baseUrl}}/api/v1/vmess/delete
+Content-Type: application/json
+Authorization: Bearer {{apiKey}}
+
+{
+  "username": "testvmess",
+  "server_id": 1
+}
+
+### Create VMESS Account (General Endpoint)
+POST {{baseUrl}}/api/v1/accounts
+Content-Type: application/json
+Authorization: Bearer {{apiKey}}
+
+{
+  "username": "testvmess2",
+  "exp": "30",
+  "quota": "10GB",
+  "ip_quota": "5",
+  "server_id": 1,
+  "account_type": "vmess"
+}
+
+### Check VMESS Account (General Endpoint)
+POST {{baseUrl}}/api/v1/accounts/check
+Content-Type: application/json
+Authorization: Bearer {{apiKey}}
+
+{
+  "username": "testvmess2",
+  "account_type": "vmess"
+}
+
+### Renew VMESS Account (General Endpoint)
+POST {{baseUrl}}/api/v1/accounts/renew
+Content-Type: application/json
+Authorization: Bearer {{apiKey}}
+
+{
+  "username": "testvmess2",
+  "exp": "15",
+  "server_id": 1,
+  "account_type": "vmess"
+}
+
+### Delete VMESS Account (General Endpoint)
+POST {{baseUrl}}/api/v1/accounts/delete
+Content-Type: application/json
+Authorization: Bearer {{apiKey}}
+
+{
+  "username": "testvmess2",
+  "server_id": 1,
+  "account_type": "vmess"
+}

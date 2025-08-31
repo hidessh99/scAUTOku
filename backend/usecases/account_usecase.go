@@ -10,26 +10,45 @@ type AccountUsecase interface {
 	CreateAccount(req models.CreateAccountRequest) (*models.AccountResponse, error)
 	CheckAccount(req models.CheckAccountRequest) (*models.AccountResponse, error)
 	DeleteAccount(req models.DeleteAccountRequest) (*models.AccountResponse, error)
+	RenewAccount(req models.RenewAccountRequest) (*models.AccountResponse, error)
 }
 
-type accountUsecase struct{}
+type accountUsecase struct {
+	vmessUsecase       VmessUsecase
+	sshUsecase         SshUsecase
+	vlessUsecase       VlessUsecase
+	trojanUsecase      TrojanUsecase
+	shadowsocksUsecase ShadowsocksUsecase
+}
 
-func NewAccountUsecase() AccountUsecase {
-	return &accountUsecase{}
+func NewAccountUsecase(
+	vmessUsecase VmessUsecase,
+	sshUsecase SshUsecase,
+	vlessUsecase VlessUsecase,
+	trojanUsecase TrojanUsecase,
+	shadowsocksUsecase ShadowsocksUsecase,
+) AccountUsecase {
+	return &accountUsecase{
+		vmessUsecase:       vmessUsecase,
+		sshUsecase:         sshUsecase,
+		vlessUsecase:       vlessUsecase,
+		trojanUsecase:      trojanUsecase,
+		shadowsocksUsecase: shadowsocksUsecase,
+	}
 }
 
 func (uc *accountUsecase) CreateAccount(req models.CreateAccountRequest) (*models.AccountResponse, error) {
 	switch req.AccountType {
 	case models.VMESS:
-		return uc.createVmessAccount(req)
+		return uc.vmessUsecase.CreateAccount(req)
 	case models.SSH:
-		return uc.createSSHAccount(req)
+		return uc.sshUsecase.CreateAccount(req)
 	case models.TROJAN:
-		return uc.createTrojanAccount(req)
+		return uc.trojanUsecase.CreateAccount(req)
 	case models.VLESS:
-		return uc.createVlessAccount(req)
+		return uc.vlessUsecase.CreateAccount(req)
 	case models.SHADOWSOCKS:
-		return uc.createShadowsocksAccount(req)
+		return uc.shadowsocksUsecase.CreateAccount(req)
 	default:
 		return &models.AccountResponse{
 			Status:  "error",
@@ -41,15 +60,15 @@ func (uc *accountUsecase) CreateAccount(req models.CreateAccountRequest) (*model
 func (uc *accountUsecase) CheckAccount(req models.CheckAccountRequest) (*models.AccountResponse, error) {
 	switch req.AccountType {
 	case models.VMESS:
-		return uc.checkVmessAccount(req)
+		return uc.vmessUsecase.CheckAccount(req)
 	case models.SSH:
-		return uc.checkSSHAccount(req)
+		return uc.sshUsecase.CheckAccount(req)
 	case models.TROJAN:
-		return uc.checkTrojanAccount(req)
+		return uc.trojanUsecase.CheckAccount(req)
 	case models.VLESS:
-		return uc.checkVlessAccount(req)
+		return uc.vlessUsecase.CheckAccount(req)
 	case models.SHADOWSOCKS:
-		return uc.checkShadowsocksAccount(req)
+		return uc.shadowsocksUsecase.CheckAccount(req)
 	default:
 		return &models.AccountResponse{
 			Status:  "error",
@@ -61,15 +80,35 @@ func (uc *accountUsecase) CheckAccount(req models.CheckAccountRequest) (*models.
 func (uc *accountUsecase) DeleteAccount(req models.DeleteAccountRequest) (*models.AccountResponse, error) {
 	switch req.AccountType {
 	case models.VMESS:
-		return uc.deleteVmessAccount(req)
+		return uc.vmessUsecase.DeleteAccount(req)
 	case models.SSH:
-		return uc.deleteSSHAccount(req)
+		return uc.sshUsecase.DeleteAccount(req)
 	case models.TROJAN:
-		return uc.deleteTrojanAccount(req)
+		return uc.trojanUsecase.DeleteAccount(req)
 	case models.VLESS:
-		return uc.deleteVlessAccount(req)
+		return uc.vlessUsecase.DeleteAccount(req)
 	case models.SHADOWSOCKS:
-		return uc.deleteShadowsocksAccount(req)
+		return uc.shadowsocksUsecase.DeleteAccount(req)
+	default:
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Unsupported account type",
+		}, fmt.Errorf("unsupported account type: %s", req.AccountType)
+	}
+}
+
+func (uc *accountUsecase) RenewAccount(req models.RenewAccountRequest) (*models.AccountResponse, error) {
+	switch req.AccountType {
+	case models.VMESS:
+		return uc.vmessUsecase.RenewAccount(req)
+	case models.SSH:
+		return uc.sshUsecase.RenewAccount(req)
+	case models.TROJAN:
+		return uc.trojanUsecase.RenewAccount(req)
+	case models.VLESS:
+		return uc.vlessUsecase.RenewAccount(req)
+	case models.SHADOWSOCKS:
+		return uc.shadowsocksUsecase.RenewAccount(req)
 	default:
 		return &models.AccountResponse{
 			Status:  "error",
@@ -83,7 +122,6 @@ func (uc *accountUsecase) createVmessAccount(req models.CreateAccountRequest) (*
 	// Execute the add-vmess-user script with appropriate parameters
 	scriptArgs := []string{
 		req.Username,
-		req.Password
 		req.Exp,
 		req.Quota,
 		req.IPQuota,
@@ -145,9 +183,9 @@ func (uc *accountUsecase) checkVmessAccount(req models.CheckAccountRequest) (*mo
 }
 
 func (uc *accountUsecase) deleteVmessAccount(req models.DeleteAccountRequest) (*models.AccountResponse, error) {
-	// Execute the dellvmess script
+	// Execute the del-vmess script
 	scriptArgs := []string{req.Username}
-	_, err := utils.ExecuteShellCommand("./project/dellaccvmess.sh", scriptArgs...)
+	_, err := utils.ExecuteShellCommand("/usr/local/bin/del-vmess", scriptArgs...)
 	if err != nil {
 		return &models.AccountResponse{
 			Status:  "error",
@@ -159,6 +197,29 @@ func (uc *accountUsecase) deleteVmessAccount(req models.DeleteAccountRequest) (*
 	return &models.AccountResponse{
 		Status:  "success",
 		Message: "VMESS account deleted successfully",
+	}, nil
+}
+
+func (uc *accountUsecase) renewVmessAccount(req models.RenewAccountRequest) (*models.AccountResponse, error) {
+	// Execute the renew-vmess script
+	scriptArgs := []string{
+		req.Username,
+		req.Exp,
+		fmt.Sprintf("%d", req.ServerID),
+	}
+
+	_, err := utils.ExecuteShellCommand("/usr/local/bin/renew-vmess", scriptArgs...)
+	if err != nil {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: fmt.Sprintf("Failed to renew VMESS account: %v", err),
+		}, err
+	}
+
+	// Parse output (simplified)
+	return &models.AccountResponse{
+		Status:  "success",
+		Message: "VMESS account renewed successfully",
 	}, nil
 }
 
@@ -222,9 +283,9 @@ func (uc *accountUsecase) checkSSHAccount(req models.CheckAccountRequest) (*mode
 }
 
 func (uc *accountUsecase) deleteSSHAccount(req models.DeleteAccountRequest) (*models.AccountResponse, error) {
-	// Execute the dellssh script
+	// Execute the del-ssh script
 	scriptArgs := []string{req.Username}
-	_, err := utils.ExecuteShellCommand("./project/dellaccssh.sh", scriptArgs...)
+	_, err := utils.ExecuteShellCommand("/usr/local/bin/del-ssh", scriptArgs...)
 	if err != nil {
 		return &models.AccountResponse{
 			Status:  "error",
@@ -236,6 +297,29 @@ func (uc *accountUsecase) deleteSSHAccount(req models.DeleteAccountRequest) (*mo
 	return &models.AccountResponse{
 		Status:  "success",
 		Message: "SSH account deleted successfully",
+	}, nil
+}
+
+func (uc *accountUsecase) renewSSHAccount(req models.RenewAccountRequest) (*models.AccountResponse, error) {
+	// Execute the renew-ssh script
+	scriptArgs := []string{
+		req.Username,
+		req.Exp,
+		fmt.Sprintf("%d", req.ServerID),
+	}
+
+	_, err := utils.ExecuteShellCommand("/usr/local/bin/renew-ssh", scriptArgs...)
+	if err != nil {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: fmt.Sprintf("Failed to renew SSH account: %v", err),
+		}, err
+	}
+
+	// Parse output (simplified)
+	return &models.AccountResponse{
+		Status:  "success",
+		Message: "SSH account renewed successfully",
 	}, nil
 }
 
@@ -300,9 +384,9 @@ func (uc *accountUsecase) checkTrojanAccount(req models.CheckAccountRequest) (*m
 }
 
 func (uc *accountUsecase) deleteTrojanAccount(req models.DeleteAccountRequest) (*models.AccountResponse, error) {
-	// Execute the delltrojan script
+	// Execute the del-trojan script
 	scriptArgs := []string{req.Username}
-	_, err := utils.ExecuteShellCommand("./project/dellacctrojan.sh", scriptArgs...)
+	_, err := utils.ExecuteShellCommand("/usr/local/bin/del-trojan", scriptArgs...)
 	if err != nil {
 		return &models.AccountResponse{
 			Status:  "error",
@@ -317,12 +401,34 @@ func (uc *accountUsecase) deleteTrojanAccount(req models.DeleteAccountRequest) (
 	}, nil
 }
 
+func (uc *accountUsecase) renewTrojanAccount(req models.RenewAccountRequest) (*models.AccountResponse, error) {
+	// Execute the renew-trojan script
+	scriptArgs := []string{
+		req.Username,
+		req.Exp,
+		fmt.Sprintf("%d", req.ServerID),
+	}
+
+	_, err := utils.ExecuteShellCommand("/usr/local/bin/renew-trojan", scriptArgs...)
+	if err != nil {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: fmt.Sprintf("Failed to renew TROJAN account: %v", err),
+		}, err
+	}
+
+	// Parse output (simplified)
+	return &models.AccountResponse{
+		Status:  "success",
+		Message: "TROJAN account renewed successfully",
+	}, nil
+}
+
 // VLESS implementations
 func (uc *accountUsecase) createVlessAccount(req models.CreateAccountRequest) (*models.AccountResponse, error) {
 	// Execute the add-vless-user script
 	scriptArgs := []string{
 		req.Username,
-		req.Password
 		req.Exp,
 		req.Quota,
 		req.IPQuota,
@@ -379,9 +485,9 @@ func (uc *accountUsecase) checkVlessAccount(req models.CheckAccountRequest) (*mo
 }
 
 func (uc *accountUsecase) deleteVlessAccount(req models.DeleteAccountRequest) (*models.AccountResponse, error) {
-	// Execute the dellvless script
+	// Execute the del-vless script
 	scriptArgs := []string{req.Username}
-	_, err := utils.ExecuteShellCommand("./project/dellaccvless.sh", scriptArgs...)
+	_, err := utils.ExecuteShellCommand("/usr/local/bin/del-vless", scriptArgs...)
 	if err != nil {
 		return &models.AccountResponse{
 			Status:  "error",
@@ -393,6 +499,29 @@ func (uc *accountUsecase) deleteVlessAccount(req models.DeleteAccountRequest) (*
 	return &models.AccountResponse{
 		Status:  "success",
 		Message: "VLESS account deleted successfully",
+	}, nil
+}
+
+func (uc *accountUsecase) renewVlessAccount(req models.RenewAccountRequest) (*models.AccountResponse, error) {
+	// Execute the renew-vless script
+	scriptArgs := []string{
+		req.Username,
+		req.Exp,
+		fmt.Sprintf("%d", req.ServerID),
+	}
+
+	_, err := utils.ExecuteShellCommand("/usr/local/bin/renew-vless", scriptArgs...)
+	if err != nil {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: fmt.Sprintf("Failed to renew VLESS account: %v", err),
+		}, err
+	}
+
+	// Parse output (simplified)
+	return &models.AccountResponse{
+		Status:  "success",
+		Message: "VLESS account renewed successfully",
 	}, nil
 }
 
@@ -457,9 +586,9 @@ func (uc *accountUsecase) checkShadowsocksAccount(req models.CheckAccountRequest
 }
 
 func (uc *accountUsecase) deleteShadowsocksAccount(req models.DeleteAccountRequest) (*models.AccountResponse, error) {
-	// Execute the dellshadowsocks script
+	// Execute the del-addshadowsocks script
 	scriptArgs := []string{req.Username}
-	_, err := utils.ExecuteShellCommand("./project/dellaccshadowsocks.sh", scriptArgs...)
+	_, err := utils.ExecuteShellCommand("/usr/local/bin/del-addshadowsocks", scriptArgs...)
 	if err != nil {
 		return &models.AccountResponse{
 			Status:  "error",
@@ -471,5 +600,28 @@ func (uc *accountUsecase) deleteShadowsocksAccount(req models.DeleteAccountReque
 	return &models.AccountResponse{
 		Status:  "success",
 		Message: "SHADOWSOCKS account deleted successfully",
+	}, nil
+}
+
+func (uc *accountUsecase) renewShadowsocksAccount(req models.RenewAccountRequest) (*models.AccountResponse, error) {
+	// Execute the renew-shadowsocks script
+	scriptArgs := []string{
+		req.Username,
+		req.Exp,
+		fmt.Sprintf("%d", req.ServerID),
+	}
+
+	_, err := utils.ExecuteShellCommand("/usr/local/bin/renew-shadowsocks", scriptArgs...)
+	if err != nil {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: fmt.Sprintf("Failed to renew SHADOWSOCKS account: %v", err),
+		}, err
+	}
+
+	// Parse output (simplified)
+	return &models.AccountResponse{
+		Status:  "success",
+		Message: "SHADOWSOCKS account renewed successfully",
 	}, nil
 }

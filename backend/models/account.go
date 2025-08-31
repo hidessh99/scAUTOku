@@ -11,13 +11,13 @@ const (
 )
 
 type CreateAccountRequest struct {
-	Username    string      `json:"username" validate:"required"`
-	Password    string      `json:"password,omitempty"`
-	Exp         string      `json:"exp" validate:"required"`
-	Quota       string      `json:"quota,omitempty"`
-	IPQuota     string      `json:"ip_quota,omitempty"`
-	ServerID    int         `json:"server_id" validate:"required"`
-	AccountType AccountType `json:"account_type" validate:"required"`
+	Username    string      `json:"username" validate:"required" xml:"username" form:"username"`
+	Password    string      `json:"password,omitempty" xml:"password,omitempty" form:"password,omitempty"`
+	Exp         string      `json:"exp" validate:"required" xml:"exp" form:"exp"`
+	Quota       string      `json:"quota,omitempty" xml:"quota,omitempty" form:"quota,omitempty"`
+	IPQuota     string      `json:"ip_quota,omitempty" xml:"ip_quota,omitempty" form:"ip_quota,omitempty"`
+	ServerID    int         `json:"server_id" validate:"required" xml:"server_id" form:"server_id"`
+	AccountType AccountType `json:"account_type" validate:"required" xml:"account_type" form:"account_type"`
 }
 
 type AccountResponse struct {
@@ -79,12 +79,20 @@ type ShadowsocksAccountData struct {
 }
 
 type CheckAccountRequest struct {
-	Username    string      `json:"username" validate:"required"`
-	AccountType AccountType `json:"account_type" validate:"required"`
+	Username    string      `json:"username" validate:"required" xml:"username" form:"username"`
+	AccountType AccountType `json:"account_type" validate:"required" xml:"account_type" form:"account_type"`
 }
 
 type DeleteAccountRequest struct {
-	Username    string      `json:"username" validate:"required"`
-	AccountType AccountType `json:"account_type" validate:"required"`
-	ServerID    int         `json:"server_id" validate:"required"`
+	Username    string      `json:"username" validate:"required" xml:"username" form:"username"`
+	AccountType AccountType `json:"account_type" validate:"required" xml:"account_type" form:"account_type"`
+	ServerID    int         `json:"server_id" validate:"required" xml:"server_id" form:"server_id"`
+}
+
+// Renewal request
+type RenewAccountRequest struct {
+	Username    string      `json:"username" validate:"required" xml:"username" form:"username"`
+	AccountType AccountType `json:"account_type" validate:"required" xml:"account_type" form:"account_type"`
+	Exp         string      `json:"exp" validate:"required" xml:"exp" form:"exp"`
+	ServerID    int         `json:"server_id" validate:"required" xml:"server_id" form:"server_id"`
 }

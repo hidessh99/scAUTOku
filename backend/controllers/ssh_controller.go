@@ -7,35 +7,18 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-type AccountController struct {
-	accountUsecase        usecases.AccountUsecase
-	vmessController       *VmessController
-	sshController         *SshController
-	vlessController       *VlessController
-	trojanController      *TrojanController
-	shadowsocksController *ShadowsocksController
+type SshController struct {
+	sshUsecase usecases.SshUsecase
 }
 
-func NewAccountController(
-	accountUsecase usecases.AccountUsecase,
-	vmessController *VmessController,
-	sshController *SshController,
-	vlessController *VlessController,
-	trojanController *TrojanController,
-	shadowsocksController *ShadowsocksController,
-) *AccountController {
-	return &AccountController{
-		accountUsecase:        accountUsecase,
-		vmessController:       vmessController,
-		sshController:         sshController,
-		vlessController:       vlessController,
-		trojanController:      trojanController,
-		shadowsocksController: shadowsocksController,
+func NewSshController(sshUsecase usecases.SshUsecase) *SshController {
+	return &SshController{
+		sshUsecase: sshUsecase,
 	}
 }
 
-// CreateAccount creates a new account
-func (ac *AccountController) CreateAccount(c *fiber.Ctx) error {
+// CreateAccount creates a new SSH account
+func (ac *SshController) CreateAccount(c *fiber.Ctx) error {
 	var req models.CreateAccountRequest
 
 	if err := c.BodyParser(&req); err != nil {
@@ -46,14 +29,17 @@ func (ac *AccountController) CreateAccount(c *fiber.Ctx) error {
 	}
 
 	// Validate required fields
-	if req.Username == "" || req.Exp == "" || req.ServerID <= 0 {
+	if req.Username == "" || req.Password == "" || req.Exp == "" || req.ServerID <= 0 {
 		return c.Status(fiber.StatusBadRequest).JSON(models.AccountResponse{
 			Status:  "error",
-			Message: "Username, expiration, and server ID are required",
+			Message: "Username, password, expiration, and server ID are required",
 		})
 	}
 
-	response, err := ac.accountUsecase.CreateAccount(req)
+	// Set account type
+	req.AccountType = models.SSH
+
+	response, err := ac.sshUsecase.CreateAccount(req)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(response)
 	}
@@ -61,8 +47,8 @@ func (ac *AccountController) CreateAccount(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(response)
 }
 
-// CheckAccount checks an existing account
-func (ac *AccountController) CheckAccount(c *fiber.Ctx) error {
+// CheckAccount checks an existing SSH account
+func (ac *SshController) CheckAccount(c *fiber.Ctx) error {
 	var req models.CheckAccountRequest
 
 	if err := c.BodyParser(&req); err != nil {
@@ -80,7 +66,10 @@ func (ac *AccountController) CheckAccount(c *fiber.Ctx) error {
 		})
 	}
 
-	response, err := ac.accountUsecase.CheckAccount(req)
+	// Set account type
+	req.AccountType = models.SSH
+
+	response, err := ac.sshUsecase.CheckAccount(req)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(response)
 	}
@@ -88,8 +77,8 @@ func (ac *AccountController) CheckAccount(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(response)
 }
 
-// DeleteAccount deletes an existing account
-func (ac *AccountController) DeleteAccount(c *fiber.Ctx) error {
+// DeleteAccount deletes an existing SSH account
+func (ac *SshController) DeleteAccount(c *fiber.Ctx) error {
 	var req models.DeleteAccountRequest
 
 	if err := c.BodyParser(&req); err != nil {
@@ -107,7 +96,10 @@ func (ac *AccountController) DeleteAccount(c *fiber.Ctx) error {
 		})
 	}
 
-	response, err := ac.accountUsecase.DeleteAccount(req)
+	// Set account type
+	req.AccountType = models.SSH
+
+	response, err := ac.sshUsecase.DeleteAccount(req)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(response)
 	}
@@ -115,8 +107,8 @@ func (ac *AccountController) DeleteAccount(c *fiber.Ctx) error {
 	return c.Status(fiber.StatusOK).JSON(response)
 }
 
-// RenewAccount renews an existing account
-func (ac *AccountController) RenewAccount(c *fiber.Ctx) error {
+// RenewAccount renews an existing SSH account
+func (ac *SshController) RenewAccount(c *fiber.Ctx) error {
 	var req models.RenewAccountRequest
 
 	if err := c.BodyParser(&req); err != nil {
@@ -134,18 +126,13 @@ func (ac *AccountController) RenewAccount(c *fiber.Ctx) error {
 		})
 	}
 
-	response, err := ac.accountUsecase.RenewAccount(req)
+	// Set account type
+	req.AccountType = models.SSH
+
+	response, err := ac.sshUsecase.RenewAccount(req)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(response)
 	}
 
 	return c.Status(fiber.StatusOK).JSON(response)
-}
-
-// Health check endpoint
-func (ac *AccountController) Health(c *fiber.Ctx) error {
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{
-		"status":  "success",
-		"message": "Account management API is running",
-	})
 }
