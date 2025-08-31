@@ -15,14 +15,13 @@ cd
 echo -e "${blue}─────────────────────────────────────────${neutral}"
 echo -e "${green}   INSTALLASI golang restapi HIdeSSH       ${neutral}"
 echo -e "${blue}─────────────────────────────────────────${neutral}"
+
 cd
-cd
-wget -q -O /usr/local/bin/vpn-api 
+wget -q -O /usr/local/bin/vpn-api "https://github.com/hidessh99/scAUTOku/raw/refs/heads/main/golang/vpn-api" && chmod +x /usr/local/bin/vpn-api
 
 clear
 read -p "Port example 3005 : " port
 uuid=$(cat /proc/sys/kernel/random/uuid)
-
 
 
 cat >/etc/systemd/system/vpn-api.service <<EOF
