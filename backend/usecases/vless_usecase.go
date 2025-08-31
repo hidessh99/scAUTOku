@@ -33,7 +33,7 @@ func (uc *vlessUsecase) CreateAccount(req models.CreateAccountRequest) (*models.
 		}, fmt.Errorf("validation failed: %v", validationErrors)
 	}
 
-	// Execute the add-vless-user script
+	// Execute the add-vless script
 	scriptArgs := []string{
 		req.Username,
 		req.Exp,
@@ -41,7 +41,7 @@ func (uc *vlessUsecase) CreateAccount(req models.CreateAccountRequest) (*models.
 		req.IPQuota,
 	}
 
-	_, err := utils.ExecuteShellCommand("/usr/local/bin/add-vless-user", scriptArgs...)
+	_, err := utils.ExecuteShellCommand("/usr/local/bin/add-vless", scriptArgs...)
 	if err != nil {
 		return &models.AccountResponse{
 			Status:  "error",

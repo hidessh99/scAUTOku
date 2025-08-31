@@ -33,7 +33,7 @@ func (uc *shadowsocksUsecase) CreateAccount(req models.CreateAccountRequest) (*m
 		}, fmt.Errorf("validation failed: %v", validationErrors)
 	}
 
-	// Execute the add-shadowsocks-user script
+	// Execute the add-addshadowsocks script
 	scriptArgs := []string{
 		req.Username,
 		req.Password,
@@ -41,7 +41,7 @@ func (uc *shadowsocksUsecase) CreateAccount(req models.CreateAccountRequest) (*m
 		req.IPQuota,
 	}
 
-	_, err := utils.ExecuteShellCommand("/usr/local/bin/add-shadowsocks-user", scriptArgs...)
+	_, err := utils.ExecuteShellCommand("/usr/local/bin/add-addshadowsocks", scriptArgs...)
 	if err != nil {
 		return &models.AccountResponse{
 			Status:  "error",

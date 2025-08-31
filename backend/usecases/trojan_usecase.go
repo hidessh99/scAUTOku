@@ -33,7 +33,7 @@ func (uc *trojanUsecase) CreateAccount(req models.CreateAccountRequest) (*models
 		}, fmt.Errorf("validation failed: %v", validationErrors)
 	}
 
-	// Execute the add-trojan-user script
+	// Execute the add-trojan script
 	scriptArgs := []string{
 		req.Username,
 		req.Password,
@@ -41,7 +41,7 @@ func (uc *trojanUsecase) CreateAccount(req models.CreateAccountRequest) (*models
 		req.IPQuota,
 	}
 
-	_, err := utils.ExecuteShellCommand("/usr/local/bin/add-trojan-user", scriptArgs...)
+	_, err := utils.ExecuteShellCommand("/usr/local/bin/add-trojan", scriptArgs...)
 	if err != nil {
 		return &models.AccountResponse{
 			Status:  "error",

@@ -33,41 +33,29 @@ func (uc *sshUsecase) CreateAccount(req models.CreateAccountRequest) (*models.Ac
 		}, fmt.Errorf("validation failed: %v", validationErrors)
 	}
 
-	// Execute the add-ssh-user script
+	// Execute the add-ssh script
 	scriptArgs := []string{
 		req.Username,
 		req.Password,
 		req.Exp,
 		req.IPQuota,
 	}
-	fmt.Println(req.Username, req.Password, req.Exp, req.IPQuota)
 
-	resp, err := utils.ExecuteShellCommand("/usr/local/bin/add-ssh-user", scriptArgs...)
+	_, err := utils.ExecuteShellCommand("/usr/local/bin/add-ssh", scriptArgs...)
 	if err != nil {
 		return &models.AccountResponse{
 			Status:  "error",
 			Message: fmt.Sprintf("Failed to create SSH account: %v", err),
 		}, err
 	}
-	
-	responseBytes, err := utils.OutputParseVMess(resp)
-	if err != nil {
-		c.Log.WithError(err).Error("Failed to parse account data")
-		return nil, fiber.NewError(fiber.StatusBadRequest, err.Error())
-	}
-
-	response := &utils.ParseJsonSSH{}
-	if err := json.Unmarshal(responseBytes, response); err != nil {
-		c.Log.WithError(err).Error("Failed to unmarshal account data")
-		return nil, fiber.NewError(fiber.StatusBadRequest, err.Error())
-	}
 
 	data := models.SSHAccountData{
-		Username: response.Username,
-		Password: response.Password,
-		Domain:   response.Domain
-		Expired:  response.MasaAktif
-
+		Username: req.Username,
+		Password: req.Password,
+		Domain:   "example.com", // Would be extracted from output
+		Expired:  req.Exp,
+		IPQuota:  req.IPQuota,
+		Pubkey:   "public-key", // Would be extracted from output
 	}
 
 	return &models.AccountResponse{

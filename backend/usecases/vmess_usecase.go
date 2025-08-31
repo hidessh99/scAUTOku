@@ -33,7 +33,7 @@ func (uc *vmessUsecase) CreateAccount(req models.CreateAccountRequest) (*models.
 		}, fmt.Errorf("validation failed: %v", validationErrors)
 	}
 
-	// Execute the add-vmess-user script with appropriate parameters
+	// Execute the add-vmess script with appropriate parameters
 	scriptArgs := []string{
 		req.Username,
 		req.Exp,
@@ -41,7 +41,7 @@ func (uc *vmessUsecase) CreateAccount(req models.CreateAccountRequest) (*models.
 		req.IPQuota,
 	}
 
-	_, err := utils.ExecuteShellCommand("/usr/local/bin/add-vmess-user", scriptArgs...)
+	_, err := utils.ExecuteShellCommand("/usr/local/bin/add-vmess", scriptArgs...)
 	if err != nil {
 		return &models.AccountResponse{
 			Status:  "error",

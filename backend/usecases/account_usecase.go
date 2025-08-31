@@ -157,7 +157,7 @@ func (uc *accountUsecase) RenewAccount(req models.RenewAccountRequest) (*models.
 
 // VMESS implementations
 func (uc *accountUsecase) createVmessAccount(req models.CreateAccountRequest) (*models.AccountResponse, error) {
-	// Execute the add-vmess-user script with appropriate parameters
+	// Execute the add-vmess script with appropriate parameters
 	scriptArgs := []string{
 		req.Username,
 		req.Exp,
@@ -165,7 +165,7 @@ func (uc *accountUsecase) createVmessAccount(req models.CreateAccountRequest) (*
 		req.IPQuota,
 	}
 
-	_, err := utils.ExecuteShellCommand("/usr/local/bin/add-vmess-user", scriptArgs...)
+	_, err := utils.ExecuteShellCommand("/usr/local/bin/add-vmess", scriptArgs...)
 	if err != nil {
 		return &models.AccountResponse{
 			Status:  "error",
@@ -196,9 +196,9 @@ func (uc *accountUsecase) createVmessAccount(req models.CreateAccountRequest) (*
 }
 
 func (uc *accountUsecase) checkVmessAccount(req models.CheckAccountRequest) (*models.AccountResponse, error) {
-	// Execute the checkvmess script
+	// Execute the check-vmess script
 	scriptArgs := []string{req.Username}
-	_, err := utils.ExecuteShellCommand("./project/checkuservmess.sh", scriptArgs...)
+	_, err := utils.ExecuteShellCommand("/usr/local/bin/check-vmess", scriptArgs...)
 	if err != nil {
 		return &models.AccountResponse{
 			Status:  "error",
@@ -261,7 +261,7 @@ func (uc *accountUsecase) renewVmessAccount(req models.RenewAccountRequest) (*mo
 
 // SSH implementations
 func (uc *accountUsecase) createSSHAccount(req models.CreateAccountRequest) (*models.AccountResponse, error) {
-	// Execute the add-ssh-user script
+	// Execute the add-ssh script
 	scriptArgs := []string{
 		req.Username,
 		req.Password,
@@ -269,7 +269,7 @@ func (uc *accountUsecase) createSSHAccount(req models.CreateAccountRequest) (*mo
 		req.IPQuota,
 	}
 
-	_, err := utils.ExecuteShellCommand("/usr/local/bin/add-ssh-user", scriptArgs...)
+	_, err := utils.ExecuteShellCommand("/usr/local/bin/add-ssh", scriptArgs...)
 	if err != nil {
 		return &models.AccountResponse{
 			Status:  "error",
@@ -294,9 +294,9 @@ func (uc *accountUsecase) createSSHAccount(req models.CreateAccountRequest) (*mo
 }
 
 func (uc *accountUsecase) checkSSHAccount(req models.CheckAccountRequest) (*models.AccountResponse, error) {
-	// Execute the checkssh script
+	// Execute the check-ssh script
 	scriptArgs := []string{req.Username}
-	_, err := utils.ExecuteShellCommand("./project/checkuserssh.sh", scriptArgs...)
+	_, err := utils.ExecuteShellCommand("/usr/local/bin/check-ssh", scriptArgs...)
 	if err != nil {
 		return &models.AccountResponse{
 			Status:  "error",
@@ -359,7 +359,7 @@ func (uc *accountUsecase) renewSSHAccount(req models.RenewAccountRequest) (*mode
 
 // TROJAN implementations
 func (uc *accountUsecase) createTrojanAccount(req models.CreateAccountRequest) (*models.AccountResponse, error) {
-	// Execute the add-trojan-user script
+	// Execute the add-trojan script
 	scriptArgs := []string{
 		req.Username,
 		req.Password,
@@ -367,7 +367,7 @@ func (uc *accountUsecase) createTrojanAccount(req models.CreateAccountRequest) (
 		req.IPQuota,
 	}
 
-	_, err := utils.ExecuteShellCommand("/usr/local/bin/add-trojan-user", scriptArgs...)
+	_, err := utils.ExecuteShellCommand("/usr/local/bin/add-trojan", scriptArgs...)
 	if err != nil {
 		return &models.AccountResponse{
 			Status:  "error",
@@ -393,9 +393,9 @@ func (uc *accountUsecase) createTrojanAccount(req models.CreateAccountRequest) (
 }
 
 func (uc *accountUsecase) checkTrojanAccount(req models.CheckAccountRequest) (*models.AccountResponse, error) {
-	// Execute the checktrojan script
+	// Execute the check-trojan script
 	scriptArgs := []string{req.Username}
-	_, err := utils.ExecuteShellCommand("./project/checkusertrojan.sh", scriptArgs...)
+	_, err := utils.ExecuteShellCommand("/usr/local/bin/check-trojan", scriptArgs...)
 	if err != nil {
 		return &models.AccountResponse{
 			Status:  "error",
@@ -458,7 +458,7 @@ func (uc *accountUsecase) renewTrojanAccount(req models.RenewAccountRequest) (*m
 
 // VLESS implementations
 func (uc *accountUsecase) createVlessAccount(req models.CreateAccountRequest) (*models.AccountResponse, error) {
-	// Execute the add-vless-user script
+	// Execute the add-vless script
 	scriptArgs := []string{
 		req.Username,
 		req.Exp,
@@ -466,7 +466,7 @@ func (uc *accountUsecase) createVlessAccount(req models.CreateAccountRequest) (*
 		req.IPQuota,
 	}
 
-	_, err := utils.ExecuteShellCommand("/usr/local/bin/add-vless-user", scriptArgs...)
+	_, err := utils.ExecuteShellCommand("/usr/local/bin/add-vless", scriptArgs...)
 	if err != nil {
 		return &models.AccountResponse{
 			Status:  "error",
@@ -492,9 +492,9 @@ func (uc *accountUsecase) createVlessAccount(req models.CreateAccountRequest) (*
 }
 
 func (uc *accountUsecase) checkVlessAccount(req models.CheckAccountRequest) (*models.AccountResponse, error) {
-	// Execute the checkvless script
+	// Execute the check-vless script
 	scriptArgs := []string{req.Username}
-	_, err := utils.ExecuteShellCommand("./project/checkuservless.sh", scriptArgs...)
+	_, err := utils.ExecuteShellCommand("/usr/local/bin/check-vless", scriptArgs...)
 	if err != nil {
 		return &models.AccountResponse{
 			Status:  "error",
@@ -557,7 +557,7 @@ func (uc *accountUsecase) renewVlessAccount(req models.RenewAccountRequest) (*mo
 
 // SHADOWSOCKS implementations
 func (uc *accountUsecase) createShadowsocksAccount(req models.CreateAccountRequest) (*models.AccountResponse, error) {
-	// Execute the add-shadowsocks-user script
+	// Execute the add-addshadowsocks script
 	scriptArgs := []string{
 		req.Username,
 		req.Password,
@@ -565,7 +565,7 @@ func (uc *accountUsecase) createShadowsocksAccount(req models.CreateAccountReque
 		req.IPQuota,
 	}
 
-	_, err := utils.ExecuteShellCommand("/usr/local/bin/add-shadowsocks-user", scriptArgs...)
+	_, err := utils.ExecuteShellCommand("/usr/local/bin/add-addshadowsocks", scriptArgs...)
 	if err != nil {
 		return &models.AccountResponse{
 			Status:  "error",
@@ -591,9 +591,9 @@ func (uc *accountUsecase) createShadowsocksAccount(req models.CreateAccountReque
 }
 
 func (uc *accountUsecase) checkShadowsocksAccount(req models.CheckAccountRequest) (*models.AccountResponse, error) {
-	// Execute the checkshadowsocks script
+	// Execute the check-shadowsocks script
 	scriptArgs := []string{req.Username}
-	_, err := utils.ExecuteShellCommand("./project/checkusershadowsocks.sh", scriptArgs...)
+	_, err := utils.ExecuteShellCommand("/usr/local/bin/check-shadowsocks", scriptArgs...)
 	if err != nil {
 		return &models.AccountResponse{
 			Status:  "error",
