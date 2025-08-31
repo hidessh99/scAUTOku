@@ -57,7 +57,7 @@ wget -q -O trial "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/head
 wget -q -O trialvmess "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/trialvmess"
 wget -q -O trialvless "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/trialvless"
 wget -q -O trialssh "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/trialssh"
-wget -q -O  trialshadowsoks "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/trialshadowsoks"
+wget -q -O trialshadowsoks "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/trialshadowsoks"
 
 
 chmod +x addshadowsocks
@@ -74,6 +74,7 @@ chmod +x checkssh
 chmod +x checktrojan
 chmod +x checkvless
 chmod +x checkvmess
+chmod +x checkshadowsocks
 
 chmod +x dellshadowsocks
 chmod +x dellssh
