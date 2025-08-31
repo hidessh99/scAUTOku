@@ -13,13 +13,26 @@ type ShadowsocksUsecase interface {
 	RenewAccount(req models.RenewAccountRequest) (*models.AccountResponse, error)
 }
 
-type shadowsocksUsecase struct{}
+type shadowsocksUsecase struct {
+	validator *utils.Validator
+}
 
 func NewShadowsocksUsecase() ShadowsocksUsecase {
-	return &shadowsocksUsecase{}
+	return &shadowsocksUsecase{
+		validator: utils.NewValidator(),
+	}
 }
 
 func (uc *shadowsocksUsecase) CreateAccount(req models.CreateAccountRequest) (*models.AccountResponse, error) {
+	// Validate the request
+	if validationErrors := uc.validator.ValidateStruct(req); len(validationErrors) > 0 {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Validation failed",
+			Data:    validationErrors,
+		}, fmt.Errorf("validation failed: %v", validationErrors)
+	}
+
 	// Execute the add-shadowsocks-user script
 	scriptArgs := []string{
 		req.Username,
@@ -54,6 +67,15 @@ func (uc *shadowsocksUsecase) CreateAccount(req models.CreateAccountRequest) (*m
 }
 
 func (uc *shadowsocksUsecase) CheckAccount(req models.CheckAccountRequest) (*models.AccountResponse, error) {
+	// Validate the request
+	if validationErrors := uc.validator.ValidateStruct(req); len(validationErrors) > 0 {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Validation failed",
+			Data:    validationErrors,
+		}, fmt.Errorf("validation failed: %v", validationErrors)
+	}
+
 	// Execute the check-shadowsocks script
 	scriptArgs := []string{req.Username}
 	_, err := utils.ExecuteShellCommand("/usr/local/bin/check-shadowsocks", scriptArgs...)
@@ -78,6 +100,15 @@ func (uc *shadowsocksUsecase) CheckAccount(req models.CheckAccountRequest) (*mod
 }
 
 func (uc *shadowsocksUsecase) DeleteAccount(req models.DeleteAccountRequest) (*models.AccountResponse, error) {
+	// Validate the request
+	if validationErrors := uc.validator.ValidateStruct(req); len(validationErrors) > 0 {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Validation failed",
+			Data:    validationErrors,
+		}, fmt.Errorf("validation failed: %v", validationErrors)
+	}
+
 	// Execute the del-addshadowsocks script
 	scriptArgs := []string{req.Username}
 	_, err := utils.ExecuteShellCommand("/usr/local/bin/del-addshadowsocks", scriptArgs...)
@@ -96,6 +127,15 @@ func (uc *shadowsocksUsecase) DeleteAccount(req models.DeleteAccountRequest) (*m
 }
 
 func (uc *shadowsocksUsecase) RenewAccount(req models.RenewAccountRequest) (*models.AccountResponse, error) {
+	// Validate the request
+	if validationErrors := uc.validator.ValidateStruct(req); len(validationErrors) > 0 {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Validation failed",
+			Data:    validationErrors,
+		}, fmt.Errorf("validation failed: %v", validationErrors)
+	}
+
 	// Execute the renew-shadowsocks script
 	scriptArgs := []string{
 		req.Username,

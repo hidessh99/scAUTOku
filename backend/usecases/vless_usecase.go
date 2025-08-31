@@ -13,13 +13,26 @@ type VlessUsecase interface {
 	RenewAccount(req models.RenewAccountRequest) (*models.AccountResponse, error)
 }
 
-type vlessUsecase struct{}
+type vlessUsecase struct {
+	validator *utils.Validator
+}
 
 func NewVlessUsecase() VlessUsecase {
-	return &vlessUsecase{}
+	return &vlessUsecase{
+		validator: utils.NewValidator(),
+	}
 }
 
 func (uc *vlessUsecase) CreateAccount(req models.CreateAccountRequest) (*models.AccountResponse, error) {
+	// Validate the request
+	if validationErrors := uc.validator.ValidateStruct(req); len(validationErrors) > 0 {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Validation failed",
+			Data:    validationErrors,
+		}, fmt.Errorf("validation failed: %v", validationErrors)
+	}
+
 	// Execute the add-vless-user script
 	scriptArgs := []string{
 		req.Username,
@@ -54,6 +67,15 @@ func (uc *vlessUsecase) CreateAccount(req models.CreateAccountRequest) (*models.
 }
 
 func (uc *vlessUsecase) CheckAccount(req models.CheckAccountRequest) (*models.AccountResponse, error) {
+	// Validate the request
+	if validationErrors := uc.validator.ValidateStruct(req); len(validationErrors) > 0 {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Validation failed",
+			Data:    validationErrors,
+		}, fmt.Errorf("validation failed: %v", validationErrors)
+	}
+
 	// Execute the check-vless script
 	scriptArgs := []string{req.Username}
 	_, err := utils.ExecuteShellCommand("/usr/local/bin/check-vless", scriptArgs...)
@@ -78,6 +100,15 @@ func (uc *vlessUsecase) CheckAccount(req models.CheckAccountRequest) (*models.Ac
 }
 
 func (uc *vlessUsecase) DeleteAccount(req models.DeleteAccountRequest) (*models.AccountResponse, error) {
+	// Validate the request
+	if validationErrors := uc.validator.ValidateStruct(req); len(validationErrors) > 0 {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Validation failed",
+			Data:    validationErrors,
+		}, fmt.Errorf("validation failed: %v", validationErrors)
+	}
+
 	// Execute the del-vless script
 	scriptArgs := []string{req.Username}
 	_, err := utils.ExecuteShellCommand("/usr/local/bin/del-vless", scriptArgs...)
@@ -96,6 +127,15 @@ func (uc *vlessUsecase) DeleteAccount(req models.DeleteAccountRequest) (*models.
 }
 
 func (uc *vlessUsecase) RenewAccount(req models.RenewAccountRequest) (*models.AccountResponse, error) {
+	// Validate the request
+	if validationErrors := uc.validator.ValidateStruct(req); len(validationErrors) > 0 {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Validation failed",
+			Data:    validationErrors,
+		}, fmt.Errorf("validation failed: %v", validationErrors)
+	}
+
 	// Execute the renew-vless script
 	scriptArgs := []string{
 		req.Username,

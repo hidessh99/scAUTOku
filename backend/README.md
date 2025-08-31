@@ -276,7 +276,10 @@ ls -la vpn-api
    ExecStart=/home/user/backend/vpn-api
    Restart=always
    RestartSec=10
-   Environment=PORT=3000
+   Environment=PORT=3005
+   Environment=API_KEY=c75258f0-940b-4972-b316-63c14a4bb7e3
+   Environment=AllowOrigins=*
+
 
    [Install]
    WantedBy=multi-user.target

@@ -10,7 +10,7 @@ import (
 
 // AccountRoutes sets up the account management routes
 func AccountRoutes(app *fiber.App) {
-	// Initialize usecases
+	// Initialize usecases with validators
 	vmessUsecase := usecases.NewVmessUsecase()
 	sshUsecase := usecases.NewSshUsecase()
 	vlessUsecase := usecases.NewVlessUsecase()

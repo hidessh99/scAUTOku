@@ -13,13 +13,26 @@ type VmessUsecase interface {
 	RenewAccount(req models.RenewAccountRequest) (*models.AccountResponse, error)
 }
 
-type vmessUsecase struct{}
+type vmessUsecase struct {
+	validator *utils.Validator
+}
 
 func NewVmessUsecase() VmessUsecase {
-	return &vmessUsecase{}
+	return &vmessUsecase{
+		validator: utils.NewValidator(),
+	}
 }
 
 func (uc *vmessUsecase) CreateAccount(req models.CreateAccountRequest) (*models.AccountResponse, error) {
+	// Validate the request
+	if validationErrors := uc.validator.ValidateStruct(req); len(validationErrors) > 0 {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Validation failed",
+			Data:    validationErrors,
+		}, fmt.Errorf("validation failed: %v", validationErrors)
+	}
+
 	// Execute the add-vmess-user script with appropriate parameters
 	scriptArgs := []string{
 		req.Username,
@@ -59,6 +72,15 @@ func (uc *vmessUsecase) CreateAccount(req models.CreateAccountRequest) (*models.
 }
 
 func (uc *vmessUsecase) CheckAccount(req models.CheckAccountRequest) (*models.AccountResponse, error) {
+	// Validate the request
+	if validationErrors := uc.validator.ValidateStruct(req); len(validationErrors) > 0 {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Validation failed",
+			Data:    validationErrors,
+		}, fmt.Errorf("validation failed: %v", validationErrors)
+	}
+
 	// Execute the check-vmess script
 	scriptArgs := []string{req.Username}
 	_, err := utils.ExecuteShellCommand("/usr/local/bin/check-vmess", scriptArgs...)
@@ -83,6 +105,15 @@ func (uc *vmessUsecase) CheckAccount(req models.CheckAccountRequest) (*models.Ac
 }
 
 func (uc *vmessUsecase) DeleteAccount(req models.DeleteAccountRequest) (*models.AccountResponse, error) {
+	// Validate the request
+	if validationErrors := uc.validator.ValidateStruct(req); len(validationErrors) > 0 {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Validation failed",
+			Data:    validationErrors,
+		}, fmt.Errorf("validation failed: %v", validationErrors)
+	}
+
 	// Execute the del-vmess script
 	scriptArgs := []string{req.Username}
 	_, err := utils.ExecuteShellCommand("/usr/local/bin/del-vmess", scriptArgs...)
@@ -101,6 +132,15 @@ func (uc *vmessUsecase) DeleteAccount(req models.DeleteAccountRequest) (*models.
 }
 
 func (uc *vmessUsecase) RenewAccount(req models.RenewAccountRequest) (*models.AccountResponse, error) {
+	// Validate the request
+	if validationErrors := uc.validator.ValidateStruct(req); len(validationErrors) > 0 {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Validation failed",
+			Data:    validationErrors,
+		}, fmt.Errorf("validation failed: %v", validationErrors)
+	}
+
 	// Execute the renew-vmess script
 	scriptArgs := []string{
 		req.Username,

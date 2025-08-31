@@ -13,13 +13,26 @@ type SshUsecase interface {
 	RenewAccount(req models.RenewAccountRequest) (*models.AccountResponse, error)
 }
 
-type sshUsecase struct{}
+type sshUsecase struct {
+	validator *utils.Validator
+}
 
 func NewSshUsecase() SshUsecase {
-	return &sshUsecase{}
+	return &sshUsecase{
+		validator: utils.NewValidator(),
+	}
 }
 
 func (uc *sshUsecase) CreateAccount(req models.CreateAccountRequest) (*models.AccountResponse, error) {
+	// Validate the request
+	if validationErrors := uc.validator.ValidateStruct(req); len(validationErrors) > 0 {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Validation failed",
+			Data:    validationErrors,
+		}, fmt.Errorf("validation failed: %v", validationErrors)
+	}
+
 	// Execute the add-ssh-user script
 	scriptArgs := []string{
 		req.Username,
@@ -36,15 +49,25 @@ func (uc *sshUsecase) CreateAccount(req models.CreateAccountRequest) (*models.Ac
 			Message: fmt.Sprintf("Failed to create SSH account: %v", err),
 		}, err
 	}
-	fmt.Println(resp)
+	
+	responseBytes, err := utils.OutputParseVMess(resp)
+	if err != nil {
+		c.Log.WithError(err).Error("Failed to parse account data")
+		return nil, fiber.NewError(fiber.StatusBadRequest, err.Error())
+	}
+
+	response := &utils.ParseJsonSSH{}
+	if err := json.Unmarshal(responseBytes, response); err != nil {
+		c.Log.WithError(err).Error("Failed to unmarshal account data")
+		return nil, fiber.NewError(fiber.StatusBadRequest, err.Error())
+	}
 
 	data := models.SSHAccountData{
-		Username: req.Username,
-		Password: req.Password,
-		Domain:   "example.com", // Would be extracted from output
-		Expired:  req.Exp,
-		IPQuota:  req.IPQuota,
-		Pubkey:   "public-key", // Would be extracted from output
+		Username: response.Username,
+		Password: response.Password,
+		Domain:   response.Domain
+		Expired:  response.MasaAktif
+
 	}
 
 	return &models.AccountResponse{
@@ -55,6 +78,15 @@ func (uc *sshUsecase) CreateAccount(req models.CreateAccountRequest) (*models.Ac
 }
 
 func (uc *sshUsecase) CheckAccount(req models.CheckAccountRequest) (*models.AccountResponse, error) {
+	// Validate the request
+	if validationErrors := uc.validator.ValidateStruct(req); len(validationErrors) > 0 {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Validation failed",
+			Data:    validationErrors,
+		}, fmt.Errorf("validation failed: %v", validationErrors)
+	}
+
 	// Execute the check-ssh script
 	scriptArgs := []string{req.Username}
 	_, err := utils.ExecuteShellCommand("/usr/local/bin/check-ssh", scriptArgs...)
@@ -79,6 +111,15 @@ func (uc *sshUsecase) CheckAccount(req models.CheckAccountRequest) (*models.Acco
 }
 
 func (uc *sshUsecase) DeleteAccount(req models.DeleteAccountRequest) (*models.AccountResponse, error) {
+	// Validate the request
+	if validationErrors := uc.validator.ValidateStruct(req); len(validationErrors) > 0 {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Validation failed",
+			Data:    validationErrors,
+		}, fmt.Errorf("validation failed: %v", validationErrors)
+	}
+
 	// Execute the del-ssh script
 	scriptArgs := []string{req.Username}
 	_, err := utils.ExecuteShellCommand("/usr/local/bin/del-ssh", scriptArgs...)
@@ -97,6 +138,15 @@ func (uc *sshUsecase) DeleteAccount(req models.DeleteAccountRequest) (*models.Ac
 }
 
 func (uc *sshUsecase) RenewAccount(req models.RenewAccountRequest) (*models.AccountResponse, error) {
+	// Validate the request
+	if validationErrors := uc.validator.ValidateStruct(req); len(validationErrors) > 0 {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Validation failed",
+			Data:    validationErrors,
+		}, fmt.Errorf("validation failed: %v", validationErrors)
+	}
+
 	// Execute the renew-ssh script
 	scriptArgs := []string{
 		req.Username,

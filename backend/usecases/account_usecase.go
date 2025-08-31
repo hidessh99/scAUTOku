@@ -19,6 +19,7 @@ type accountUsecase struct {
 	vlessUsecase       VlessUsecase
 	trojanUsecase      TrojanUsecase
 	shadowsocksUsecase ShadowsocksUsecase
+	validator          *utils.Validator
 }
 
 func NewAccountUsecase(
@@ -34,10 +35,20 @@ func NewAccountUsecase(
 		vlessUsecase:       vlessUsecase,
 		trojanUsecase:      trojanUsecase,
 		shadowsocksUsecase: shadowsocksUsecase,
+		validator:          utils.NewValidator(),
 	}
 }
 
 func (uc *accountUsecase) CreateAccount(req models.CreateAccountRequest) (*models.AccountResponse, error) {
+	// Validate the request
+	if validationErrors := uc.validator.ValidateStruct(req); len(validationErrors) > 0 {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Validation failed",
+			Data:    validationErrors,
+		}, fmt.Errorf("validation failed: %v", validationErrors)
+	}
+
 	switch req.AccountType {
 	case models.VMESS:
 		return uc.vmessUsecase.CreateAccount(req)
@@ -58,6 +69,15 @@ func (uc *accountUsecase) CreateAccount(req models.CreateAccountRequest) (*model
 }
 
 func (uc *accountUsecase) CheckAccount(req models.CheckAccountRequest) (*models.AccountResponse, error) {
+	// Validate the request
+	if validationErrors := uc.validator.ValidateStruct(req); len(validationErrors) > 0 {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Validation failed",
+			Data:    validationErrors,
+		}, fmt.Errorf("validation failed: %v", validationErrors)
+	}
+
 	switch req.AccountType {
 	case models.VMESS:
 		return uc.vmessUsecase.CheckAccount(req)
@@ -78,6 +98,15 @@ func (uc *accountUsecase) CheckAccount(req models.CheckAccountRequest) (*models.
 }
 
 func (uc *accountUsecase) DeleteAccount(req models.DeleteAccountRequest) (*models.AccountResponse, error) {
+	// Validate the request
+	if validationErrors := uc.validator.ValidateStruct(req); len(validationErrors) > 0 {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Validation failed",
+			Data:    validationErrors,
+		}, fmt.Errorf("validation failed: %v", validationErrors)
+	}
+
 	switch req.AccountType {
 	case models.VMESS:
 		return uc.vmessUsecase.DeleteAccount(req)
@@ -98,6 +127,15 @@ func (uc *accountUsecase) DeleteAccount(req models.DeleteAccountRequest) (*model
 }
 
 func (uc *accountUsecase) RenewAccount(req models.RenewAccountRequest) (*models.AccountResponse, error) {
+	// Validate the request
+	if validationErrors := uc.validator.ValidateStruct(req); len(validationErrors) > 0 {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Validation failed",
+			Data:    validationErrors,
+		}, fmt.Errorf("validation failed: %v", validationErrors)
+	}
+
 	switch req.AccountType {
 	case models.VMESS:
 		return uc.vmessUsecase.RenewAccount(req)

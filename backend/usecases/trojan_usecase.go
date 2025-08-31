@@ -13,13 +13,26 @@ type TrojanUsecase interface {
 	RenewAccount(req models.RenewAccountRequest) (*models.AccountResponse, error)
 }
 
-type trojanUsecase struct{}
+type trojanUsecase struct {
+	validator *utils.Validator
+}
 
 func NewTrojanUsecase() TrojanUsecase {
-	return &trojanUsecase{}
+	return &trojanUsecase{
+		validator: utils.NewValidator(),
+	}
 }
 
 func (uc *trojanUsecase) CreateAccount(req models.CreateAccountRequest) (*models.AccountResponse, error) {
+	// Validate the request
+	if validationErrors := uc.validator.ValidateStruct(req); len(validationErrors) > 0 {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Validation failed",
+			Data:    validationErrors,
+		}, fmt.Errorf("validation failed: %v", validationErrors)
+	}
+
 	// Execute the add-trojan-user script
 	scriptArgs := []string{
 		req.Username,
@@ -54,6 +67,15 @@ func (uc *trojanUsecase) CreateAccount(req models.CreateAccountRequest) (*models
 }
 
 func (uc *trojanUsecase) CheckAccount(req models.CheckAccountRequest) (*models.AccountResponse, error) {
+	// Validate the request
+	if validationErrors := uc.validator.ValidateStruct(req); len(validationErrors) > 0 {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Validation failed",
+			Data:    validationErrors,
+		}, fmt.Errorf("validation failed: %v", validationErrors)
+	}
+
 	// Execute the check-trojan script
 	scriptArgs := []string{req.Username}
 	_, err := utils.ExecuteShellCommand("/usr/local/bin/check-trojan", scriptArgs...)
@@ -78,6 +100,15 @@ func (uc *trojanUsecase) CheckAccount(req models.CheckAccountRequest) (*models.A
 }
 
 func (uc *trojanUsecase) DeleteAccount(req models.DeleteAccountRequest) (*models.AccountResponse, error) {
+	// Validate the request
+	if validationErrors := uc.validator.ValidateStruct(req); len(validationErrors) > 0 {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Validation failed",
+			Data:    validationErrors,
+		}, fmt.Errorf("validation failed: %v", validationErrors)
+	}
+
 	// Execute the del-trojan script
 	scriptArgs := []string{req.Username}
 	_, err := utils.ExecuteShellCommand("/usr/local/bin/del-trojan", scriptArgs...)
@@ -96,6 +127,15 @@ func (uc *trojanUsecase) DeleteAccount(req models.DeleteAccountRequest) (*models
 }
 
 func (uc *trojanUsecase) RenewAccount(req models.RenewAccountRequest) (*models.AccountResponse, error) {
+	// Validate the request
+	if validationErrors := uc.validator.ValidateStruct(req); len(validationErrors) > 0 {
+		return &models.AccountResponse{
+			Status:  "error",
+			Message: "Validation failed",
+			Data:    validationErrors,
+		}, fmt.Errorf("validation failed: %v", validationErrors)
+	}
+
 	// Execute the renew-trojan script
 	scriptArgs := []string{
 		req.Username,
