@@ -2,6 +2,10 @@
 
 A REST API built with GoFiber implementing Clean Architecture for managing VPN accounts (VMESS, SSH, TROJAN, VLESS, SHADOWSOCKS).
 
+## Postman Documentation
+
+For detailed API documentation and examples, visit our [Postman Documentation](https://documenter.getpostman.com/view/26294023/2sB3HhsN7H)
+
 ## Architecture
 
 This API follows Clean Architecture principles with the following layers:
@@ -321,7 +325,7 @@ The application expects the following shell commands to be available on the syst
 - SSH: `/usr/local/bin/del-ssh`
 - TROJAN: `/usr/local/bin/del-trojan`
 - VLESS: `/usr/local/bin/del-vless`
-- SHADOWSOCKS: `/usr/local/bin/del-addshadowsocks`
+- SHADOWSOCKS: `/usr/local/bin/del-shadowsocks`
 
 ### Account Renewal:
 - VMESS: `/usr/local/bin/renew-vmess`
