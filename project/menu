@@ -138,7 +138,7 @@ read -n 1 -s -r -p "Press any key to return to the menu"
             # Display menu
             display_menu() {
             echo -e "   ${orange}┌───────────────────────────────────────────┐${neutral}"
-echo -e "   ${orange}│ ${dark_blue_bg}${green}           THEFATKAY-TUNNELING           ${neutral} ${orange}│${neutral}"
+echo -e "   ${orange}│ ${dark_blue_bg}${green}           HideSSH-TUNNELING           ${neutral} ${orange}│${neutral}"
 echo -e "   ${orange}└───────────────────────────────────────────┘${neutral}"            
             echo -e "   ${orange}┌───────────────────────────────────────────┐${neutral}"
 

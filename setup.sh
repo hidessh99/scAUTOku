@@ -70,7 +70,7 @@ if [ -z "$1" ]; then
     echo -e "${blue}    │   ${green}┌─┐┬ ┬┌┬┐┌─┐┌─┐┌─┐┬─┐┬┌─┐┌┬┐  ┬  ┬┌┬┐┌─┐"
     echo -e "${blue}    │   ${green}├─┤│ │ │ │ │└─┐│  ├┬┘│├─┘ │   │  │ │ ├┤    "
     echo -e "${blue}    │   ${green}┴ ┴└─┘ ┴ └─┘└─┘└─┘┴└─┴┴   ┴   ┴─┘┴ ┴ └─┘   ${neutral}"
-    echo -e "${blue}    │   ${yellow}Copyright${reset} (C)${gray} https://t.me/thefatkay   ${neutral}"
+    echo -e "${blue}    │   ${yellow}Copyright${reset} (C)${gray} https://t.me/hidessh   ${neutral}"
     echo -e "${blue}    └───────────────────────────────────────────────┘${neutral}"
     echo -e "${blue}    ────────────────────────────────────────────────${neutral}"
     echo -e "${yellow}     Masukkan domain Anda untuk memulai instalasi:${neutral}"
