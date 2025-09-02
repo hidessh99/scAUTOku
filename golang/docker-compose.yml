@@ -2,16 +2,12 @@ version: '3.8'
 
 services:
   vpn-api:
-    build: .
+    image: hidessh99/vpn-rest:latest
     container_name: vpn-api
     ports:
-      - "3000:3000"
+      - "3005:3005"
     environment:
-      - PORT=3000
+      - PORT=3005
       - API_KEY=your_api_key_here
-      - JWT_SECRET=your_jwt_secret_here
-      - ADMIN_USERNAME=admin
-      - ADMIN_PASSWORD=admin123
+      - AllowOrigins=*
     restart: unless-stopped
-    # If you want to use the pre-built image from Docker Hub, uncomment the next line
-    # image: your-dockerhub-username/vpn-api:latest
