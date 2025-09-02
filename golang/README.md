@@ -358,3 +358,11 @@ Make sure these commands are properly installed and accessible on your system.
 
 - [GoFiber](https://gofiber.io/) - Express-inspired web framework for Go
 - [godotenv](https://github.com/joho/godotenv) - Loading environment variables from .env files
+
+## Pre-built Docker Image
+
+You can pull the pre-built Docker image from Docker Hub:
+
+```bash
+docker pull hidessh99/vpn-rest:v1
+```
