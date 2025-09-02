@@ -54,3 +54,4 @@ sudo systemctl enable vpn-api
 
 echo "Installation completed"
 echo "You can access key header Bearer: ${uuid}"
+echo "Port Rest Api: ${port}"
