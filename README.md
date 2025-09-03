@@ -14,7 +14,7 @@
 
 - Jika dalam proses instalasi [Step 1](#Step-1), terjadi diskoneksi pada terminal. Jangan masukkan kembali perintah instalasi [Step 1](#Step-1). Silahkan masukkan perintah `screen -r setup` untuk melihat proses yang telah berjalan.
 - Jika ingin melihat log instalasi dapat dilihat pada `/root/syslog.log`.
-- Laporan bug bisa dilakukan pada akun [hidessh admin](https://t.me/hidessh).
+- Laporan bug bisa dilakukan pada akun [hidessh](https://t.me/hidessh).
 
 ## Tutorial
 
@@ -37,6 +37,9 @@ Perintah untuk membatalkan.
     crontab /tmp/cron.txt
     rm -rf /tmp/cron.txt
 
+## Support
 
-support 
-Ubuntu 22.04 LTS (Jammy Jellyfish)"    
+### os support ssh and rest 
+
+    Ubuntu 22.04 LTS (Jammy Jellyfish)    
+    Ubuntu 24.04.3 LTS (noble)
