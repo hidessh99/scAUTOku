@@ -85,10 +85,10 @@ The API key can be configured in the `.env` file.
 ### Create Account (General)
 ```json
 {
-  "username": "testuser",
-  "password": "testpass", // Required for SSH, TROJAN, SHADOWSOCKS
+  "username": "testuser", // Required for username
+  "password": "testpass", // Required for password
   "exp": "30", // Expiration in days
-  "quota": "10GB", // Optional quota
+  "quota": "10", //  quota example 10GB
   "ip_quota": "5", // IP limit
   "account_type": "vmess" // vmess, ssh, trojan, vless, shadowsocks
 }
@@ -147,14 +147,9 @@ The API can be configured using environment variables or a `.env` file:
 ```
 # Authentication Configuration
 API_KEY=your_api_key_here
-JWT_SECRET=your_jwt_secret_here
-ADMIN_USERNAME=admin
-ADMIN_PASSWORD=admin123
-
+AllowOrigins=* // if you want to allow all origins or specific ones
 # Server Configuration
-PORT=3000
-HOST=localhost
-
+PORT=3005
 ```
 
 ## Installation on Ubuntu VPS
@@ -168,44 +163,18 @@ Follow these steps to deploy the VPN Account Management API on your Ubuntu VPS:
 - Sudo privileges
 
 
-### Step 3: Prepare the Application
+### Step 1: Prepare the Application
 
-1. Navigate to the backend directory:
+ instal auto rest backend :
    ```bash
-   cd backend
+   wget https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/golang/rest-go.sh
+   chmod +x rest-go.sh
+   bash rest-go.sh
    ```
 
-2. Install dependencies:
-   ```bash
-   go mod tidy
-   ```
 
-3. Configure the environment:
-   ```bash
-   # Copy the example env file
-   cp .env.example .env
-   
-   # Edit the configuration
-   nano .env
-   ```
-   
-   Set your API key and other configuration values:
-   ```
-   API_KEY=your_secure_api_key_here
-   PORT=3000
-   ```
 
-### Step 4: Build the Application
-
-```bash
-# Build the application for Linux
-GOOS=linux GOARCH=amd64 go build -o vpn-api main.go
-
-# Verify the build was successful
-ls -la vpn-api
-```
-
-### Step 5: Create a Systemd Service
+### if you custom a Systemd Service
 
 1. Create a systemd service file:
    ```bash
@@ -281,32 +250,8 @@ curl http://localhost:3000/health
 # {"message":"Account management API is running","status":"success"}
 ```
 
-## Installing Go
 
-To install the latest version of Go on Ubuntu/Debian, you can use the provided installation script:
-
-```bash
-wget https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/backend/install-go.sh
-chmod +x install-go.sh
-./install-go.sh
-```
-
-This script will:
-- Detect your system architecture
-- Download and install the latest version of Go
-- Set up the necessary environment variables
-- Verify the installation
-
-
-## Installing golang to your system vps
-
-then install golang with this script
-
-```bash
-wget https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/golang/rest-go.sh
-chmod +x rest-go.sh
-./rest-go.sh
-```
+## quide rest api go to your system vps
 
 This script will:
 - rest api golang
@@ -353,11 +298,6 @@ The application expects the following shell commands to be available on the syst
 - SHADOWSOCKS: `/usr/local/bin/renew-shadowsocks`
 
 Make sure these commands are properly installed and accessible on your system.
-
-## Dependencies
-
-- [GoFiber](https://gofiber.io/) - Express-inspired web framework for Go
-- [godotenv](https://github.com/joho/godotenv) - Loading environment variables from .env files
 
 ## Pre-built Docker Image
 
