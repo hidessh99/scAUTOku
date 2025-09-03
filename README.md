@@ -6,7 +6,7 @@
 
     apt-get update && \
     apt-get --reinstall --fix-missing install -y whois bzip2 gzip coreutils wget screen nscd && \
-    wget --inet4-only --no-check-certificate -O setup.sh https://raw.githubusercontent.com/hidessh99/goautoscript/refs/heads/main/setup.sh && \
+    wget --inet4-only --no-check-certificate -O setup.sh https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/setup.sh && \
     chmod +x setup.sh && \
     screen -S setup ./setup.sh
 
@@ -36,3 +36,7 @@ Perintah untuk membatalkan.
     sed -i "/reboot$/d" /tmp/cron.txt
     crontab /tmp/cron.txt
     rm -rf /tmp/cron.txt
+
+
+support 
+Ubuntu 22.04 LTS (Jammy Jellyfish)"    
