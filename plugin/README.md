@@ -21,7 +21,6 @@
   quota // quota example 1 = 1GB
   limit // limit  example 100 =100 ip address
 
-
 #### ssh
 
   username // user example hide1
@@ -29,3 +28,23 @@
   exp // expired example 30 = 30 hari
   limit // limit  example 100 =100 ip address
 
+### check and delete acount
+
+#### vmess, vless, trojan, shadowsoks, ssh
+
+  username // user example hide1
+
+### renew acount
+
+#### vmess, vless, trojan, shadowsoks,
+
+  username // user example hide1
+  exp // expired example 30 = 30 hari
+  quota // quota example 1 = 1GB
+  limit // limit  example 100 =100 ip address
+
+
+#### ssh
+  username // user example hide1
+  exp // expired example 30 = 30 hari
+  limit // limit  example 100 =100 ip address
