@@ -631,7 +631,7 @@ fi
 
 # Install Xray
 if ! command -v xray >/dev/null 2>&1; then
-    bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install -u www-data --version 1.8.7
+    bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install -u www-data --version 25.2.18
 else
     echo -e "${green}Xray is already installed, skipping installation${neutral}"
 fi
