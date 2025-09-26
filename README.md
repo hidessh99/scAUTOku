@@ -122,6 +122,9 @@ rm -rf /tmp/cron.txt
 ### Supported Operating Systems:
 - Ubuntu 22.04 LTS (Jammy Jellyfish)
 - Ubuntu 24.04.3 LTS (Noble)
+- Ubuntu 25.04 LTS (Plucky Puffin)
+- Debian 12 (Bookworm)
+- Debian 13 (Trixie)
 
 ### Required Packages:
 - whois
