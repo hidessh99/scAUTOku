@@ -40,7 +40,8 @@ The API key can be configured in the `.env` file.
 ## API Endpoints
 
 ### Health Check
-- `GET /health` - Check if the API is running (No authentication required)
+- HTTP `GET http://domain:[yourport]/health` - Check if the API is running (No authentication required)
+- HTTPS `GET https://domain:3000/health` - Check if the API is running (No authentication required)
 
 ### General Account Management
 - `POST /api/v1/accounts` - Create a new account (specify account_type in request)
