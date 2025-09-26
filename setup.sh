@@ -413,6 +413,17 @@ elif [[ $os_id == "debian" && $os_version == "12" ]]; then
     sudo apt update -y || echo -e "${red}Failed to update package list${neutral}"
     apt-get install -y haproxy=3.0.* || echo -e "${red}Failed to install haproxy${neutral}"
 
+elif [[ $os_id == "debian" && $os_version == "13" ]]; then
+    curl https://haproxy.debian.net/bernat.debian.org.gpg | gpg --dearmor >/usr/share/keyrings/haproxy.debian.net.gpg || echo -e "${red}Failed to add haproxy repository${neutral}"
+    echo "deb [signed-by=/usr/share/keyrings/haproxy.debian.net.gpg] http://haproxy.debian.net trixie-backports-3.2 main" >/etc/apt/sources.list.d/haproxy.list || echo -e "${red}Failed to add haproxy repository${neutral}"
+    sudo apt update -y || echo -e "${red}Failed to update package list${neutral}"
+    apt-get install -y haproxy=3.2.* || echo -e "${red}Failed to install haproxy${neutral}"
+
+elif [[ $os_id == "ubuntu" && $os_version == "25" ]]; then
+    add-apt-repository -y ppa:vbernat/haproxy-3.2 || echo -e "${red}Failed to add haproxy repository${neutral}"
+    sudo apt update -y || echo -e "${red}Failed to update package list${neutral}"
+    apt-get install -y haproxy=3.2.* || echo -e "${red}Failed to install haproxy${neutral}"
+
 else
     echo -e "${red}Unsupported OS. Exiting.${neutral}"
     exit 1
