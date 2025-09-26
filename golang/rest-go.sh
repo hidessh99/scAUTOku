@@ -107,4 +107,4 @@ fi
 echo "Installation completed"
 echo "You can access key header Bearer: ${uuid}"
 echo "Port Rest Api: ${port}"
-echo "HTTPS API URL: https://your-domain:${port}/"
+echo "HTTPS API URL: https://your-domain:${port}/health"
