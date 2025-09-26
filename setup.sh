@@ -420,10 +420,9 @@ elif [[ $os_id == "debian" && $os_version == "13" ]]; then
     apt-get install -y haproxy=3.2.* || echo -e "${red}Failed to install haproxy${neutral}"
 
 elif [[ $os_id == "ubuntu" && $os_version == "25.04" ]]; then
-    add-apt-repository -y ppa:vbernat/haproxy-3.2 || echo -e "${red}Failed to add haproxy repository${neutral}"
+    # add-apt-repository -y ppa:vbernat/haproxy-3.2 || echo -e "${red}Failed to add haproxy repository${neutral}"
     sudo apt update -y || echo -e "${red}Failed to update package list${neutral}"
-    apt-get install -y haproxy=3.2.* || echo -e "${red}Failed to install haproxy${neutral}"
-
+    apt-get install -y haproxy || echo -e "${red}Failed to install haproxy${neutral}"
 else
     echo -e "${red}Unsupported OS. Exiting.${neutral}"
     exit 1
