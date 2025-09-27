@@ -54,8 +54,8 @@ fi
 
 
 systemctl daemon-reload || echo -e "${red}Failed to reload systemd daemon${neutral}"
-systemctl restart sshd || echo -e "${red}Failed to restart sshd${neutral}"
-systemctl restart ssh || echo -e "${red}Failed to restart ssh${neutral}"
+service sshd restart || echo -e "${red}Failed to restart sshd${neutral}"
+service ssh restart || echo -e "${red}Failed to restart ssh${neutral}"
 sleep 2
-systemctl enable sshd || echo -e "${red}Failed to enable sshd${neutral}"
-systemctl status sshd || echo -e "${red}Failed to check sshd status${neutral}"
+service sshd enable || echo -e "${red}Failed to enable sshd${neutral}"
+service ssh enable || echo -e "${red}Failed to enable ssh${neutral}"
