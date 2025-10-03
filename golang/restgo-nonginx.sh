@@ -31,6 +31,7 @@ chmod 644 /etc/systemd/system/vpn-api.service
 sudo systemctl daemon-reload
 sudo systemctl start vpn-api
 sudo systemctl enable vpn-api
+sudo systemctl restart vpn-api
 
 echo "Installation completed"
 echo "save all data below"
