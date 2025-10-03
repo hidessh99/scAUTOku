@@ -105,6 +105,7 @@ else
 fi
 
 echo "Installation completed"
+echo "save all data below"
 echo "You can access key header Bearer: ${uuid}"
 echo "Port Rest Api: ${port}"
 echo "HTTPS API URL: https://your-domain:3000/health"
