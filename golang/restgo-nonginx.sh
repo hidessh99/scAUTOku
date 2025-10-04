@@ -24,6 +24,25 @@ read -p "Port example 3005 : " port
 uuid=$(cat /proc/sys/kernel/random/uuid)
 
 
+cat >/etc/systemd/system/vpn-api.service <<EOF
+[Unit]
+Description=VPN Account Management API
+After=network.target
+
+[Service]
+Type=simple
+User=root
+ExecStart=/usr/local/bin/vpn-api
+Restart=always
+RestartSec=10
+Environment=PORT=${port}
+Environment=API_KEY=${uuid}
+Environment=AllowOrigins=*
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
 
 cd
 chmod 644 /etc/systemd/system/vpn-api.service
