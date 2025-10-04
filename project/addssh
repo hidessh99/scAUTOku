@@ -108,7 +108,7 @@ WSS Payload: GET wss://BUG.COM/ HTTP/1.1[crlf]Host: $domain[crlf]Upgrade: websoc
 ---------------------
 OpenVPN Link     : http://$domain:85
 ---------------------
-Expiration       : $exp
+Expiration       : $expired
 END
 
 
@@ -144,7 +144,7 @@ END
     echo "───────────────────────────"
     echo "Save Account Link: https://$domain:81/ssh-$user.txt"
     echo "───────────────────────────"
-    echo "Expiration       : $exp"
+    echo "Expiration       : $expired"
     echo ""
 } >>/etc/xray/log-createssh-${user}.log
 
@@ -177,5 +177,5 @@ echo -e "OpenVPN Link     : https://$domain:81/allovpn.zip"
 echo -e "—————————————————————————————————————"
 echo -e "Save Account Link: https://$domain:81/ssh-$user.txt"
 echo -e "—————————————————————————————————————"
-echo -e "Expiration       : $exp"
+echo -e "Expiration       : $expired"
 echo -e ""
