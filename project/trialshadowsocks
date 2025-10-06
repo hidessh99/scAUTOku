@@ -6,50 +6,11 @@ data_server=$(curl -v --insecure --silent https://google.com/ 2>&1 | grep Date |
 date_list=$(date +"%Y-%m-%d" -d "$data_server")
 
 
-    
-
-# Colors
-red="\e[91m"
-green="\e[92m"
-yellow="\e[93m"
-blue="\e[94m"
-purple="\e[95m"
-cyan="\e[96m"
-white="\e[97m"
-reset="\e[0m"
-
-# Function to print rainbow text
-print_rainbow() {
-    local text="$1"
-    local length=${#text}
-    local start_color=(255 255 0) # yellow
-    local mid_color=(0 255 0)     # green
-    local end_color=(255 255 0)   # yellow
-
-    for ((i = 0; i < length; i++)); do
-        local progress=$((i * 100 / (length - 1)))
-
-        if [ $progress -lt 50 ]; then
-            local factor=$((progress * 2))
-            r=$((start_color[0] * (100 - factor) / 100 + mid_color[0] * factor / 100))
-            g=$((start_color[1] * (100 - factor) / 100 + mid_color[1] * factor / 100))
-            b=$((start_color[2] * (100 - factor) / 100 + mid_color[2] * factor / 100))
-        else
-            local factor=$(((progress - 50) * 2))
-            r=$((mid_color[0] * (100 - factor) / 100 + end_color[0] * factor / 100))
-            g=$((mid_color[1] * (100 - factor) / 100 + end_color[1] * factor / 100))
-            b=$((mid_color[2] * (100 - factor) / 100 + end_color[2] * factor / 100))
-        fi
-
-        printf "\e[38;2;%d;%d;%dm%s" "$r" "$g" "$b" "${text:$i:1}"
-    done
-    echo -e "$reset"
-}
 # Variables
 ip=$(wget -qO- ipv4.icanhazip.com)
 srv_date=$(curl -v --insecure --silent https://google.com/ 2>&1 | grep Date | sed -e 's/< Date: //')
 date=$(date +"%Y-%m-%d" -d "$srv_date")
-ip_url="https://ip.yha.my.id/ip"
+
 city=$(cat /etc/xray/city 2>/dev/null || echo "Unknown city")
 pubkey=$(cat /etc/slowdns/server.pub 2>/dev/null || echo "Pubkey not available")
 ns_domain=$(cat /etc/xray/dns 2>/dev/null || echo "NS domain not set")
@@ -57,30 +18,39 @@ domain=$(cat /etc/xray/domain 2>/dev/null || hostname -f)
 uuid=$(cat /proc/sys/kernel/random/uuid)
 password=$(openssl rand -base64 16)
 
-# Loading animation
-echo ""
-echo -ne "${yellow}Preparing Premium Account${reset}"
-for i in {1..2}; do
-    for j in ⠋ ⠙ ⠹ ⠸ ⠼ ⠴ ⠦ ⠧ ⠇ ⠏; do
-        echo -ne "\r${yellow}Preparing Premium Account $j${reset}"
-        sleep 0.1
-    done
-done
-echo -ne "\r${yellow}Premium Account Ready to be created!${reset}\n"
-sleep 1
 clear
 
 # User data input
-print_rainbow "┌─────────────────────────────────────────┐"
-print_rainbow "│        Script by XTRIMER-TUNNEL         │"
-print_rainbow "│   Input xray/ssocks account dependency  │"
-print_rainbow "│            Enter User Data              │"
-print_rainbow "└─────────────────────────────────────────┘"
+echo "┌─────────────────────────────────────────┐"
+echo "│        Script by XTRIMER-TUNNEL         │"
+echo "│   Input xray/ssocks account dependency  │"
+echo "│            Enter User Data              │"
+echo "└─────────────────────────────────────────┘"
 
 # Generate random username
-user=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1)
+# user=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1)
 
-echo "   Username : $user"
+# echo "   Username : $user"
+
+
+
+while true; do
+    read -p "   Name: " user
+    if [[ ${#user} -lt 3 || ! "$user" =~ ^[a-zA-Z0-9_-]+$ ]]; then
+        printf "\033[1A\033[0J"
+        echo -e "${red}   Username cannot be empty${reset}"
+        continue
+    fi
+    if grep -q "^### $user " /etc/xray/shadowsocks/config.json; then
+        random_number=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 5)
+        user="${random_number}${user}"
+        echo -e "${yellow}   Username already exists. New username used: $user${reset}"
+        break
+    else
+        break
+    fi
+done
+
 until [[ $duration =~ ^[0-9]+$ ]]; do
     read -p "   Active period (minutes): " duration
     if [[ -z "$duration" ]]; then
@@ -342,27 +312,26 @@ fi
 tmux new-session -d -s "trial_shadowsocks_$user" "trial trialss $user $duration"
 
 # Display account information
-clear -x
-print_rainbow "───────────────────────────"
-print_rainbow " Xray/Shadowsocks Account  "
-print_rainbow "───────────────────────────"
-echo -e "Description : ${user}"
-echo -e "Host Server : ${domain}"
-echo -e "Host XrayDNS: ${ns_domain}"
-echo -e "Location    : $city"
-echo -e "Port        : 443"
-echo -e "Method      : ${method}"
-echo -e "Password    : ${password}"
-echo -e "Path WS     : /whatever/shadowsocks"
-echo -e "ServiceName : ss-grpc"
-echo -e "Public Key  : ${pubkey}"
-print_rainbow "───────────────────────────"
-echo -e "SS WS Link  : ${ss_link_ws}"
-print_rainbow "───────────────────────────"
-echo -e "SS gRPC Link: ${ss_link_grpc}"
-print_rainbow "───────────────────────────"
-echo -e "OpenClash Format: https://${domain}:81/shadowsocks-$user.txt"
-print_rainbow "───────────────────────────"
-echo -e "Expires On  : $exp"
-echo -e ""
+clear 
+echo -e "—————————————————————————————————————"
+echo -e "  Xray/Shadowsocks Account "
+echo -e "—————————————————————————————————————"
+echo -e "Description  : ${user}"
+echo -e "Server Host  : ${domain}"
+echo -e "Location     : ${city}"
+echo -e "Port         : 443"
+echo -e "Method       : ${method}"
+echo -e "Password     : ${password}"
+echo -e "WS Path      : /whatever/ss-ws"
+echo -e "ServiceName  : ss-grpc"
+echo -e "Public Key   : ${pubkey}"
+echo -e "—————————————————————————————————————"
+echo -e "SS WS Link   : ${ss_link_ws}"
+echo -e "—————————————————————————————————————"
+echo -e "SS gRPC Link : ${ss_link_grpc}"
+echo -e "—————————————————————————————————————"
+echo -e "OpenClash Format : https://${domain}:81/shadowsocks-${user}.txt"
+echo -e "—————————————————————————————————————"
+echo -e "Expires On   : ${exp}"
+
 

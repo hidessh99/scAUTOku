@@ -66,7 +66,7 @@ wget -q -O /usr/local/bin/trial-vmess "https://raw.githubusercontent.com/hidessh
 wget -q -O /usr/local/bin/trial-ssh "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/trialssh" && chmod +x /usr/local/bin/trial-ssh
 wget -q -O /usr/local/bin/trial-vless "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/trialvless" && chmod +x /usr/local/bin/trial-vless
 wget -q -O /usr/local/bin/trial-trojan "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/trialTrojan" && chmod +x /usr/local/bin/trial-trojan
-
+wget -q -O /usr/local/bin/trial-shadowsocks "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/trialshadowsocks" && chmod +x /usr/local/bin/trial-shadowsocks
 
 echo -e "${blue}─────────────────────────────────────────${neutral}"
 echo -e "${green} Finish install package HIdeSSH      ${neutral}"
