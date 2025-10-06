@@ -55,3 +55,20 @@ wget -q -O /usr/local/bin/renew-ssh "https://raw.githubusercontent.com/hidessh99
 wget -q -O /usr/local/bin/renew-vless "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/renewaccvless.sh" && chmod +x /usr/local/bin/renew-vless
 wget -q -O /usr/local/bin/renew-trojan "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/renewacctrojan.sh" && chmod +x /usr/local/bin/renew-trojan
 wget -q -O /usr/local/bin/renew-shadowsocks "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/renewshadowsocks.sh" && chmod +x /usr/local/bin/renew-shadowsocks
+
+
+echo -e "${blue}─────────────────────────────────────────${neutral}"
+echo -e "${green} INSTALLASI Trial package HIdeSSH      ${neutral}"
+echo -e "${blue}─────────────────────────────────────────${neutral}"
+cd
+
+wget -q -O /usr/local/bin/trial-vmess "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/trialvmess" && chmod +x /usr/local/bin/trial-vmess
+wget -q -O /usr/local/bin/trial-ssh "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/trialssh" && chmod +x /usr/local/bin/trial-ssh
+wget -q -O /usr/local/bin/trial-vless "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/trialvless" && chmod +x /usr/local/bin/trial-vless
+wget -q -O /usr/local/bin/trial-trojan "https://raw.githubusercontent.com/hidessh99/scAUTOku/refs/heads/main/project/trialTrojan" && chmod +x /usr/local/bin/trial-trojan
+
+
+echo -e "${blue}─────────────────────────────────────────${neutral}"
+echo -e "${green} Finish install package HIdeSSH      ${neutral}"
+echo -e "${blue}─────────────────────────────────────────${neutral}"
+cd
