@@ -1,0 +1,197 @@
+## Tutorial Deploy Proyek Golang di VPS Ubuntu/Debian
+
+Panduan ini menjelaskan langkah lengkap memasang dan menjalankan proyek Golang di VPS Ubuntu/Debian: instal Go, build aplikasi, jalankan sebagai service `systemd`, dan (opsional) pasang reverse proxy Nginx.
+
+### Prasyarat
+- VPS Ubuntu/Debian dengan akses `sudo` atau root.
+- `curl`, `tar`, `git`, dan `systemd` tersedia.
+- Domain (opsional) jika ingin akses lewat `https` dengan Nginx.
+
+### 1) Instal Go
+Ada dua cara: menggunakan skrip otomatis yang sudah disediakan di repo, atau manual.
+
+#### Opsi A: Instal otomatis (disarankan)
+1. Upload/transfer file `install-go.sh` dari repo ke VPS (mis. via `scp` atau SFTP).
+2. Jalankan:
+   ```bash
+   sudo chmod +x install-go.sh
+   sudo ./install-go.sh
+   ```
+3. Verifikasi:
+   ```bash
+   go version
+   ```
+
+Skrip akan mendeteksi arsitektur (amd64/arm64/386), mengunduh Go terbaru, memasang ke `/usr/local/go`, dan menambahkan PATH melalui `/etc/profile.d/go.sh`.
+
+#### Opsi B: Instal manual (ringkas)
+1. Tentukan versi terbaru dari https://go.dev/dl/ (misal `go1.22.x`).
+2. Unduh dan pasang (contoh untuk `amd64`):
+   ```bash
+   wget https://go.dev/dl/go1.22.5.linux-amd64.tar.gz
+   sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go1.22.5.linux-amd64.tar.gz
+   echo 'export PATH=/usr/local/go/bin:$PATH' | sudo tee /etc/profile.d/go.sh
+   source /etc/profile.d/go.sh
+   go version
+   ```
+
+### 2) Ambil Kode Proyek
+Clone proyek Anda (contoh):
+```bash
+cd ~
+git clone https://github.com/username/nama-proyek.git
+cd nama-proyek
+```
+
+Jika belum ada `go.mod`, inisialisasi:
+```bash
+go mod init contoh.com/nama-proyek
+go mod tidy
+```
+
+### 3) Build Aplikasi
+Build binary untuk server:
+```bash
+go build -o bin/app ./...
+```
+
+Catatan:
+- Sesuaikan `-o bin/app` dengan nama output yang Anda inginkan.
+- Jika aplikasi adalah single module utama: `go build -o app .`
+
+### 4) Menjalankan Langsung (Tanpa Service)
+Jalankan aplikasi:
+```bash
+PORT=8080 ./bin/app
+```
+
+Pastikan firewall mengizinkan port:
+```bash
+sudo ufw allow 8080/tcp
+```
+
+### 5) Jalankan sebagai Service Systemd (Direkomendasikan)
+Jalankan aplikasi sebagai service agar otomatis start saat boot dan mudah di-restart.
+
+1. Buat user non-root (opsional, lebih aman):
+   ```bash
+   sudo useradd -r -s /bin/false myapp
+   sudo mkdir -p /opt/myapp && sudo chown -R myapp:myapp /opt/myapp
+   sudo cp ~/nama-proyek/bin/app /opt/myapp/app
+   ```
+
+2. Buat file service: `/etc/systemd/system/myapp.service`
+   ```ini
+   [Unit]
+   Description=My Go App
+   After=network.target
+
+   [Service]
+   Type=simple
+   User=myapp
+   Group=myapp
+   WorkingDirectory=/opt/myapp
+   Environment=PORT=8080
+   ExecStart=/opt/myapp/app
+   Restart=on-failure
+   RestartSec=3
+
+   # Batasi konsumsi resource (opsional)
+   NoNewPrivileges=true
+   LimitNOFILE=65535
+
+   [Install]
+   WantedBy=multi-user.target
+   ```
+
+3. Aktifkan service:
+   ```bash
+   sudo systemctl daemon-reload
+   sudo systemctl enable myapp
+   sudo systemctl start myapp
+   sudo systemctl status myapp --no-pager
+   ```
+
+4. Log realtime:
+   ```bash
+   journalctl -u myapp -f --no-pager
+   ```
+
+### 6) (Opsional) Pasang Nginx sebagai Reverse Proxy
+Jalankan aplikasi di port internal (mis. 8080), lalu proxikan lewat Nginx di 80/443.
+
+1. Instal Nginx & ufw:
+   ```bash
+   sudo apt update && sudo apt install -y nginx
+   sudo ufw allow 80/tcp
+   sudo ufw allow 443/tcp
+   ```
+
+2. Konfigurasi server block: `/etc/nginx/sites-available/myapp`
+   ```nginx
+   server {
+     listen 80;
+     server_name contoh.com;
+
+     location / {
+       proxy_pass http://127.0.0.1:8080;
+       proxy_set_header Host $host;
+       proxy_set_header X-Real-IP $remote_addr;
+       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+       proxy_set_header X-Forwarded-Proto $scheme;
+     }
+   }
+   ```
+
+3. Aktifkan dan reload:
+   ```bash
+   sudo ln -s /etc/nginx/sites-available/myapp /etc/nginx/sites-enabled/myapp
+   sudo nginx -t && sudo systemctl reload nginx
+   ```
+
+Untuk TLS/HTTPS, gunakan Certbot atau layanan seperti Cloudflare.
+
+### 7) Deployment & Update
+- Pull update:
+  ```bash
+  cd ~/nama-proyek && git pull
+  ```
+- Rebuild:
+  ```bash
+  go build -o bin/app ./...
+  sudo cp bin/app /opt/myapp/app
+  sudo systemctl restart myapp
+  ```
+
+### 8) Troubleshooting
+- `go: command not found`: pastikan PATH sudah memuat `/usr/local/go/bin` (logout/login atau `source /etc/profile.d/go.sh`).
+- Service tidak start: cek `journalctl -u myapp -r` untuk error terakhir.
+- Port tidak bisa diakses: cek `ufw status` dan pastikan aplikasi mendengar di port yang benar.
+- Permission: pastikan file binary dimiliki user `myapp` dan dapat dieksekusi (`chmod +x`).
+
+### 9) Upgrade/Uninstall Go (Ringkas)
+- Upgrade: jalankan kembali `install-go.sh` atau pasang manual versi baru.
+- Uninstall manual:
+  ```bash
+  sudo rm -rf /usr/local/go
+  sudo rm -f /etc/profile.d/go.sh
+  ```
+
+### Ringkasan Cepat
+```bash
+# Instal Go
+sudo ./install-go.sh && go version
+
+# Build
+git clone https://github.com/username/nama-proyek.git
+cd nama-proyek && go build -o bin/app ./...
+
+# Jalankan sebagai service
+sudo useradd -r -s /bin/false myapp
+sudo mkdir -p /opt/myapp && sudo chown -R myapp:myapp /opt/myapp
+sudo cp bin/app /opt/myapp/app
+echo "[Unit]\nDescription=My Go App\nAfter=network.target\n\n[Service]\nType=simple\nUser=myapp\nGroup=myapp\nWorkingDirectory=/opt/myapp\nEnvironment=PORT=8080\nExecStart=/opt/myapp/app\nRestart=on-failure\nRestartSec=3\n\n[Install]\nWantedBy=multi-user.target" | sudo tee /etc/systemd/system/myapp.service
+sudo systemctl daemon-reload && sudo systemctl enable --now myapp
+```
+
+Selesai. Proyek Golang Anda kini berjalan stabil di VPS Ubuntu/Debian.
