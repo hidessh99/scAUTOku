@@ -27,6 +27,7 @@ screen -S setup ./setup.sh
 
 - If during the installation process in [Step 1](#-installation), a disconnection occurs in the terminal, do not re-enter the installation command. Please use the command `screen -r setup` to view the ongoing process.
 - To view the installation log, check `/root/syslog.log`.
+- If the installation process is interrupted, you can resume it using `screen -r setup`.
 - Report bugs to the [hidessh Telegram account](https://t.me/hidessh).
 
 ## ✨ Features
