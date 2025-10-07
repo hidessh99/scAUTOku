@@ -55,6 +55,13 @@ while true; do
     fi
 done
 
+until [[ $duration =~ ^[0-9]+$ ]]; do
+    read -p "   Active period (minutes): " duration
+    if [[ -z "$duration" ]]; then
+        echo -e "${red}   Active period cannot be empty${reset}"
+    fi
+done
+
 # Account creation process
 expiration=$(date -d "+$duration minutes" +"%Y-%m-%d %H:%M:%S")
 
