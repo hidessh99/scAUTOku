@@ -16,8 +16,9 @@ echo -e "${blue}─────────────────────�
 echo -e "${green}   INSTALLASI golang restapi HIdeSSH       ${neutral}"
 echo -e "${blue}─────────────────────────────────────────${neutral}"
 
+
 cd
-wget -q -O /usr/local/bin/vpn-api "https://github.com/hidessh99/scAUTOku/raw/refs/heads/main/golang/vpn-rest" && chmod +x /usr/local/bin/vpn-api
+wget -q -O /usr/local/bin/vpn-api "https://github.com/hidessh99/scAUTOku/raw/refs/heads/main/golang/vpn-apiv2" && chmod +x /usr/local/bin/vpn-api
 
 clear
 read -p "Port example 3005 : " port
